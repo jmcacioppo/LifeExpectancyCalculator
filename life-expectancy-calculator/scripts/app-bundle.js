@@ -1,10 +1,18 @@
-define('app',['exports', 'bootstrap'], function (exports) {
+define('app',['exports', 'jquery', 'bootstrap'], function (exports, _jquery) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   exports.App = undefined;
+
+  var _jquery2 = _interopRequireDefault(_jquery);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -76,21 +84,13 @@ define('main',['exports', './environment'], function (exports, _environment) {
     });
   }
 });
-define('aboutyou/personalinfo',['exports', 'jquery', 'aurelia-framework', 'aurelia-router', 'bootstrap'], function (exports, _jquery, _aureliaFramework, _aureliaRouter) {
+define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
     exports.personalinfo = undefined;
-
-    var _jquery2 = _interopRequireDefault(_jquery);
-
-    function _interopRequireDefault(obj) {
-        return obj && obj.__esModule ? obj : {
-            default: obj
-        };
-    }
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -100,11 +100,19 @@ define('aboutyou/personalinfo',['exports', 'jquery', 'aurelia-framework', 'aurel
 
     var _dec, _class;
 
-    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function personalinfo(router) {
-        _classCallCheck(this, personalinfo);
+    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function () {
+        function personalinfo(router) {
+            _classCallCheck(this, personalinfo);
 
-        this.router = router;
-    }) || _class);
+            this.router = router;
+        }
+
+        personalinfo.prototype.gender = function gender() {
+            console.log("change");
+        };
+
+        return personalinfo;
+    }()) || _class);
 });
 define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
@@ -150,6 +158,15 @@ define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router'], fun
         this.router = router;
     }) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
 define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
 
@@ -171,15 +188,6 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
 
         this.router = router;
     }) || _class);
-});
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
 });
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
@@ -206,10 +214,11 @@ define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], fun
 define('services/personalinfoData',[], function () {
   "use strict";
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><h1>Life Expectancy Calculator</h1><div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\"><ul class=\"nav navbar-nav\"><li repeat.for=\"row of router.navigation\" class=\"${row.isActive ? 'active' : 'disabled'}\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div><router-view></router-view></template>"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><h1>Personal Info</h1><button class=\"btn btn-primary\">Button</button></template>"; });
-define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><h1>Occupation</h1></template>"; });
-define('text!results/results.html', ['module'], function(module) { module.exports = "<template><h1>Results</h1></template>"; });
-define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><h1>Family Health</h1></template>"; });
-define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><h1>My Health</h1></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><div id=\"home\"><h1>Life Expectancy Calculator</h1><ul><li repeat.for=\"row of router.navigation\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div><router-view></router-view></template>"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><div id=\"personalinfo\"><h1>Personal Info</h1><div click.delegate=\"gender()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${gender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!gender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><div class=\"form-group\"><label for=\"firstName\">Age</label><input type=\"text\" class=\"form-control\" placeholder=\"30\"></div></div></template>"; });
+define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"familyhealth\"><h1>Family Health</h1></div></template>"; });
+define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"myhealth\"><h1>My Health</h1></div></template>"; });
+define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><div id=\"occupation\"><h1>Occupation</h1></div></template>"; });
+define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div></template>"; });
+define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, #personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: center;\r\n    margin: 0 auto;\r\n}"; });
 //# sourceMappingURL=app-bundle.js.map

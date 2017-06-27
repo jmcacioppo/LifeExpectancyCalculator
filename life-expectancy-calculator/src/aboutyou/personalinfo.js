@@ -1,6 +1,3 @@
-import $ from 'jquery'
-import 'bootstrap'
-
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 
@@ -8,5 +5,9 @@ import {Router} from 'aurelia-router';
 export class personalinfo {
     constructor(router) {
         this.router = router;
+    }
+
+    gender() {
+        console.log("change");
     }
 }
