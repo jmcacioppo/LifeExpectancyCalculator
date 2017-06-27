@@ -1,5 +1,20 @@
 <template>  
-    <h1>Personal Info</h1>
+    <div id="personalinfo">
+        <h1>Personal Info</h1>
+    
+        <div click.delegate="gender()" class="btn-group" data-toggle="buttons">
+            <label class="btn ${gender ? 'active btn-primary' : 'btn-secondary'}">
+                <input type="radio">Male
+            </label>
+            <label class="btn ${!gender ? 'active btn-primary' : 'btn-secondary'}">
+                <input type="radio">Female
+            </label>
+        </div>
 
-    <button class="btn btn-primary">Button</button>
+        <div class="form-group">
+            <label for="firstName">Age</label>
+            <input type="text" class="form-control" placeholder="30">
+        </div>
+
+    </div>
 </template>
