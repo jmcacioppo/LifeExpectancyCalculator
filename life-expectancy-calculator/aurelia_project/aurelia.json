@@ -75,7 +75,14 @@
           ],
           "stub": true
         }
-      ]
+      ],
+      "config": {
+        "shim": {
+          "highcharts": {
+            "exports": "Highcharts"
+          }
+        } 
+      }
     },
     "options": {
       "minify": "stage & prod",
@@ -119,6 +126,7 @@
           "aurelia-templating",
           "aurelia-templating-binding",
           "text",
+          "jquery",
           {
             "name": "aurelia-templating-resources",
             "path": "../node_modules/aurelia-templating-resources/dist/amd",
@@ -134,6 +142,33 @@
             "path": "../node_modules/aurelia-testing/dist/amd",
             "main": "aurelia-testing",
             "env": "dev"
+          },
+          {
+            "name": "ion-rangeslider",
+            "path": "../node_modules/ion-rangeslider",
+            "main": "js/ion.rangeSlider",
+            "resources": [
+                "css/ion.rangeSlider.css",
+                "css/ion.rangeSlider.skinModern.css"
+            ]
+          },
+          {
+            "name": "bootstrap",
+            "path": "../node_modules/bootstrap/dist",
+            "main": "js/bootstrap.min",
+            "deps": ["jquery"],
+            "exports": "$",
+            "resources": [
+              "css/bootstrap.css"
+            ]
+          },
+          {
+            "name": "highcharts",
+            "path": "../node_modules/highcharts",
+            "main": "js/highcharts",
+            "resources": [
+              "css/highcharts.css"
+            ]
           }
         ]
       }
