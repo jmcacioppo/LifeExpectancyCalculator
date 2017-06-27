@@ -1,3 +1,5 @@
+import 'bootstrap'
+
 export class App {
   constructor() {
     this.message = 'Life Expectancy Calculator';
