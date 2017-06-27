@@ -1,12 +1,15 @@
 <template>
-  <h1>Life Expectancy Calculator</h1>
-  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-    <ul class="nav navbar-nav">
-      <li repeat.for="row of router.navigation" class="${row.isActive ? 'active' : 'disabled'}">
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="css/styles.css"></require>
+
+  <div id="home">
+    <h1>Life Expectancy Calculator</h1>
+    <ul>
+      <li repeat.for="row of router.navigation">
           <a href.bind="row.href">${row.title}</a>
       </li>
     </ul>
-  </div> 
+  </div>
 
   <router-view></router-view>
 

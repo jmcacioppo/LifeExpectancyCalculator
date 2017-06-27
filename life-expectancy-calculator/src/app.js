@@ -1,3 +1,4 @@
+import $ from 'jquery'
 import 'bootstrap'
 
 export class App {
@@ -24,5 +25,4 @@ export class App {
         name: 'results', title: 'Results', nav: true}
     ]);
   }
-
 }
