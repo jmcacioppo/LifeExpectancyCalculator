@@ -2,15 +2,12 @@ import $ from 'jquery';
 import 'bootstrap';
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
-import * as config from 'text!./services/lifeExpectancy.json';
  
 
 @inject()
 export class App {
   constructor() {
     this.message = 'Life Expectancy Calculator';
-    let obj = JSON.parse(config as any);
-    console.log(obj);
   }
 
   configureRouter(config, router) {
@@ -30,7 +27,10 @@ export class App {
         name: 'occupation', title: 'Occupation', nav: true},  
 
       { route: 'results', moduleId: 'results/results',
-        name: 'results', title: 'Results', nav: true}
+        name: 'results', title: 'Results', nav: true},
+
+      { route: 'jsonfile', moduleId: 'services/lifeExpectancy.json!json',
+        name: 'jsonfile', title: 'Json File', nav: true}
     ]);
   }
 }

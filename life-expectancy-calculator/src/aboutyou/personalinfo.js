@@ -2,9 +2,9 @@ import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
 
-@inject(Router, User)
+@inject(Router, User, ReadFile)
 export class personalinfo {
-    constructor(router, user) {
+    constructor(router, user, readfile) {
         this.router = router;
         this.user = user;
     }
@@ -14,6 +14,10 @@ export class personalinfo {
         if(this.user.clientPersonalInfo.checkgender) this.user.clientPersonalInfo.gender = 'Male';
         else this.user.clientPersonalInfo.gender = 'Female';
         console.log(this.user.clientPersonalInfo);
+    }
+
+    checkspouse() {
+        this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
     }
 
     myhealth() {
