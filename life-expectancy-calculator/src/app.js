@@ -1,8 +1,11 @@
-import $ from 'jquery'
-import 'bootstrap'
+import $ from 'jquery';
+import 'bootstrap';
+import {inject} from 'aurelia-framework';
+import {HttpClient} from 'aurelia-fetch-client';
 
+@inject(HttpClient)
 export class App {
-  constructor() {
+  constructor(http) {
     this.message = 'Life Expectancy Calculator';
   }
 

@@ -1,4 +1,4 @@
-define('app',['exports', 'jquery', 'bootstrap'], function (exports, _jquery) {
+define('app',['exports', 'jquery', 'aurelia-framework', 'aurelia-fetch-client', 'bootstrap'], function (exports, _jquery, _aureliaFramework, _aureliaFetchClient) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -20,8 +20,10 @@ define('app',['exports', 'jquery', 'bootstrap'], function (exports, _jquery) {
     }
   }
 
-  var App = exports.App = function () {
-    function App() {
+  var _dec, _class;
+
+  var App = exports.App = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient), _dec(_class = function () {
+    function App(http) {
       _classCallCheck(this, App);
 
       this.message = 'Life Expectancy Calculator';
@@ -39,7 +41,7 @@ define('app',['exports', 'jquery', 'bootstrap'], function (exports, _jquery) {
     };
 
     return App;
-  }();
+  }()) || _class);
 });
 define('environment',["exports"], function (exports) {
   "use strict";
@@ -183,15 +185,6 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         this.router = router;
     }) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
 
@@ -307,6 +300,15 @@ define('services/user',['exports', 'aurelia-framework', '../services/familyHealt
         this.spouse = new _familyHealthData.FamilyHealthData();
     }) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
 define('utilities/chart',["exports"], function (exports) {
     "use strict";
 
@@ -324,11 +326,45 @@ define('utilities/chart',["exports"], function (exports) {
         _classCallCheck(this, Chart);
     };
 });
+define('utilities/readFile',['exports', 'aurelia-fetch-client'], function (exports, _aureliaFetchClient) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.ReadFile = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var ReadFile = exports.ReadFile = function () {
+        function ReadFile() {
+            _classCallCheck(this, ReadFile);
+        }
+
+        ReadFile.prototype.getCountyList = function getCountyList(state) {
+            var httpClient = new _aureliaFetchClient.HttpClient();
+
+            httpClient.fetch('IHME_USA_EXPECTANCY_1985_2010.csv').then(function (response) {
+                return console.log(response.json());
+            }).then(function (data) {
+                console.log(data);
+            });
+        };
+
+        ReadFile.prototype.getCountyLifeExpectancy = function getCountyLifeExpectancy(county) {};
+
+        return ReadFile;
+    }();
+});
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><div id=\"home\"><h1>Life Expectancy Calculator</h1><ul><li repeat.for=\"row of router.navigation\"><a href.bind=\"row.href\">${row.title}</a></li></ul></div><router-view></router-view></template>"; });
 define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, #personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: center;\r\n    margin: 0 auto;\r\n}"; });
 define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><div id=\"personalinfo\"><h1>Personal Info</h1><div click.delegate=\"gender()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${gender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!gender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><div class=\"form-group\"><label for=\"age\">Age</label><input type=\"text\" class=\"form-control\" placeholder=\"30\"></div></div></template>"; });
 define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"familyhealth\"><h1>Family Health</h1></div></template>"; });
 define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"myhealth\"><h1>My Health</h1></div></template>"; });
-define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><div id=\"occupation\"><h1>Occupation</h1></div></template>"; });
 define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1></div></template>"; });
+define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><div id=\"occupation\"><h1>Occupation</h1></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map
