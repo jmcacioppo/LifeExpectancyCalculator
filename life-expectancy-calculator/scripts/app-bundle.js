@@ -1,4 +1,4 @@
-define('app',['exports', 'jquery', 'aurelia-framework', 'aurelia-fetch-client', 'bootstrap'], function (exports, _jquery, _aureliaFramework, _aureliaFetchClient) {
+define('app',['exports', 'aurelia-framework', 'aurelia-fetch-client', 'jquery', 'bootstrap'], function (exports, _aureliaFramework, _aureliaFetchClient, _jquery) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -14,6 +14,35 @@ define('app',['exports', 'jquery', 'aurelia-framework', 'aurelia-fetch-client', 
     };
   }
 
+  function _asyncToGenerator(fn) {
+    return function () {
+      var gen = fn.apply(this, arguments);
+      return new Promise(function (resolve, reject) {
+        function step(key, arg) {
+          try {
+            var info = gen[key](arg);
+            var value = info.value;
+          } catch (error) {
+            reject(error);
+            return;
+          }
+
+          if (info.done) {
+            resolve(value);
+          } else {
+            return Promise.resolve(value).then(function (value) {
+              step("next", value);
+            }, function (err) {
+              step("throw", err);
+            });
+          }
+        }
+
+        return step("next");
+      });
+    };
+  }
+
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
       throw new TypeError("Cannot call a class as a function");
@@ -23,13 +52,39 @@ define('app',['exports', 'jquery', 'aurelia-framework', 'aurelia-fetch-client', 
   var _dec, _class;
 
   var App = exports.App = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient), _dec(_class = function () {
-    function App(http) {
+    function App(httpClient) {
       _classCallCheck(this, App);
 
+      this.httpClient = httpClient;
       this.message = 'Life Expectancy Calculator';
     }
 
+    App.prototype.activate = function () {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.httpClient.fetch('/api/life-expectancy/get.json');
+
+              case 2:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function activate() {
+        return _ref.apply(this, arguments);
+      }
+
+      return activate;
+    }();
+
     App.prototype.configureRouter = function configureRouter(config, router) {
+
       this.router = router;
       config.title = "Life Expectancy Calculator";
       config.map([{ route: ['', 'personalinfo'], moduleId: 'aboutyou/personalinfo',
@@ -86,59 +141,6 @@ define('main',['exports', './environment'], function (exports, _environment) {
       return aurelia.setRoot();
     });
   }
-});
-define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user'], function (exports, _aureliaFramework, _aureliaRouter, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.personalinfo = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User), _dec(_class = function () {
-        function personalinfo(router, user) {
-            _classCallCheck(this, personalinfo);
-
-            this.router = router;
-            this.user = user;
-        }
-
-        personalinfo.prototype.gender = function gender() {
-            this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
-            if (this.user.clientPersonalInfo.checkgender) this.user.clientPersonalInfo.gender = 'Male';else this.user.clientPersonalInfo.gender = 'Female';
-            console.log(this.user.clientPersonalInfo);
-        };
-
-        personalinfo.prototype.checkspouse = function checkspouse() {
-            this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
-        };
-
-        personalinfo.prototype.myhealth = function myhealth() {
-            this.router.navigate('#/myhealth');
-        };
-
-        personalinfo.prototype.familyhealth = function familyhealth() {
-            this.router.navigate('#/familyhealth');
-        };
-
-        personalinfo.prototype.occupation = function occupation() {
-            this.router.navigate('#/occupation');
-        };
-
-        personalinfo.prototype.submit = function submit() {
-            this.router.navigate('#/results');
-        };
-
-        return personalinfo;
-    }()) || _class);
 });
 define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
@@ -200,15 +202,6 @@ define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router'], fun
         return myhealth;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
 
@@ -237,6 +230,68 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         };
 
         return occupation;
+    }()) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
+define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user'], function (exports, _aureliaFramework, _aureliaRouter, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.personalinfo = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User), _dec(_class = function () {
+        function personalinfo(router, user) {
+            _classCallCheck(this, personalinfo);
+
+            this.router = router;
+            this.user = user;
+        }
+
+        personalinfo.prototype.gender = function gender() {
+            this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
+            if (this.user.clientPersonalInfo.checkgender) this.user.clientPersonalInfo.gender = 'Male';else this.user.clientPersonalInfo.gender = 'Female';
+            console.log(this.user.clientPersonalInfo);
+        };
+
+        personalinfo.prototype.checkspouse = function checkspouse() {
+            this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
+        };
+
+        personalinfo.prototype.myhealth = function myhealth() {
+            this.router.navigate('#/myhealth');
+        };
+
+        personalinfo.prototype.familyhealth = function familyhealth() {
+            this.router.navigate('#/familyhealth');
+        };
+
+        personalinfo.prototype.occupation = function occupation() {
+            this.router.navigate('#/occupation');
+        };
+
+        personalinfo.prototype.submit = function submit() {
+            this.router.navigate('#/results');
+        };
+
+        return personalinfo;
     }()) || _class);
 });
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
