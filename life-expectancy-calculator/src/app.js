@@ -2,11 +2,15 @@ import $ from 'jquery';
 import 'bootstrap';
 import {inject} from 'aurelia-framework';
 import {HttpClient} from 'aurelia-fetch-client';
+import * as config from 'text!./services/lifeExpectancy.json';
+ 
 
-@inject(HttpClient)
+@inject()
 export class App {
-  constructor(http) {
+  constructor() {
     this.message = 'Life Expectancy Calculator';
+    let obj = JSON.parse(config as any);
+    console.log(obj);
   }
 
   configureRouter(config, router) {
@@ -18,6 +22,7 @@ export class App {
 
       { route: 'myhealth', moduleId: 'health/myhealth',
         name: 'myhealth', title: 'My Health', nav: true},
+
       { route: 'familyhealth', moduleId: 'health/familyhealth',
         name: 'familyhealth', title: 'Family Health', nav: true},
 
