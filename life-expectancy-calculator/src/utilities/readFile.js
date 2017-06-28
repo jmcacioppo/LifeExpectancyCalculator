@@ -1,8 +1,7 @@
-import { HttpClient } from 'aurelia-fetch-client';
+import {HttpClient} from 'aurelia-fetch-client';
 
 export class ReadFile {
     constructor() {
-
     }
 
     //Given a state as input this method reads the csv file and returns all counties for that state.
@@ -10,7 +9,7 @@ export class ReadFile {
         let httpClient = new HttpClient();
 
         httpClient.fetch('IHME_USA_EXPECTANCY_1985_2010.csv')
-                .then(response => response.json())
+                .then(response => console.log(response.json()))
             .then(data => {
                 console.log(data);
             });
@@ -18,6 +17,6 @@ export class ReadFile {
 
     //Given a county name this method will return the life expectancy for that county
     getCountyLifeExpectancy(county) {
-
+        
     }
 }

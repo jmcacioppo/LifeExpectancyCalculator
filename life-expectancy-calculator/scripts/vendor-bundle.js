@@ -3782,6 +3782,468 @@ Promise.config({
   }
 });
 
+(function(self) {
+  'use strict';
+
+  if (self.fetch) {
+    return
+  }
+
+  var support = {
+    searchParams: 'URLSearchParams' in self,
+    iterable: 'Symbol' in self && 'iterator' in Symbol,
+    blob: 'FileReader' in self && 'Blob' in self && (function() {
+      try {
+        new Blob()
+        return true
+      } catch(e) {
+        return false
+      }
+    })(),
+    formData: 'FormData' in self,
+    arrayBuffer: 'ArrayBuffer' in self
+  }
+
+  if (support.arrayBuffer) {
+    var viewClasses = [
+      '[object Int8Array]',
+      '[object Uint8Array]',
+      '[object Uint8ClampedArray]',
+      '[object Int16Array]',
+      '[object Uint16Array]',
+      '[object Int32Array]',
+      '[object Uint32Array]',
+      '[object Float32Array]',
+      '[object Float64Array]'
+    ]
+
+    var isDataView = function(obj) {
+      return obj && DataView.prototype.isPrototypeOf(obj)
+    }
+
+    var isArrayBufferView = ArrayBuffer.isView || function(obj) {
+      return obj && viewClasses.indexOf(Object.prototype.toString.call(obj)) > -1
+    }
+  }
+
+  function normalizeName(name) {
+    if (typeof name !== 'string') {
+      name = String(name)
+    }
+    if (/[^a-z0-9\-#$%&'*+.\^_`|~]/i.test(name)) {
+      throw new TypeError('Invalid character in header field name')
+    }
+    return name.toLowerCase()
+  }
+
+  function normalizeValue(value) {
+    if (typeof value !== 'string') {
+      value = String(value)
+    }
+    return value
+  }
+
+  // Build a destructive iterator for the value list
+  function iteratorFor(items) {
+    var iterator = {
+      next: function() {
+        var value = items.shift()
+        return {done: value === undefined, value: value}
+      }
+    }
+
+    if (support.iterable) {
+      iterator[Symbol.iterator] = function() {
+        return iterator
+      }
+    }
+
+    return iterator
+  }
+
+  function Headers(headers) {
+    this.map = {}
+
+    if (headers instanceof Headers) {
+      headers.forEach(function(value, name) {
+        this.append(name, value)
+      }, this)
+    } else if (Array.isArray(headers)) {
+      headers.forEach(function(header) {
+        this.append(header[0], header[1])
+      }, this)
+    } else if (headers) {
+      Object.getOwnPropertyNames(headers).forEach(function(name) {
+        this.append(name, headers[name])
+      }, this)
+    }
+  }
+
+  Headers.prototype.append = function(name, value) {
+    name = normalizeName(name)
+    value = normalizeValue(value)
+    var oldValue = this.map[name]
+    this.map[name] = oldValue ? oldValue+','+value : value
+  }
+
+  Headers.prototype['delete'] = function(name) {
+    delete this.map[normalizeName(name)]
+  }
+
+  Headers.prototype.get = function(name) {
+    name = normalizeName(name)
+    return this.has(name) ? this.map[name] : null
+  }
+
+  Headers.prototype.has = function(name) {
+    return this.map.hasOwnProperty(normalizeName(name))
+  }
+
+  Headers.prototype.set = function(name, value) {
+    this.map[normalizeName(name)] = normalizeValue(value)
+  }
+
+  Headers.prototype.forEach = function(callback, thisArg) {
+    for (var name in this.map) {
+      if (this.map.hasOwnProperty(name)) {
+        callback.call(thisArg, this.map[name], name, this)
+      }
+    }
+  }
+
+  Headers.prototype.keys = function() {
+    var items = []
+    this.forEach(function(value, name) { items.push(name) })
+    return iteratorFor(items)
+  }
+
+  Headers.prototype.values = function() {
+    var items = []
+    this.forEach(function(value) { items.push(value) })
+    return iteratorFor(items)
+  }
+
+  Headers.prototype.entries = function() {
+    var items = []
+    this.forEach(function(value, name) { items.push([name, value]) })
+    return iteratorFor(items)
+  }
+
+  if (support.iterable) {
+    Headers.prototype[Symbol.iterator] = Headers.prototype.entries
+  }
+
+  function consumed(body) {
+    if (body.bodyUsed) {
+      return Promise.reject(new TypeError('Already read'))
+    }
+    body.bodyUsed = true
+  }
+
+  function fileReaderReady(reader) {
+    return new Promise(function(resolve, reject) {
+      reader.onload = function() {
+        resolve(reader.result)
+      }
+      reader.onerror = function() {
+        reject(reader.error)
+      }
+    })
+  }
+
+  function readBlobAsArrayBuffer(blob) {
+    var reader = new FileReader()
+    var promise = fileReaderReady(reader)
+    reader.readAsArrayBuffer(blob)
+    return promise
+  }
+
+  function readBlobAsText(blob) {
+    var reader = new FileReader()
+    var promise = fileReaderReady(reader)
+    reader.readAsText(blob)
+    return promise
+  }
+
+  function readArrayBufferAsText(buf) {
+    var view = new Uint8Array(buf)
+    var chars = new Array(view.length)
+
+    for (var i = 0; i < view.length; i++) {
+      chars[i] = String.fromCharCode(view[i])
+    }
+    return chars.join('')
+  }
+
+  function bufferClone(buf) {
+    if (buf.slice) {
+      return buf.slice(0)
+    } else {
+      var view = new Uint8Array(buf.byteLength)
+      view.set(new Uint8Array(buf))
+      return view.buffer
+    }
+  }
+
+  function Body() {
+    this.bodyUsed = false
+
+    this._initBody = function(body) {
+      this._bodyInit = body
+      if (!body) {
+        this._bodyText = ''
+      } else if (typeof body === 'string') {
+        this._bodyText = body
+      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+        this._bodyBlob = body
+      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+        this._bodyFormData = body
+      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+        this._bodyText = body.toString()
+      } else if (support.arrayBuffer && support.blob && isDataView(body)) {
+        this._bodyArrayBuffer = bufferClone(body.buffer)
+        // IE 10-11 can't handle a DataView body.
+        this._bodyInit = new Blob([this._bodyArrayBuffer])
+      } else if (support.arrayBuffer && (ArrayBuffer.prototype.isPrototypeOf(body) || isArrayBufferView(body))) {
+        this._bodyArrayBuffer = bufferClone(body)
+      } else {
+        throw new Error('unsupported BodyInit type')
+      }
+
+      if (!this.headers.get('content-type')) {
+        if (typeof body === 'string') {
+          this.headers.set('content-type', 'text/plain;charset=UTF-8')
+        } else if (this._bodyBlob && this._bodyBlob.type) {
+          this.headers.set('content-type', this._bodyBlob.type)
+        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+          this.headers.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8')
+        }
+      }
+    }
+
+    if (support.blob) {
+      this.blob = function() {
+        var rejected = consumed(this)
+        if (rejected) {
+          return rejected
+        }
+
+        if (this._bodyBlob) {
+          return Promise.resolve(this._bodyBlob)
+        } else if (this._bodyArrayBuffer) {
+          return Promise.resolve(new Blob([this._bodyArrayBuffer]))
+        } else if (this._bodyFormData) {
+          throw new Error('could not read FormData body as blob')
+        } else {
+          return Promise.resolve(new Blob([this._bodyText]))
+        }
+      }
+
+      this.arrayBuffer = function() {
+        if (this._bodyArrayBuffer) {
+          return consumed(this) || Promise.resolve(this._bodyArrayBuffer)
+        } else {
+          return this.blob().then(readBlobAsArrayBuffer)
+        }
+      }
+    }
+
+    this.text = function() {
+      var rejected = consumed(this)
+      if (rejected) {
+        return rejected
+      }
+
+      if (this._bodyBlob) {
+        return readBlobAsText(this._bodyBlob)
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as text')
+      } else {
+        return Promise.resolve(this._bodyText)
+      }
+    }
+
+    if (support.formData) {
+      this.formData = function() {
+        return this.text().then(decode)
+      }
+    }
+
+    this.json = function() {
+      return this.text().then(JSON.parse)
+    }
+
+    return this
+  }
+
+  // HTTP methods whose capitalization should be normalized
+  var methods = ['DELETE', 'GET', 'HEAD', 'OPTIONS', 'POST', 'PUT']
+
+  function normalizeMethod(method) {
+    var upcased = method.toUpperCase()
+    return (methods.indexOf(upcased) > -1) ? upcased : method
+  }
+
+  function Request(input, options) {
+    options = options || {}
+    var body = options.body
+
+    if (input instanceof Request) {
+      if (input.bodyUsed) {
+        throw new TypeError('Already read')
+      }
+      this.url = input.url
+      this.credentials = input.credentials
+      if (!options.headers) {
+        this.headers = new Headers(input.headers)
+      }
+      this.method = input.method
+      this.mode = input.mode
+      if (!body && input._bodyInit != null) {
+        body = input._bodyInit
+        input.bodyUsed = true
+      }
+    } else {
+      this.url = String(input)
+    }
+
+    this.credentials = options.credentials || this.credentials || 'omit'
+    if (options.headers || !this.headers) {
+      this.headers = new Headers(options.headers)
+    }
+    this.method = normalizeMethod(options.method || this.method || 'GET')
+    this.mode = options.mode || this.mode || null
+    this.referrer = null
+
+    if ((this.method === 'GET' || this.method === 'HEAD') && body) {
+      throw new TypeError('Body not allowed for GET or HEAD requests')
+    }
+    this._initBody(body)
+  }
+
+  Request.prototype.clone = function() {
+    return new Request(this, { body: this._bodyInit })
+  }
+
+  function decode(body) {
+    var form = new FormData()
+    body.trim().split('&').forEach(function(bytes) {
+      if (bytes) {
+        var split = bytes.split('=')
+        var name = split.shift().replace(/\+/g, ' ')
+        var value = split.join('=').replace(/\+/g, ' ')
+        form.append(decodeURIComponent(name), decodeURIComponent(value))
+      }
+    })
+    return form
+  }
+
+  function parseHeaders(rawHeaders) {
+    var headers = new Headers()
+    rawHeaders.split(/\r?\n/).forEach(function(line) {
+      var parts = line.split(':')
+      var key = parts.shift().trim()
+      if (key) {
+        var value = parts.join(':').trim()
+        headers.append(key, value)
+      }
+    })
+    return headers
+  }
+
+  Body.call(Request.prototype)
+
+  function Response(bodyInit, options) {
+    if (!options) {
+      options = {}
+    }
+
+    this.type = 'default'
+    this.status = 'status' in options ? options.status : 200
+    this.ok = this.status >= 200 && this.status < 300
+    this.statusText = 'statusText' in options ? options.statusText : 'OK'
+    this.headers = new Headers(options.headers)
+    this.url = options.url || ''
+    this._initBody(bodyInit)
+  }
+
+  Body.call(Response.prototype)
+
+  Response.prototype.clone = function() {
+    return new Response(this._bodyInit, {
+      status: this.status,
+      statusText: this.statusText,
+      headers: new Headers(this.headers),
+      url: this.url
+    })
+  }
+
+  Response.error = function() {
+    var response = new Response(null, {status: 0, statusText: ''})
+    response.type = 'error'
+    return response
+  }
+
+  var redirectStatuses = [301, 302, 303, 307, 308]
+
+  Response.redirect = function(url, status) {
+    if (redirectStatuses.indexOf(status) === -1) {
+      throw new RangeError('Invalid status code')
+    }
+
+    return new Response(null, {status: status, headers: {location: url}})
+  }
+
+  self.Headers = Headers
+  self.Request = Request
+  self.Response = Response
+
+  self.fetch = function(input, init) {
+    return new Promise(function(resolve, reject) {
+      var request = new Request(input, init)
+      var xhr = new XMLHttpRequest()
+
+      xhr.onload = function() {
+        var options = {
+          status: xhr.status,
+          statusText: xhr.statusText,
+          headers: parseHeaders(xhr.getAllResponseHeaders() || '')
+        }
+        options.url = 'responseURL' in xhr ? xhr.responseURL : options.headers.get('X-Request-URL')
+        var body = 'response' in xhr ? xhr.response : xhr.responseText
+        resolve(new Response(body, options))
+      }
+
+      xhr.onerror = function() {
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.ontimeout = function() {
+        reject(new TypeError('Network request failed'))
+      }
+
+      xhr.open(request.method, request.url, true)
+
+      if (request.credentials === 'include') {
+        xhr.withCredentials = true
+      }
+
+      if ('responseType' in xhr && support.blob) {
+        xhr.responseType = 'blob'
+      }
+
+      request.headers.forEach(function(value, name) {
+        xhr.setRequestHeader(name, value)
+      })
+
+      xhr.send(typeof request._bodyInit === 'undefined' ? null : request._bodyInit)
+    })
+  }
+  self.fetch.polyfill = true
+})(typeof self !== 'undefined' ? self : this);
+
 /** vim: et:ts=4:sw=4:sts=4
  * @license RequireJS 2.3.3 Copyright jQuery Foundation and other contributors.
  * Released under MIT license, https://github.com/requirejs/requirejs/blob/master/LICENSE
@@ -12529,6 +12991,263 @@ define('aurelia-event-aggregator',['exports', 'aurelia-logging'], function (expo
 
   function configure(config) {
     config.instance(EventAggregator, includeEventsIn(config.aurelia));
+  }
+});
+define('aurelia-fetch-client',['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.json = json;
+
+  var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+    return typeof obj;
+  } : function (obj) {
+    return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj;
+  };
+
+  
+
+  function json(body) {
+    return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
+  }
+
+  var HttpClientConfiguration = exports.HttpClientConfiguration = function () {
+    function HttpClientConfiguration() {
+      
+
+      this.baseUrl = '';
+      this.defaults = {};
+      this.interceptors = [];
+    }
+
+    HttpClientConfiguration.prototype.withBaseUrl = function withBaseUrl(baseUrl) {
+      this.baseUrl = baseUrl;
+      return this;
+    };
+
+    HttpClientConfiguration.prototype.withDefaults = function withDefaults(defaults) {
+      this.defaults = defaults;
+      return this;
+    };
+
+    HttpClientConfiguration.prototype.withInterceptor = function withInterceptor(interceptor) {
+      this.interceptors.push(interceptor);
+      return this;
+    };
+
+    HttpClientConfiguration.prototype.useStandardConfiguration = function useStandardConfiguration() {
+      var standardConfig = { credentials: 'same-origin' };
+      Object.assign(this.defaults, standardConfig, this.defaults);
+      return this.rejectErrorResponses();
+    };
+
+    HttpClientConfiguration.prototype.rejectErrorResponses = function rejectErrorResponses() {
+      return this.withInterceptor({ response: rejectOnError });
+    };
+
+    return HttpClientConfiguration;
+  }();
+
+  function rejectOnError(response) {
+    if (!response.ok) {
+      throw response;
+    }
+
+    return response;
+  }
+
+  var HttpClient = exports.HttpClient = function () {
+    function HttpClient() {
+      
+
+      this.activeRequestCount = 0;
+      this.isRequesting = false;
+      this.isConfigured = false;
+      this.baseUrl = '';
+      this.defaults = null;
+      this.interceptors = [];
+
+      if (typeof fetch === 'undefined') {
+        throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch.');
+      }
+    }
+
+    HttpClient.prototype.configure = function configure(config) {
+      var normalizedConfig = void 0;
+
+      if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
+        normalizedConfig = { defaults: config };
+      } else if (typeof config === 'function') {
+        normalizedConfig = new HttpClientConfiguration();
+        normalizedConfig.baseUrl = this.baseUrl;
+        normalizedConfig.defaults = Object.assign({}, this.defaults);
+        normalizedConfig.interceptors = this.interceptors;
+
+        var c = config(normalizedConfig);
+        if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
+          normalizedConfig = c;
+        }
+      } else {
+        throw new Error('invalid config');
+      }
+
+      var defaults = normalizedConfig.defaults;
+      if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
+        throw new Error('Default headers must be a plain object.');
+      }
+
+      this.baseUrl = normalizedConfig.baseUrl;
+      this.defaults = defaults;
+      this.interceptors = normalizedConfig.interceptors || [];
+      this.isConfigured = true;
+
+      return this;
+    };
+
+    HttpClient.prototype.fetch = function (_fetch) {
+      function fetch(_x, _x2) {
+        return _fetch.apply(this, arguments);
+      }
+
+      fetch.toString = function () {
+        return _fetch.toString();
+      };
+
+      return fetch;
+    }(function (input, init) {
+      var _this = this;
+
+      trackRequestStart.call(this);
+
+      var request = Promise.resolve().then(function () {
+        return buildRequest.call(_this, input, init, _this.defaults);
+      });
+      var promise = processRequest(request, this.interceptors).then(function (result) {
+        var response = null;
+
+        if (Response.prototype.isPrototypeOf(result)) {
+          response = result;
+        } else if (Request.prototype.isPrototypeOf(result)) {
+          request = Promise.resolve(result);
+          response = fetch(result);
+        } else {
+          throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');
+        }
+
+        return request.then(function (_request) {
+          return processResponse(response, _this.interceptors, _request);
+        });
+      });
+
+      return trackRequestEndWith.call(this, promise);
+    });
+
+    return HttpClient;
+  }();
+
+  var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+
+  function trackRequestStart() {
+    this.isRequesting = !! ++this.activeRequestCount;
+  }
+
+  function trackRequestEnd() {
+    this.isRequesting = !! --this.activeRequestCount;
+  }
+
+  function trackRequestEndWith(promise) {
+    var handle = trackRequestEnd.bind(this);
+    promise.then(handle, handle);
+    return promise;
+  }
+
+  function parseHeaderValues(headers) {
+    var parsedHeaders = {};
+    for (var name in headers || {}) {
+      if (headers.hasOwnProperty(name)) {
+        parsedHeaders[name] = typeof headers[name] === 'function' ? headers[name]() : headers[name];
+      }
+    }
+    return parsedHeaders;
+  }
+
+  function buildRequest(input, init) {
+    var defaults = this.defaults || {};
+    var request = void 0;
+    var body = void 0;
+    var requestContentType = void 0;
+
+    var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+    if (Request.prototype.isPrototypeOf(input)) {
+      request = input;
+      requestContentType = new Headers(request.headers).get('Content-Type');
+    } else {
+      init || (init = {});
+      body = init.body;
+      var bodyObj = body ? { body: body } : null;
+      var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+      requestContentType = new Headers(requestInit.headers).get('Content-Type');
+      request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
+    }
+    if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
+      request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+    }
+    setDefaultHeaders(request.headers, parsedDefaultHeaders);
+    if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+      request.headers.set('Content-Type', body.type);
+    }
+    return request;
+  }
+
+  function getRequestUrl(baseUrl, url) {
+    if (absoluteUrlRegexp.test(url)) {
+      return url;
+    }
+
+    return (baseUrl || '') + url;
+  }
+
+  function setDefaultHeaders(headers, defaultHeaders) {
+    for (var name in defaultHeaders || {}) {
+      if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
+        headers.set(name, defaultHeaders[name]);
+      }
+    }
+  }
+
+  function processRequest(request, interceptors) {
+    return applyInterceptors(request, interceptors, 'request', 'requestError');
+  }
+
+  function processResponse(response, interceptors, request) {
+    return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+  }
+
+  function applyInterceptors(input, interceptors, successName, errorName) {
+    for (var _len = arguments.length, interceptorArgs = Array(_len > 4 ? _len - 4 : 0), _key = 4; _key < _len; _key++) {
+      interceptorArgs[_key - 4] = arguments[_key];
+    }
+
+    return (interceptors || []).reduce(function (chain, interceptor) {
+      var successHandler = interceptor[successName];
+      var errorHandler = interceptor[errorName];
+
+      return chain.then(successHandler && function (value) {
+        return successHandler.call.apply(successHandler, [interceptor, value].concat(interceptorArgs));
+      } || identity, errorHandler && function (reason) {
+        return errorHandler.call.apply(errorHandler, [interceptor, reason].concat(interceptorArgs));
+      } || thrower);
+    }, Promise.resolve(input));
+  }
+
+  function identity(x) {
+    return x;
+  }
+
+  function thrower(x) {
+    throw x;
   }
 });
 define('aurelia-framework',['exports', 'aurelia-dependency-injection', 'aurelia-binding', 'aurelia-metadata', 'aurelia-templating', 'aurelia-loader', 'aurelia-task-queue', 'aurelia-path', 'aurelia-pal', 'aurelia-logging'], function (exports, _aureliaDependencyInjection, _aureliaBinding, _aureliaMetadata, _aureliaTemplating, _aureliaLoader, _aureliaTaskQueue, _aureliaPath, _aureliaPal, _aureliaLogging) {
@@ -40452,4 +41171,4 @@ define("highcharts/js/highcharts", (function (global) {
 ;define('highcharts', ['highcharts/js/highcharts'], function (main) { return main; });
 
 define('text!highcharts/css/highcharts.css', ['module'], function(module) { module.exports = "/**\n * @license Highcharts\n *\n * (c) 2009-2016 Torstein Honsi\n *\n * License: www.highcharts.com/license\n */\n.highcharts-container {\n  position: relative;\n  overflow: hidden;\n  width: 100%;\n  height: 100%;\n  text-align: left;\n  line-height: normal;\n  z-index: 0;\n  /* #1072 */\n  -webkit-tap-highlight-color: transparent;\n  font-family: \"Lucida Grande\", \"Lucida Sans Unicode\", Arial, Helvetica, sans-serif;\n  font-size: 12px;\n}\n\n.highcharts-root text {\n  stroke-width: 0;\n}\n\n.highcharts-strong {\n  font-weight: bold;\n}\n\n.highcharts-emphasized {\n  font-style: italic;\n}\n\n.highcharts-background {\n  fill: #ffffff;\n}\n\n.highcharts-plot-border, .highcharts-plot-background {\n  fill: none;\n}\n\n.highcharts-label-box {\n  fill: none;\n}\n\n.highcharts-button-box {\n  fill: inherit;\n}\n\n/* Titles */\n.highcharts-title {\n  fill: #333333;\n  font-size: 1.5em;\n}\n\n.highcharts-subtitle {\n  fill: #666666;\n}\n\n/* Axes */\n.highcharts-axis-line {\n  fill: none;\n  stroke: #ccd6eb;\n}\n\n.highcharts-yaxis .highcharts-axis-line {\n  stroke-width: 0;\n}\n\n.highcharts-axis-title {\n  fill: #666666;\n}\n\n.highcharts-axis-labels {\n  fill: #666666;\n  cursor: default;\n  font-size: 0.9em;\n}\n\n.highcharts-grid-line {\n  fill: none;\n  stroke: #e6e6e6;\n}\n\n.highcharts-xaxis-grid .highcharts-grid-line {\n  stroke-width: 0;\n}\n\n.highcharts-tick {\n  stroke: #ccd6eb;\n}\n\n.highcharts-yaxis .highcharts-tick {\n  stroke-width: 0;\n}\n\n.highcharts-minor-grid-line {\n  stroke: #f2f2f2;\n}\n\n.highcharts-crosshair-thin {\n  stroke-width: 1px;\n  stroke: #cccccc;\n}\n\n.highcharts-crosshair-category {\n  stroke: #ccd6eb;\n  stroke-opacity: 0.25;\n}\n\n/* Credits */\n.highcharts-credits {\n  cursor: pointer;\n  fill: #999999;\n  font-size: 0.7em;\n  transition: fill 250ms, font-size 250ms;\n}\n\n.highcharts-credits:hover {\n  fill: black;\n  font-size: 1em;\n}\n\n/* Tooltip */\n.highcharts-tooltip {\n  cursor: default;\n  pointer-events: none;\n  white-space: nowrap;\n  transition: stroke 150ms;\n}\n\n.highcharts-tooltip text {\n  fill: #333333;\n}\n\n.highcharts-tooltip .highcharts-header {\n  font-size: 0.85em;\n}\n\n.highcharts-tooltip-box {\n  stroke-width: 1px;\n  fill: #f7f7f7;\n  fill-opacity: 0.85;\n}\n\n.highcharts-selection-marker {\n  fill: #335cad;\n  fill-opacity: 0.25;\n}\n\n.highcharts-graph {\n  fill: none;\n  stroke-width: 2px;\n  stroke-linecap: round;\n  stroke-linejoin: round;\n}\n\n.highcharts-state-hover .highcharts-graph {\n  stroke-width: 3;\n}\n\n.highcharts-state-hover path {\n  transition: stroke-width 50;\n  /* quick in */\n}\n\n.highcharts-state-normal path {\n  transition: stroke-width 250ms;\n  /* slow out */\n}\n\n/* Legend hover affects points and series */\ng.highcharts-series,\n.highcharts-point,\n.highcharts-markers,\n.highcharts-data-labels {\n  transition: opacity 250ms;\n}\n\n.highcharts-legend-series-active g.highcharts-series:not(.highcharts-series-hover),\n.highcharts-legend-point-active .highcharts-point:not(.highcharts-point-hover),\n.highcharts-legend-series-active .highcharts-markers:not(.highcharts-series-hover),\n.highcharts-legend-series-active .highcharts-data-labels:not(.highcharts-series-hover) {\n  opacity: 0.2;\n}\n\n/* Series options */\n/* Default colors */\n.highcharts-color-0 {\n  fill: #7cb5ec;\n  stroke: #7cb5ec;\n}\n\n.highcharts-color-1 {\n  fill: #434348;\n  stroke: #434348;\n}\n\n.highcharts-color-2 {\n  fill: #90ed7d;\n  stroke: #90ed7d;\n}\n\n.highcharts-color-3 {\n  fill: #f7a35c;\n  stroke: #f7a35c;\n}\n\n.highcharts-color-4 {\n  fill: #8085e9;\n  stroke: #8085e9;\n}\n\n.highcharts-color-5 {\n  fill: #f15c80;\n  stroke: #f15c80;\n}\n\n.highcharts-color-6 {\n  fill: #e4d354;\n  stroke: #e4d354;\n}\n\n.highcharts-color-7 {\n  fill: #2b908f;\n  stroke: #2b908f;\n}\n\n.highcharts-color-8 {\n  fill: #f45b5b;\n  stroke: #f45b5b;\n}\n\n.highcharts-color-9 {\n  fill: #91e8e1;\n  stroke: #91e8e1;\n}\n\n.highcharts-area {\n  fill-opacity: 0.75;\n  stroke-width: 0;\n}\n\n.highcharts-markers {\n  stroke-width: 1px;\n  stroke: #ffffff;\n}\n\n.highcharts-point {\n  stroke-width: 1px;\n}\n\n.highcharts-dense-data .highcharts-point {\n  stroke-width: 0;\n}\n\n.highcharts-data-label {\n  font-size: 0.9em;\n  font-weight: bold;\n}\n\n.highcharts-data-label-box {\n  fill: none;\n  stroke-width: 0;\n}\n\n.highcharts-data-label text {\n  fill: #333333;\n}\n\n.highcharts-data-label-connector {\n  fill: none;\n}\n\n.highcharts-halo {\n  fill-opacity: 0.25;\n  stroke-width: 0;\n}\n\n.highcharts-point-select {\n  fill: #cccccc;\n  stroke: #000000;\n}\n\n.highcharts-column-series rect.highcharts-point {\n  stroke: #ffffff;\n}\n\n.highcharts-column-series .highcharts-point {\n  transition: fill-opacity 250ms;\n}\n\n.highcharts-column-series .highcharts-point-hover {\n  fill-opacity: 0.75;\n  transition: fill-opacity 50ms;\n}\n\n.highcharts-pie-series .highcharts-point {\n  stroke-linejoin: round;\n  stroke: #ffffff;\n}\n\n.highcharts-pie-series .highcharts-point-hover {\n  fill-opacity: 0.75;\n  transition: fill-opacity 50ms;\n}\n\n.highcharts-pie-series .highcharts-point-select {\n  fill: inherit;\n  stroke: inherit;\n}\n\n.highcharts-funnel-series .highcharts-point {\n  stroke-linejoin: round;\n  stroke: #ffffff;\n}\n\n.highcharts-funnel-series .highcharts-point-hover {\n  fill-opacity: 0.75;\n  transition: fill-opacity 50ms;\n}\n\n.highcharts-funnel-series .highcharts-point-select {\n  fill: inherit;\n  stroke: inherit;\n}\n\n.highcharts-pyramid-series .highcharts-point {\n  stroke-linejoin: round;\n  stroke: #ffffff;\n}\n\n.highcharts-pyramid-series .highcharts-point-hover {\n  fill-opacity: 0.75;\n  transition: fill-opacity 50ms;\n}\n\n.highcharts-pyramid-series .highcharts-point-select {\n  fill: inherit;\n  stroke: inherit;\n}\n\n.highcharts-solidgauge-series .highcharts-point {\n  stroke-width: 0;\n}\n\n.highcharts-treemap-series .highcharts-point {\n  stroke-width: 1px;\n  stroke: #e6e6e6;\n  transition: stroke 250ms, fill 250ms, fill-opacity 250ms;\n}\n\n.highcharts-treemap-series .highcharts-point-hover {\n  stroke: #999999;\n  transition: stroke 25ms, fill 25ms, fill-opacity 25ms;\n}\n\n.highcharts-treemap-series .highcharts-above-level {\n  display: none;\n}\n\n.highcharts-treemap-series .highcharts-internal-node {\n  fill: none;\n}\n\n.highcharts-treemap-series .highcharts-internal-node-interactive {\n  fill-opacity: 0.15;\n  cursor: pointer;\n}\n\n.highcharts-treemap-series .highcharts-internal-node-interactive:hover {\n  fill-opacity: 0.75;\n}\n\n/* Legend */\n.highcharts-legend-box {\n  fill: none;\n  stroke-width: 0;\n}\n\n.highcharts-legend-item text {\n  fill: #333333;\n  font-weight: bold;\n  cursor: pointer;\n  stroke-width: 0;\n}\n\n.highcharts-legend-item:hover text {\n  fill: #000000;\n}\n\n.highcharts-legend-item-hidden * {\n  fill: #cccccc !important;\n  stroke: #cccccc !important;\n  transition: fill 250ms;\n}\n\n.highcharts-legend-nav-active {\n  fill: #003399;\n  cursor: pointer;\n}\n\n.highcharts-legend-nav-inactive {\n  fill: #cccccc;\n}\n\n.highcharts-legend-title-box {\n  fill: none;\n  stroke-width: 0;\n}\n\n/* Loading */\n.highcharts-loading {\n  position: absolute;\n  background-color: #ffffff;\n  opacity: 0.5;\n  text-align: center;\n  z-index: 10;\n  transition: opacity 250ms;\n}\n\n.highcharts-loading-hidden {\n  height: 0 !important;\n  opacity: 0;\n  overflow: hidden;\n  transition: opacity 250ms, height 250ms step-end;\n}\n\n.highcharts-loading-inner {\n  font-weight: bold;\n  position: relative;\n  top: 45%;\n}\n\n/* Plot bands and polar pane backgrounds */\n.highcharts-plot-band, .highcharts-pane {\n  fill: #000000;\n  fill-opacity: 0.05;\n}\n\n.highcharts-plot-line {\n  fill: none;\n  stroke: #999999;\n  stroke-width: 1px;\n}\n\n/* Highcharts More */\n.highcharts-boxplot-box {\n  fill: #ffffff;\n}\n\n.highcharts-boxplot-median {\n  stroke-width: 2px;\n}\n\n.highcharts-bubble-series .highcharts-point {\n  fill-opacity: 0.5;\n}\n\n.highcharts-errorbar-series .highcharts-point {\n  stroke: #000000;\n}\n\n.highcharts-gauge-series .highcharts-data-label-box {\n  stroke: #cccccc;\n  stroke-width: 1px;\n}\n\n.highcharts-gauge-series .highcharts-dial {\n  fill: #000000;\n  stroke-width: 0;\n}\n\n.highcharts-polygon-series .highcharts-graph {\n  fill: inherit;\n  stroke-width: 0;\n}\n\n.highcharts-waterfall-series .highcharts-graph {\n  stroke: #333333;\n  stroke-dasharray: 1, 3;\n}\n\n/* Highstock */\n.highcharts-navigator-mask-outside {\n  fill-opacity: 0;\n}\n\n.highcharts-navigator-mask-inside {\n  fill: #6685c2;\n  /* navigator.maskFill option */\n  fill-opacity: 0.25;\n  cursor: ew-resize;\n}\n\n.highcharts-navigator-outline {\n  stroke: #cccccc;\n  fill: none;\n}\n\n.highcharts-navigator-handle {\n  stroke: #cccccc;\n  fill: #f2f2f2;\n  cursor: ew-resize;\n}\n\n.highcharts-navigator-series {\n  fill: #335cad;\n  stroke: #335cad;\n}\n\n.highcharts-navigator-series .highcharts-graph {\n  stroke-width: 1px;\n}\n\n.highcharts-navigator-series .highcharts-area {\n  fill-opacity: 0.05;\n}\n\n.highcharts-navigator-xaxis .highcharts-axis-line {\n  stroke-width: 0;\n}\n\n.highcharts-navigator-xaxis .highcharts-grid-line {\n  stroke-width: 1px;\n  stroke: #e6e6e6;\n}\n\n.highcharts-navigator-xaxis.highcharts-axis-labels {\n  fill: #999999;\n}\n\n.highcharts-navigator-yaxis .highcharts-grid-line {\n  stroke-width: 0;\n}\n\n.highcharts-scrollbar-thumb {\n  fill: #cccccc;\n  stroke: #cccccc;\n  stroke-width: 1px;\n}\n\n.highcharts-scrollbar-button {\n  fill: #e6e6e6;\n  stroke: #cccccc;\n  stroke-width: 1px;\n}\n\n.highcharts-scrollbar-arrow {\n  fill: #666666;\n}\n\n.highcharts-scrollbar-rifles {\n  stroke: #666666;\n  stroke-width: 1px;\n}\n\n.highcharts-scrollbar-track {\n  fill: #f2f2f2;\n  stroke: #f2f2f2;\n  stroke-width: 1px;\n}\n\n.highcharts-button {\n  fill: #f7f7f7;\n  stroke: #cccccc;\n  cursor: default;\n  stroke-width: 1px;\n  transition: fill 250ms;\n}\n\n.highcharts-button text {\n  fill: #333333;\n}\n\n.highcharts-button-hover {\n  transition: fill 0ms;\n  fill: #e6e6e6;\n  stroke: #333333;\n}\n\n.highcharts-button-pressed {\n  font-weight: bold;\n  fill: #e6ebf5;\n  stroke: #335cad;\n}\n\n.highcharts-button-disabled text {\n  fill: #cccccc;\n}\n\n.highcharts-range-selector-buttons .highcharts-button {\n  stroke-width: 0;\n}\n\n.highcharts-range-label rect {\n  fill: none;\n}\n\n.highcharts-range-label text {\n  fill: #666666;\n}\n\n.highcharts-range-input rect {\n  fill: none;\n}\n\n.highcharts-range-input text {\n  fill: #333333;\n}\n\ninput.highcharts-range-selector {\n  position: absolute;\n  border: 0;\n  width: 1px;\n  /* Chrome needs a pixel to see it */\n  height: 1px;\n  padding: 0;\n  text-align: center;\n  left: -9em;\n  /* #4798 */\n}\n\n.highcharts-crosshair-label text {\n  fill: #ffffff;\n  font-size: 1.1em;\n}\n\n.highcharts-crosshair-label .highcharts-label-box {\n  fill: inherit;\n}\n\n.highcharts-candlestick-series .highcharts-point {\n  stroke: #000000;\n  stroke-width: 1px;\n}\n\n.highcharts-candlestick-series .highcharts-point-up {\n  fill: #ffffff;\n}\n\n.highcharts-ohlc-series .highcharts-point-hover {\n  stroke-width: 3px;\n}\n\n.highcharts-flags-series .highcharts-point {\n  stroke: #999999;\n  fill: #ffffff;\n}\n\n.highcharts-flags-series .highcharts-point-hover {\n  stroke: #000000;\n  fill: #ccd6eb;\n}\n\n.highcharts-flags-series .highcharts-point text {\n  fill: #000000;\n  font-size: 0.9em;\n  font-weight: bold;\n}\n\n/* Highmaps */\n.highcharts-map-series .highcharts-point {\n  transition: fill 500ms, fill-opacity 500ms, stroke-width 250ms;\n  stroke: #cccccc;\n}\n\n.highcharts-map-series .highcharts-point-hover {\n  transition: fill 0ms, fill-opacity 0ms;\n  fill-opacity: 0.5;\n  stroke-width: 2px;\n}\n\n.highcharts-mapline-series .highcharts-point {\n  fill: none;\n}\n\n.highcharts-heatmap-series .highcharts-point {\n  stroke-width: 0;\n}\n\n.highcharts-map-navigation {\n  font-size: 1.3em;\n  font-weight: bold;\n  text-align: center;\n}\n\n.highcharts-coloraxis {\n  stroke-width: 0;\n}\n\n.highcharts-coloraxis-marker {\n  fill: #999999;\n}\n\n.highcharts-null-point {\n  fill: #f7f7f7;\n}\n\n/* 3d charts */\n.highcharts-3d-frame {\n  fill: transparent;\n}\n\n/* Exporting module */\n.highcharts-contextbutton {\n  fill: #ffffff;\n  /* needed to capture hover */\n  stroke: none;\n  stroke-linecap: round;\n}\n\n.highcharts-contextbutton:hover {\n  fill: #e6e6e6;\n  stroke: #e6e6e6;\n}\n\n.highcharts-button-symbol {\n  stroke: #666666;\n  stroke-width: 3px;\n}\n\n.highcharts-menu {\n  border: 1px solid #999999;\n  background: #ffffff;\n  padding: 5px 0;\n  box-shadow: 3px 3px 10px #888;\n}\n\n.highcharts-menu-item {\n  padding: 0.5em 1em;\n  background: none;\n  color: #333333;\n  cursor: pointer;\n  transition: background 250ms, color 250ms;\n}\n\n.highcharts-menu-item:hover {\n  background: #335cad;\n  color: #ffffff;\n}\n\n/* Drilldown module */\n.highcharts-drilldown-point {\n  cursor: pointer;\n}\n\n.highcharts-drilldown-data-label text, .highcharts-drilldown-axis-label {\n  cursor: pointer;\n  fill: #003399;\n  font-weight: bold;\n  text-decoration: underline;\n}\n\n/* No-data module */\n.highcharts-no-data text {\n  font-weight: bold;\n  font-size: 12px;\n  fill: #666666;\n}\n"; });
-function _aureliaConfigureModuleLoader(){requirejs.config({"baseUrl":"src/","paths":{"aurelia-dependency-injection":"..\\node_modules\\aurelia-dependency-injection\\dist\\amd\\aurelia-dependency-injection","aurelia-binding":"..\\node_modules\\aurelia-binding\\dist\\amd\\aurelia-binding","aurelia-bootstrapper":"..\\node_modules\\aurelia-bootstrapper\\dist\\amd\\aurelia-bootstrapper","aurelia-event-aggregator":"..\\node_modules\\aurelia-event-aggregator\\dist\\amd\\aurelia-event-aggregator","aurelia-history":"..\\node_modules\\aurelia-history\\dist\\amd\\aurelia-history","aurelia-history-browser":"..\\node_modules\\aurelia-history-browser\\dist\\amd\\aurelia-history-browser","aurelia-framework":"..\\node_modules\\aurelia-framework\\dist\\amd\\aurelia-framework","aurelia-metadata":"..\\node_modules\\aurelia-metadata\\dist\\amd\\aurelia-metadata","aurelia-logging":"..\\node_modules\\aurelia-logging\\dist\\amd\\aurelia-logging","aurelia-loader-default":"..\\node_modules\\aurelia-loader-default\\dist\\amd\\aurelia-loader-default","aurelia-pal":"..\\node_modules\\aurelia-pal\\dist\\amd\\aurelia-pal","aurelia-polyfills":"..\\node_modules\\aurelia-polyfills\\dist\\amd\\aurelia-polyfills","aurelia-loader":"..\\node_modules\\aurelia-loader\\dist\\amd\\aurelia-loader","aurelia-logging-console":"..\\node_modules\\aurelia-logging-console\\dist\\amd\\aurelia-logging-console","aurelia-path":"..\\node_modules\\aurelia-path\\dist\\amd\\aurelia-path","aurelia-route-recognizer":"..\\node_modules\\aurelia-route-recognizer\\dist\\amd\\aurelia-route-recognizer","aurelia-router":"..\\node_modules\\aurelia-router\\dist\\amd\\aurelia-router","aurelia-task-queue":"..\\node_modules\\aurelia-task-queue\\dist\\amd\\aurelia-task-queue","aurelia-pal-browser":"..\\node_modules\\aurelia-pal-browser\\dist\\amd\\aurelia-pal-browser","aurelia-templating-binding":"..\\node_modules\\aurelia-templating-binding\\dist\\amd\\aurelia-templating-binding","text":"..\\node_modules\\text\\text","aurelia-templating":"..\\node_modules\\aurelia-templating\\dist\\amd\\aurelia-templating","jquery":"..\\node_modules\\jquery\\dist\\jquery","app-bundle":"../scripts/app-bundle"},"packages":[{"name":"aurelia-templating-router","location":"../node_modules/aurelia-templating-router/dist/amd","main":"aurelia-templating-router"},{"name":"aurelia-templating-resources","location":"../node_modules/aurelia-templating-resources/dist/amd","main":"aurelia-templating-resources"},{"name":"ion-rangeslider","location":"../node_modules/ion-rangeslider","main":"js/ion.rangeSlider"},{"name":"aurelia-testing","location":"../node_modules/aurelia-testing/dist/amd","main":"aurelia-testing"},{"name":"highcharts","location":"../node_modules/highcharts","main":"js/highcharts"},{"name":"bootstrap","location":"../node_modules/bootstrap/dist","main":"js/bootstrap.min"}],"stubModules":["text"],"shim":{"highcharts":{"exports":"Highcharts"},"bootstrap":{"deps":["jquery"],"exports":"$"}},"bundles":{"app-bundle":["app","environment","main","aboutyou/personalinfo","health/familyhealth","health/myhealth","occupation/occupation","resources/index","results/results","services/familyHealthData","services/myHealthData","services/occupationData","services/personalnfoData","services/user","utilities/chart","css/styles"]}})}
+function _aureliaConfigureModuleLoader(){requirejs.config({"baseUrl":"src/","paths":{"aurelia-event-aggregator":"..\\node_modules\\aurelia-event-aggregator\\dist\\amd\\aurelia-event-aggregator","aurelia-bootstrapper":"..\\node_modules\\aurelia-bootstrapper\\dist\\amd\\aurelia-bootstrapper","aurelia-fetch-client":"..\\node_modules\\aurelia-fetch-client\\dist\\amd\\aurelia-fetch-client","aurelia-binding":"..\\node_modules\\aurelia-binding\\dist\\amd\\aurelia-binding","aurelia-dependency-injection":"..\\node_modules\\aurelia-dependency-injection\\dist\\amd\\aurelia-dependency-injection","aurelia-framework":"..\\node_modules\\aurelia-framework\\dist\\amd\\aurelia-framework","aurelia-history":"..\\node_modules\\aurelia-history\\dist\\amd\\aurelia-history","aurelia-loader":"..\\node_modules\\aurelia-loader\\dist\\amd\\aurelia-loader","aurelia-history-browser":"..\\node_modules\\aurelia-history-browser\\dist\\amd\\aurelia-history-browser","aurelia-loader-default":"..\\node_modules\\aurelia-loader-default\\dist\\amd\\aurelia-loader-default","aurelia-logging-console":"..\\node_modules\\aurelia-logging-console\\dist\\amd\\aurelia-logging-console","aurelia-pal":"..\\node_modules\\aurelia-pal\\dist\\amd\\aurelia-pal","aurelia-pal-browser":"..\\node_modules\\aurelia-pal-browser\\dist\\amd\\aurelia-pal-browser","aurelia-metadata":"..\\node_modules\\aurelia-metadata\\dist\\amd\\aurelia-metadata","aurelia-path":"..\\node_modules\\aurelia-path\\dist\\amd\\aurelia-path","aurelia-logging":"..\\node_modules\\aurelia-logging\\dist\\amd\\aurelia-logging","aurelia-router":"..\\node_modules\\aurelia-router\\dist\\amd\\aurelia-router","aurelia-polyfills":"..\\node_modules\\aurelia-polyfills\\dist\\amd\\aurelia-polyfills","aurelia-route-recognizer":"..\\node_modules\\aurelia-route-recognizer\\dist\\amd\\aurelia-route-recognizer","aurelia-templating":"..\\node_modules\\aurelia-templating\\dist\\amd\\aurelia-templating","jquery":"..\\node_modules\\jquery\\dist\\jquery","aurelia-templating-binding":"..\\node_modules\\aurelia-templating-binding\\dist\\amd\\aurelia-templating-binding","aurelia-task-queue":"..\\node_modules\\aurelia-task-queue\\dist\\amd\\aurelia-task-queue","text":"..\\node_modules\\text\\text","app-bundle":"../scripts/app-bundle"},"packages":[{"name":"aurelia-templating-resources","location":"../node_modules/aurelia-templating-resources/dist/amd","main":"aurelia-templating-resources"},{"name":"bootstrap","location":"../node_modules/bootstrap/dist","main":"js/bootstrap.min"},{"name":"ion-rangeslider","location":"../node_modules/ion-rangeslider","main":"js/ion.rangeSlider"},{"name":"aurelia-templating-router","location":"../node_modules/aurelia-templating-router/dist/amd","main":"aurelia-templating-router"},{"name":"aurelia-testing","location":"../node_modules/aurelia-testing/dist/amd","main":"aurelia-testing"},{"name":"highcharts","location":"../node_modules/highcharts","main":"js/highcharts"}],"stubModules":["text"],"shim":{"highcharts":{"exports":"Highcharts"},"bootstrap":{"deps":["jquery"],"exports":"$"}},"bundles":{"app-bundle":["app","environment","main","aboutyou/personalinfo","health/familyhealth","health/myhealth","occupation/occupation","results/results","services/familyHealthData","services/myHealthData","services/occupationData","services/personalnfoData","services/user","resources/index","utilities/chart","utilities/readFile","css/styles"]}})}
