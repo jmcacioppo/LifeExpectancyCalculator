@@ -16,6 +16,10 @@ export class personalinfo {
         console.log(this.user.clientPersonalInfo);
     }
 
+    checkspouse() {
+        this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
+    }
+
     myhealth() {
         this.router.navigate('#/myhealth');  
     }

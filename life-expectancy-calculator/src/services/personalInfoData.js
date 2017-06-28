@@ -4,5 +4,6 @@ export class PersonalInfoData {
         this.checkgender = true;
         this.gender;
         this.race;
+        this.checkspouse = false;
     }
 }
