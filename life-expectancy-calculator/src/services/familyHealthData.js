@@ -1,5 +1,6 @@
 export class FamilyHealthData {
     constructor() {
-        this.name;
+        this.motherHealthCheck = false;
+        this.fatherHealthCheck = false;
     }
 }

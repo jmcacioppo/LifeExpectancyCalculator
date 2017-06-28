@@ -6,4 +6,8 @@ export class familyhealth {
     constructor(router) {
         this.router = router;
     }
+
+    back() {
+        this.router.navigate('#/personalinfo');  
+    }
 }
