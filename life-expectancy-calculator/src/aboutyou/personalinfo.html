@@ -1,21 +1,44 @@
 <template>  
-    <div id="personalinfo">
+    <form id="personalinfo" submit.delegate="submit()">
         <h1>Personal Info</h1>
     
+        <!--=========================AGE OF CLIENT============================-->
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="text" value.bind="user.clientPersonalInfo.age" class="form-control" placeholder="30">
+        </div>
+
+        <!--======================GENDER OF CLIENT============================-->
         <div click.delegate="gender()" class="btn-group" data-toggle="buttons">
-            <label class="btn ${gender ? 'active btn-primary' : 'btn-secondary'}">
+            <label class="btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
                 <input type="radio">Male
             </label>
-            <label class="btn ${!gender ? 'active btn-primary' : 'btn-secondary'}">
+            <label class="btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
                 <input type="radio">Female
             </label>
         </div>
 
+        <br> <br>
+
+        <!--===========================RACE OF CLIENT=========================-->
         <div class="form-group">
-            <label for="age">Age</label>
-            <input type="text" class="form-control" placeholder="30">
+            <label for="race">Race</label>
+            <select class="form-control" value.bind="user.clientPersonalInfo.race">
+                <option data-hidden="true">Please Select</option>
+                <option>White</option>
+                <option>Black</option>
+                <option>Hispanic</option>
+                <option>Asian</option>
+            </select>
         </div>
-<!--
+
+        <br>
+
+        <button class="btn btn-primary" click.delegate="myhealth()">My Health</button>
+        <button class="btn btn-primary" click.delegate="familyhealth()">My Family Health</button>
+        <button class="btn btn-primary" click.delegate="occupation()">My Occupation</button>
+        
+        <!--
         <div class="form-group">
             <label for="state">State</label>
             <select class="form-control">
@@ -30,5 +53,6 @@
             </select>
         </div>-->
 
-    </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
 </template>

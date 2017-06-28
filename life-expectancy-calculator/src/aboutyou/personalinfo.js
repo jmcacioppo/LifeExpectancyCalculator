@@ -10,8 +10,25 @@ export class personalinfo {
     }
 
     gender() {
-        console.log("change");
-        this.user.client.familyHealthData.name = "Joseph";
-        console.log(this.user.familyhealthdata.name);
+        this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
+        if(this.user.clientPersonalInfo.checkgender) this.user.clientPersonalInfo.gender = 'Male';
+        else this.user.clientPersonalInfo.gender = 'Female';
+        console.log(this.user.clientPersonalInfo);
+    }
+
+    myhealth() {
+        this.router.navigate('#/myhealth');  
+    }
+
+    familyhealth() {
+        this.router.navigate('#/familyhealth');  
+    }
+
+    occupation() {
+        this.router.navigate('#/occupation');  
+    }
+
+    submit() {
+        this.router.navigate('#/results');  
     }
 }
