@@ -25,7 +25,10 @@ export class App {
         name: 'occupation', title: 'Occupation', nav: true},  
 
       { route: 'results', moduleId: 'results/results',
-        name: 'results', title: 'Results', nav: true}
+        name: 'results', title: 'Results', nav: true},
+
+      { route: 'jsonfile', moduleId: 'services/lifeExpectancy.json!json',
+        name: 'jsonfile', title: 'Json File', nav: true}
     ]);
   }
 }

@@ -1,5 +1,11 @@
-#home, #personalinfo, #myhealth, #familyhealth, #occupation, #results {    
+#home, h1, #clientorspouse {
     text-align: center;
+    margin: 0 auto;
+    width: 500px;
+}
+
+#personalinfo, #myhealth, #familyhealth, #occupation, #results {    
+    text-align: left;
     margin: 0 auto;
     width: 500px;
 }

@@ -37,7 +37,8 @@ define('app',['exports', 'jquery', 'aurelia-framework', 'aurelia-fetch-client', 
         name: 'myhealth', title: 'My Health', nav: true }, { route: 'familyhealth', moduleId: 'health/familyhealth',
         name: 'familyhealth', title: 'Family Health', nav: true }, { route: 'occupation', moduleId: 'occupation/occupation',
         name: 'occupation', title: 'Occupation', nav: true }, { route: 'results', moduleId: 'results/results',
-        name: 'results', title: 'Results', nav: true }]);
+        name: 'results', title: 'Results', nav: true }, { route: 'jsonfile', moduleId: 'services/lifeExpectancy.json!json',
+        name: 'jsonfile', title: 'Json File', nav: true }]);
     };
 
     return App;
@@ -114,6 +115,10 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
             this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
             if (this.user.clientPersonalInfo.checkgender) this.user.clientPersonalInfo.gender = 'Male';else this.user.clientPersonalInfo.gender = 'Female';
             console.log(this.user.clientPersonalInfo);
+        };
+
+        personalinfo.prototype.checkspouse = function checkspouse() {
+            this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
         };
 
         personalinfo.prototype.myhealth = function myhealth() {
@@ -195,6 +200,15 @@ define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router'], fun
         return myhealth;
     }()) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
 define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
 
@@ -224,15 +238,6 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
 
         return occupation;
     }()) || _class);
-});
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
 });
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
     'use strict';
@@ -343,6 +348,7 @@ define('services/personalInfoData',["exports"], function (exports) {
         this.checkgender = true;
         this.gender;
         this.race;
+        this.checkspouse = false;
     };
 });
 define('services/user',['exports', 'aurelia-framework', '../services/personalInfoData', '../services/myHealthData', '../services/familyHealthData', '../services/occupationData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _familyHealthData, _occupationData) {
@@ -428,9 +434,9 @@ define('utilities/readFile',['exports', 'aurelia-fetch-client'], function (expor
         return ReadFile;
     }();
 });
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><div id=\"home\"><h1>Life Expectancy Calculator</h1></div><router-view></router-view></template>"; });
-define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, #personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: center;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><form id=\"personalinfo\" submit.delegate=\"submit()\"><h1>Personal Info</h1><div class=\"form-group\"><label for=\"age\">Age</label><input type=\"text\" value.bind=\"user.clientPersonalInfo.age\" class=\"form-control\" placeholder=\"30\"></div><div click.delegate=\"gender()\" class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><div class=\"form-group\"><label for=\"race\">Race</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.race\"><option data-hidden=\"true\">Please Select</option><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><br><button class=\"btn btn-primary\" click.delegate=\"myhealth()\">My Health</button> <button class=\"btn btn-primary\" click.delegate=\"familyhealth()\">My Family Health</button> <button class=\"btn btn-primary\" click.delegate=\"occupation()\">My Occupation</button> <button type=\"submit\" class=\"btn btn-primary\">Submit</button></form></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><br><div id=\"home\"><h1>Life Expectancy Calculator</h1></div><hr><router-view></router-view></template>"; });
+define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, h1, #clientorspouse {\r\n    text-align: center;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n\r\n#personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: left;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><br><h1>Personal Information</h1><br><hr><form id=\"personalinfo\" submit.delegate=\"submit()\"><div id=\"client\"><h2 id=\"clientorspouse\">Client</h2><br><div class=\"form-group\"><label class=\"col-sm-2\" for=\"age\">Age:</label><input cladd=\"col-sm-6\" style=\"width:400px\" type=\"text\" value.bind=\"user.clientPersonalInfo.age\" class=\"form-control\" placeholder=\"30\"></div><label class=\"col-sm-2\" for=\"gender\">Gender:</label><span id=\"space\"></span><div class=\"btn-group col-sm-6\" click.delegate=\"gender()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><div class=\"form-group\"><label class=\"col-sm-2\" for=\"race\">Race:</label><select class=\"form-control col-sm-6\" style=\"width:400px\" value.bind=\"user.clientPersonalInfo.race\"><option data-hidden=\"true\">Please Select</option><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><br><br><label class=\"col-sm-6\" for=\"checkspouse\">Do you have a spouse?</label><span id=\"space\"></span><div class=\"btn-group col-sm-6\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><hr><div><h2 style=\"margin-top:50px\" class=\"col-sm-6\">Other Factors:</h2><div style=\"text-align:center\"><button class=\"btn btn-primary\" click.delegate=\"myhealth()\">My Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"familyhealth()\">My Family Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"occupation()\">My Occupation</button></div></div></div><hr><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 id=\"clientorspouse\">Co-Client</h2><hr></div><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></form></template>"; });
 define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"familyhealth\"><h1>Family Health</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
 define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"myhealth\"><h1>My Health</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
 define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><div id=\"occupation\"><h1>Occupation</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
