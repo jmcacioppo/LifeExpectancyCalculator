@@ -1,15 +1,26 @@
+import {inject} from 'aurelia-framework';
+import {HttpClient, json} from 'aurelia-fetch-client';
 import $ from 'jquery';
 import 'bootstrap';
-import {inject} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
+
 
 @inject(HttpClient)
 export class App {
-  constructor(http) {
+
+  httpClient;
+  
+  constructor(httpClient) {
+    this.httpClient = httpClient;
     this.message = 'Life Expectancy Calculator';
   }
 
+  async activate() {
+    await this.httpClient.fetch('/api/life-expectancy/get.json');
+  }
+
   configureRouter(config, router) {
+
+  
     this.router = router;
     config.title = "Life Expectancy Calculator";
     config.map([
@@ -31,4 +42,6 @@ export class App {
         name: 'jsonfile', title: 'Json File', nav: true}
     ]);
   }
+
+
 }
