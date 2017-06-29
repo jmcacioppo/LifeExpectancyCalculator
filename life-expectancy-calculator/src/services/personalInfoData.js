@@ -5,5 +5,7 @@ export class PersonalInfoData {
         this.gender;
         this.race;
         this.checkspouse = false;
+        this.state = 'alabama';
+        this.county = 'autauga county';
     }
 }
