@@ -1,3 +1,6 @@
+import {transient} from 'aurelia-framework';
+
+@transient()
 export class PersonalInfoData {
     constructor() {
         this.age;

@@ -1,13 +1,44 @@
-#home, h1, #clientorspouse, #submit {
+/*#home, h1, #clientorspouse, #submit {
     text-align: center;
     margin: 0 auto;
-    width: 500px;
-}
+    width: 800px;
+}*/
     
+.hasSpouse {
+	width: 45%;
+	float: left;
+}
+
+.noSpouse {
+	width: 100%;
+	float: none;
+}
+
+.additional-information-container {
+	clear: both;
+	margin: 0 auto;
+	width: 600px;
+}
+
+#button-div {
+	margin: 0 auto;
+    bottom: 0;
+	margin-bottom: 65px;
+	margin-right: 10%;
+}
+
+#submit {
+	margin: 0 auto;
+	position: absolute;
+    bottom: 0;
+	margin-bottom: 65px;
+	margin-right: 65%;
+}
+
 #personalinfo, #myhealth, #familyhealth, #occupation, #results {    
-    text-align: left;
+    /*text-align: left;*/
     margin: 0 auto;
-    width: 500px;
+    width: 1000px;
 }
 
 /*FOOTER STYLING*/
@@ -27,6 +58,7 @@ html, body {
 }
 
 #footer {
+	clear: both;
 	background:#ededed;
 	width:100%;
 	height:60px;
@@ -35,4 +67,4 @@ html, body {
 	left:0;
     text-align: center;
 }
-/*END FOOTER STYLING*/
+/*END FOOTER SLYING*/
