@@ -3,27 +3,21 @@
     <require from="ion-rangeslider/css/ion.rangeSlider.skinHTML5.css"></require>
     <require from="ion-rangeslider/css/normalize.css"></require>
 
-    <br> 
-    <h1>Personal Information</h1>
-
-    <br> <hr>
-
     <form id="personalinfo" submit.delegate="submit()">
         <div id="client">
-            <h2 id="clientorspouse">Client</h2>
+            <h2 id="clientorspouse">Personal Info - Client</h2>
             <br>
             <!--=========================AGE OF CLIENT============================-->
             <div class="form-group" >
-                <label class="col-sm-4" for="age">Age:</label>
+                <label for="age">Age:</label>
                 <input style="width: 400px;" id="age" class="col-sm-6"></input>
             </div>
 
             <br> <br> <br>
 
             <!--======================GENDER OF CLIENT============================-->
-            <label class="col-sm-2" for="gender">Gender:</label>
-            <span id="space"></span>
-            <div class="btn-group col-sm-6" click.delegate="gender()" data-toggle="buttons">
+            <label style="padding-right: 10px;" for="gender">Gender: </label>
+            <div class="btn-group" click.delegate="gender()" data-toggle="buttons">
                 <label class="btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Male</label>
                 <label class="btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
@@ -33,9 +27,8 @@
             <br> <br> <br>
 
             <!--======================CHECK CLIENT HAS SPOUSE=========================-->
-            <label class="col-sm-6" for="checkspouse">Do you have a spouse?</label>
-            <span id="space"></span>
-            <div class="btn-group col-sm-4" click.delegate="checkspouse()" data-toggle="buttons">
+            <label style="padding-right: 10px;" for="checkspouse">Do you have a spouse?</label>
+            <div class="btn-group" click.delegate="checkspouse()" data-toggle="buttons">
                 <label class="btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}">
@@ -43,6 +36,18 @@
             </div>
 
             <br> <br> 
+
+            <!--===========================RACE OF CLIENT=========================-->
+            <div class="form-group">
+                <label for="race">Race</label>
+                <select class="form-control" value.bind="user.clientPersonalInfo.race">
+                    <option data-hidden="true">Please Select</option>
+                    <option>White</option>
+                    <option>Black</option>
+                    <option>Hispanic</option>
+                    <option>Asian</option>
+                </select>
+            </div>
 
             <!--============================STATE OF CLIENT=========================-->
             <div class="form-group">
@@ -60,26 +65,12 @@
                 </select>
             </div>
 
-            <br> <br>
-
-            <!--===========================RACE OF CLIENT=========================-->
-            <div class="form-group">
-                <label class="col-sm-2" for="race">Race:</label>
-                <select class="form-control col-sm-6" style="width: 400px;" value.bind="user.clientPersonalInfo.race">
-                    <option data-hidden="true">Please Select</option>
-                    <option>White</option>
-                    <option>Black</option>
-                    <option>Hispanic</option>
-                    <option>Asian</option>
-                </select>
-            </div>
-
-            <br> <br>
-
             <hr>
             
+
+            <!--========================OTHER FACTORS================================-->
             <div>
-                <h2 style="margin-top: 50px;" class="col-sm-6">Other Factors:</h2>
+                <h1>Input More Information:</h1>
                 <div style="text-align: center">
                     <button class="btn btn-primary" click.delegate="myhealth()">My Health</button>
                     <br> <br>
@@ -93,7 +84,7 @@
         <hr> 
 
         <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
-            <h2 id="clientorspouse">Co-Client</h2>
+            <h2 id="clientorspouse">Personal Info - Co-Client</h2>
 
             <hr>
         </div>
