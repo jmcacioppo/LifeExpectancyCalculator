@@ -573,6 +573,83 @@ define('services/user',['exports', 'aurelia-framework', '../services/personalInf
         this.spouseOccupation = new _occupationData.OccupationData();
     }) || _class);
 });
+define('utilities/calculateFamilyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateFamilyHealth = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateFamilyHealth = exports.CalculateFamilyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateFamilyHealth(user) {
+        _classCallCheck(this, CalculateFamilyHealth);
+
+        this.user = user;
+    }) || _class);
+});
+define('utilities/calculateMyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateMyHealth = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateMyHealth = exports.CalculateMyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function () {
+        function CalculateMyHealth(user) {
+            _classCallCheck(this, CalculateMyHealth);
+
+            this.user = user;
+        }
+
+        CalculateMyHealth.prototype.calculateBMI = function calculateBMI() {
+            var metricWeight = this.user.clientMyHealth.weight * 0.45;
+            var metricHeight = this.user.clientMyHealth.height * 0.025;
+            var metricHeightSquared = metricHeight * metricHeight;
+            this.user.clientMyHealth.bmi = metricWeight / metricHeightSquared;
+        };
+
+        return CalculateMyHealth;
+    }()) || _class);
+});
+define('utilities/calculateOccupation',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateOccupation = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateOccupation(user) {
+        _classCallCheck(this, CalculateOccupation);
+
+        this.user = user;
+    }) || _class);
+});
 define('utilities/chart',["exports"], function (exports) {
     "use strict";
 
@@ -697,88 +774,11 @@ define('utilities/slider',["exports", "ion-rangeslider"], function (exports, _io
         return slider;
     }();
 });
-define('utilities/calculateMyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateMyHealth = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateMyHealth = exports.CalculateMyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function () {
-        function CalculateMyHealth(user) {
-            _classCallCheck(this, CalculateMyHealth);
-
-            this.user = user;
-        }
-
-        CalculateMyHealth.prototype.calculateBMI = function calculateBMI() {
-            var metricWeight = this.user.clientMyHealth.weight * 0.45;
-            var metricHeight = this.user.clientMyHealth.height * 0.025;
-            var metricHeightSquared = metricHeight * metricHeight;
-            this.user.clientMyHealth.bmi = metricWeight / metricHeightSquared;
-        };
-
-        return CalculateMyHealth;
-    }()) || _class);
-});
-define('utilities/calculateFamilyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateFamilyHealth = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateFamilyHealth = exports.CalculateFamilyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateFamilyHealth(user) {
-        _classCallCheck(this, CalculateFamilyHealth);
-
-        this.user = user;
-    }) || _class);
-});
-define('utilities/calculateOccupation',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateOccupation = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateOccupation(user) {
-        _classCallCheck(this, CalculateOccupation);
-
-        this.user = user;
-    }) || _class);
-});
-define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><br><div id=\"home\"><h1>Life Expectancy Calculator</h1></div><hr><router-view></router-view></template>"; });
-define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, h1, #clientorspouse, #submit {\r\n    text-align: center;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n    \r\n#personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: left;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><br><h1>Personal Information</h1><br><hr><form id=\"personalinfo\" submit.delegate=\"submit()\"><div id=\"client\"><h2 id=\"clientorspouse\">Client</h2><br><div class=\"form-group\"><label class=\"col-sm-4\" for=\"age\">Age:</label><input style=\"width:400px\" id=\"age\" class=\"col-sm-6\"></div><br><br><br><label class=\"col-sm-2\" for=\"gender\">Gender:</label><span id=\"space\"></span><div class=\"btn-group col-sm-6\" click.delegate=\"gender()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><label class=\"col-sm-6\" for=\"checkspouse\">Do you have a spouse?</label><span id=\"space\"></span><div class=\"btn-group col-sm-4\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState()\" value.bind=\"user.clientPersonalInfo.state\"><option repeat.for=\"state of stateData.stateSet\">${state}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy()\" value.bind=\"user.clientPersonalInfo.county\"><option repeat.for=\"county of currentCountyArray\">${county}</option></select></div><br><br><div class=\"form-group\"><label class=\"col-sm-2\" for=\"race\">Race:</label><select class=\"form-control col-sm-6\" style=\"width:400px\" value.bind=\"user.clientPersonalInfo.race\"><option data-hidden=\"true\">Please Select</option><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><br><br><hr><div><h2 style=\"margin-top:50px\" class=\"col-sm-6\">Other Factors:</h2><div style=\"text-align:center\"><button class=\"btn btn-primary\" click.delegate=\"myhealth()\">My Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"familyhealth()\">My Family Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"occupation()\">My Occupation</button></div></div></div><hr><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 id=\"clientorspouse\">Co-Client</h2><hr></div><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></form></template>"; });
+define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><br><div id=\"app\"><div id=\"content\"><div id=\"home\"><h1 style=\"font-size:36px\"><b>Life Expectancy Calculator<b></b></b></h1></div><hr><router-view></router-view></div><br><br><br><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
+define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, h1, #clientorspouse, #submit {\r\n    text-align: center;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n    \r\n#personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: left;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n\r\n/*FOOTER STYLING*/\r\nhtml, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n/*END FOOTER STYLING*/"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><form id=\"personalinfo\" submit.delegate=\"submit()\"><div id=\"client\"><h2 id=\"clientorspouse\">Personal Info - Client</h2><br><div class=\"form-group\"><label for=\"age\">Age:</label><input style=\"width:400px\" id=\"age\" class=\"col-sm-6\"></div><br><br><br><label style=\"padding-right:10px\" for=\"gender\">Gender:</label><div class=\"btn-group\" click.delegate=\"gender()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><label style=\"padding-right:10px\" for=\"checkspouse\">Do you have a spouse?</label><div class=\"btn-group\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div class=\"form-group\"><label for=\"race\">Race</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.race\"><option data-hidden=\"true\">Please Select</option><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState()\" value.bind=\"user.clientPersonalInfo.state\"><option repeat.for=\"state of stateData.stateSet\">${state}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy()\" value.bind=\"user.clientPersonalInfo.county\"><option repeat.for=\"county of currentCountyArray\">${county}</option></select></div><hr><div><h1>Input More Information:</h1><div style=\"text-align:center\"><button class=\"btn btn-primary\" click.delegate=\"myhealth()\">My Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"familyhealth()\">My Family Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"occupation()\">My Occupation</button></div></div></div><hr><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 id=\"clientorspouse\">Personal Info - Co-Client</h2><hr></div><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></form></template>"; });
 define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><form id=\"familyhealth\" submit.delegate=\"submit()\"><h1>Family Health</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
-define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><form id=\"myhealth\" submit.delegate=\"submit()\"><h1>My Health</h1><div class=\"form-group\"><label for=\"height\">Height</label><input type=\"text\" value.bind=\"user.clientMyHealth.height\" class=\"form-control\" placeholder=\"5'7\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><input type=\"text\" value.bind=\"user.clientMyHealth.weight\" class=\"form-control\" placeholder=\"155\"></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
+define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><form id=\"myhealth\" submit.delegate=\"submit()\"><h1>My Health - Client</h1><div class=\"form-group\"><label for=\"height\">Height</label><input type=\"text\" value.bind=\"user.clientMyHealth.height\" class=\"form-control\" placeholder=\"5'7\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><input type=\"text\" value.bind=\"user.clientMyHealth.weight\" class=\"form-control\" placeholder=\"155\"></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
 define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><form id=\"occupation\" submit.delegate=\"submit()\"><h1>Occupation</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
 define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map
