@@ -4,29 +4,8 @@
     <require from="ion-rangeslider/css/normalize.css"></require>
 
     <form id="personalinfo" submit.delegate="submit()">
-        <div id="client">
-            <h2 id="clientorspouse">Personal Info - Client</h2>
-            <br>
-            <!--=========================AGE OF CLIENT============================-->
-            <div class="form-group" >
-                <label for="age">Age:</label>
-                <input style="width: 400px;" id="age" class="col-sm-6"></input>
-            </div>
-
-            <br> <br> <br>
-
-            <!--======================GENDER OF CLIENT============================-->
-            <label style="padding-right: 10px;" for="gender">Gender: </label>
-            <div class="btn-group" click.delegate="gender()" data-toggle="buttons">
-                <label class="btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">Male</label>
-                <label class="btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">Female</label>
-            </div>
-
-            <br> <br> <br>
-
-            <!--======================CHECK CLIENT HAS SPOUSE=========================-->
+        <!--======================CHECK CLIENT HAS SPOUSE=========================-->
+         <div style="margin-left: 38.50%; ">
             <label style="padding-right: 10px;" for="checkspouse">Do you have a spouse?</label>
             <div class="btn-group" click.delegate="checkspouse()" data-toggle="buttons">
                 <label class="btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}">
@@ -34,62 +13,120 @@
                 <label class="btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">No</label>
             </div>
-
-            <br> <br> 
-
-            <!--===========================RACE OF CLIENT=========================-->
-            <div class="form-group">
-                <label for="race">Race</label>
-                <select class="form-control" value.bind="user.clientPersonalInfo.race">
-                    <option data-hidden="true">Please Select</option>
-                    <option>White</option>
-                    <option>Black</option>
-                    <option>Hispanic</option>
-                    <option>Asian</option>
-                </select>
-            </div>
-
-            <!--============================STATE OF CLIENT=========================-->
-            <div class="form-group">
-                <label for="state">State</label>
-                <select class="form-control" change.delegate="checkState()" value.bind="user.clientPersonalInfo.state">
-                    <option repeat.for="state of stateData.stateSet">${state}</option>
-                </select>
-            </div>
-
-            <!--==========================COUNTY OF CLIENT==========================-->
-            <div class="form-group">
-                <label for="county">County</label>
-                <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.clientPersonalInfo.county">
-                    <option repeat.for="county of currentCountyArray">${county}</option>
-                </select>
-            </div>
-
-            <hr>
-            
-
-            <!--========================OTHER FACTORS================================-->
-            <div>
-                <h1>Input More Information:</h1>
-                <div style="text-align: center">
-                    <button class="btn btn-primary" click.delegate="myhealth()">My Health</button>
-                    <br> <br>
-                    <button class="btn btn-primary" click.delegate="familyhealth()">My Family Health</button>
-                    <br> <br>
-                    <button class="btn btn-primary" click.delegate="occupation()">My Occupation</button>
-                </div>
-            </div>    
-        </div>
-
-        <hr> 
-
-        <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
-            <h2 id="clientorspouse">Personal Info - Co-Client</h2>
-
-            <hr>
         </div>
         
+        <div id="client-spouse-container">
+            <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
+                <h2 id="clientorspouse" style="text-align: center;">Client</h2>
+                <!--=========================AGE OF CLIENT============================-->
+                <div class="form-group" >
+                    <label for="age">Age:</label>
+                    <input style="width: 400px;" id="age"></input>
+                </div>
 
-        <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+                <!--======================GENDER OF CLIENT============================-->
+                <label style="padding-right: 10px;" for="gender">Gender: </label>
+                <div class="btn-group" click.delegate="gender()" data-toggle="buttons">
+                    <label class="btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Male</label>
+                    <label class="btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Female</label>
+                </div>
+
+                <br> <br> <br>
+
+                <!--===========================RACE OF CLIENT=========================-->
+                <div class="form-group">
+                    <label for="race">Race</label>
+                    <select class="form-control" value.bind="user.clientPersonalInfo.race">
+                        <option data-hidden="true">Please Select</option>
+                        <option>White</option>
+                        <option>Black</option>
+                        <option>Hispanic</option>
+                        <option>Asian</option>
+                    </select>
+                </div>
+
+                <!--============================STATE OF CLIENT=========================-->
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select class="form-control" change.delegate="checkState()" value.bind="user.clientPersonalInfo.state">
+                        <option repeat.for="state of stateData.stateSet">${state}</option>
+                    </select>
+                </div>
+
+                <!--==========================COUNTY OF CLIENT==========================-->
+                <div class="form-group">
+                    <label for="county">County</label>
+                    <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.clientPersonalInfo.county">
+                        <option repeat.for="county of currentCountyArray">${county}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
+                <h2 id="clientorspouse">Co-Client</h2>
+
+                <!--=========================AGE OF SPOUSE============================-->
+                <div class="form-group" >
+                    <label for="age">Age:</label>
+                    <input style="width: 400px;" id="spouseage"></input>
+                </div>
+
+                <!--======================GENDER OF SPOUSE============================-->
+                <label style="padding-right: 10px;" for="gender">Gender: </label>
+                <div class="btn-group" click.delegate="spousegender()" data-toggle="buttons">
+                    <label class="btn ${user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Male</label>
+                    <label class="btn ${!user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Female</label>
+                </div>
+
+                <br> <br> <br>
+
+                <!--===========================RACE OF SPOUSE=========================-->
+                <div class="form-group">
+                    <label for="race">Race</label>
+                    <select class="form-control" value.bind="user.spousePersonalInfo.race">
+                        <option data-hidden="true">Please Select</option>
+                        <option>White</option>
+                        <option>Black</option>
+                        <option>Hispanic</option>
+                        <option>Asian</option>
+                    </select>
+                </div>
+
+                <!--============================STATE OF SPOUSE=========================-->
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select class="form-control" change.delegate="checkState()" value.bind="user.spousePersonalInfo.state">
+                        <option repeat.for="state of stateData.stateSet">${state}</option>
+                    </select>
+                </div>
+
+                <!--==========================COUNTY OF SPOUSE==========================-->
+                <div class="form-group">
+                    <label for="county">County</label>
+                    <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.spousePersonalInfo.county">
+                        <option repeat.for="county of currentCountyArray">${county}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <hr style="clear:both">
+        <!--========================OTHER FACTORS================================-->
+        <div class="additional-information-container">
+            <h1 style="text-align:center;">Input More Information:</h1>
+            <div style="margin: 0 auto;">
+                <button style="float:left;" class="btn btn-primary col-md-3" click.delegate="myhealth()">My Health</button>
+                <button style="margin-left: 12.5%;" class="btn btn-primary col-md-3" click.delegate="familyhealth()">My Family Health</button>
+                <button style="float:right;" class="btn btn-primary col-md-3" click.delegate="occupation()">My Occupation</button>
+            </div>
+        </div>    
+        
+        <div id="button-div">
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 </template>

@@ -23,6 +23,13 @@ export class personalinfo {
         console.log(this.user.clientPersonalInfo);
     }
 
+    spousegender() {
+        this.user.spousePersonalInfo.checkgender = !this.user.spousePersonalInfo.checkgender;
+        this.user.spousePersonalInfo.gender = (this.user.spousePersonalInfo.checkgender) ? 'Male' : 'Female';
+        console.log(this.user.clientPersonalInfo);
+        console.log(this.user.spousePersonalInfo);
+    }
+
     checkspouse() {
         this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
     }
@@ -81,6 +88,17 @@ export class personalinfo {
             step: 1,
             onFinish: (data) => {
                 this.user.clientPersonalInfo.age = data.from;
+            }
+        });
+
+        $("#spouseage").ionRangeSlider({
+            grid: true,
+            min: 0,
+            max: 100,
+            from: 30,
+            step: 1,
+            onFinish: (data) => {
+                this.user.spousePersonalInfo.age = data.from;
             }
         });
     }
