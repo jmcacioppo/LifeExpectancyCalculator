@@ -1,9 +1,9 @@
-#home, h1, #clientorspouse {
+#home, h1, #clientorspouse, #submit {
     text-align: center;
     margin: 0 auto;
     width: 500px;
 }
-
+    
 #personalinfo, #myhealth, #familyhealth, #occupation, #results {    
     text-align: left;
     margin: 0 auto;

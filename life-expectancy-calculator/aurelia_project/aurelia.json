@@ -99,9 +99,9 @@
       {
         "name": "vendor-bundle.js",
         "prepend": [
-          "node_modules/bluebird/js/browser/bluebird.core.js",
-          "node_modules/aurelia-cli/lib/resources/scripts/configure-bluebird.js",
-          "node_modules/whatwg-fetch/fetch.js",
+          "node_modules/babel-polyfill/dist/polyfill.js",
+          "node_modules/es6-promise/dist/es6-promise.min.js",
+          "node_modules/es6-promise/dist/es6-promise.auto.min.js",          
           "node_modules/requirejs/require.js"
         ],
         "dependencies": [
@@ -151,7 +151,7 @@
             "main": "js/ion.rangeSlider",
             "resources": [
                 "css/ion.rangeSlider.css",
-                "css/ion.rangeSlider.skinModern.css",
+                "css/ion.rangeSlider.skinHTML5.css",
                 "css/normalize.css"
             ]
           },
@@ -172,7 +172,9 @@
             "resources": [
               "css/highcharts.css"
             ]
-          }
+          },
+          "whatwg-fetch",
+          "es6-promise"
         ]
       }
     ]
