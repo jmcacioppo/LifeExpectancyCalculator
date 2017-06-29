@@ -55,7 +55,7 @@
             <!--==========================COUNTY OF CLIENT==========================-->
             <div class="form-group">
                 <label for="county">County</label>
-                <select class="form-control" value.bind="user.clientPersonalInfo.county">
+                <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.clientPersonalInfo.county">
                     <option repeat.for="county of currentCountyArray">${county}</option>
                 </select>
             </div>

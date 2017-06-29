@@ -225,9 +225,29 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
 
         personalinfo.prototype.checkState = function checkState() {
             var state = this.user.clientPersonalInfo.state;
+            var self = this;
             this.currentCountyArray = [];
-            this.currentCountyArray = this.stateData.stateToCountyMap.get(state).split(',');
+            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+            countyWithLifeArrays.forEach(function (data) {
+                var currentCountyInfo = data.split(":");
+                self.currentCountyArray.push(currentCountyInfo[0]);
+            });
             this.currentCountyArray.pop();
+        };
+
+        personalinfo.prototype.checkLifeExpectancy = function checkLifeExpectancy() {
+            var self = this;
+            var state = this.user.clientPersonalInfo.state;
+            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+            countyWithLifeArrays.forEach(function (data) {
+                var currentCountyInfo = data.split(":");
+
+                var lifeExpectancy = self.user.clientPersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
+
+                if (currentCountyInfo[0].indexOf(self.user.clientPersonalInfo.county) != -1) {
+                    self.user.clientPersonalInfo.lifeExpectancy = self.user.clientPersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                }
+            });
         };
 
         personalinfo.prototype.myhealth = function myhealth() {
@@ -264,7 +284,7 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
         return personalinfo;
     }()) || _class);
 });
-define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
+define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateFamilyHealth'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateFamilyHealth) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -280,21 +300,27 @@ define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router'],
 
     var _dec, _class;
 
-    var familyhealth = exports.familyhealth = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function () {
-        function familyhealth(router) {
+    var familyhealth = exports.familyhealth = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateFamilyHealth.CalculateFamilyHealth), _dec(_class = function () {
+        function familyhealth(router, user, calculateFamilyHealth) {
             _classCallCheck(this, familyhealth);
 
             this.router = router;
+            this.user = user;
+            this.calculateFamilyHealth = calculateFamilyHealth;
         }
 
         familyhealth.prototype.back = function back() {
             this.router.navigate('#/personalinfo');
         };
 
+        familyhealth.prototype.submit = function submit() {
+            this.router.navigate('#/personalinfo');
+        };
+
         return familyhealth;
     }()) || _class);
 });
-define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
+define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateMyHealth'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateMyHealth) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -310,21 +336,30 @@ define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router'], fun
 
     var _dec, _class;
 
-    var myhealth = exports.myhealth = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function () {
-        function myhealth(router) {
+    var myhealth = exports.myhealth = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateMyHealth.CalculateMyHealth), _dec(_class = function () {
+        function myhealth(router, user, calculateMyHealth) {
             _classCallCheck(this, myhealth);
 
+            this.calculateMyHealth = calculateMyHealth;
             this.router = router;
+            this.user = user;
         }
 
         myhealth.prototype.back = function back() {
+            console.log(this.user.clientMyHealth);
+            this.router.navigate('#/personalinfo');
+        };
+
+        myhealth.prototype.submit = function submit() {
+            this.calculateMyHealth.calculateBMI();
+            console.log(this.user.clientMyHealth);
             this.router.navigate('#/personalinfo');
         };
 
         return myhealth;
     }()) || _class);
 });
-define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
+define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -340,14 +375,20 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
 
     var _dec, _class;
 
-    var occupation = exports.occupation = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function () {
-        function occupation(router) {
+    var occupation = exports.occupation = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateOccupation.CalculateOccupation), _dec(_class = function () {
+        function occupation(router, user, calculateOccupation) {
             _classCallCheck(this, occupation);
 
             this.router = router;
+            this.user = user;
+            this.calculateOccupation = calculateOccupation;
         }
 
         occupation.prototype.back = function back() {
+            this.router.navigate('#/personalinfo');
+        };
+
+        occupation.prototype.submit = function submit() {
             this.router.navigate('#/personalinfo');
         };
 
@@ -392,6 +433,145 @@ define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], fun
 
         return results;
     }()) || _class);
+});
+define('services/familyHealthData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
+        _classCallCheck(this, FamilyHealthData);
+
+        this.motherHealthCheck = false;
+        this.fatherHealthCheck = false;
+    };
+});
+define('services/myHealthData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var MyHealthData = exports.MyHealthData = function MyHealthData() {
+        _classCallCheck(this, MyHealthData);
+
+        this.height;
+        this.weight;
+        this.bmi;
+        this.healthRank;
+    };
+});
+define('services/occupationData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var OccupationData = exports.OccupationData = function OccupationData() {
+        _classCallCheck(this, OccupationData);
+
+        this.job;
+    };
+});
+define('services/personalInfoData',['exports'], function (exports) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var PersonalInfoData = exports.PersonalInfoData = function PersonalInfoData() {
+        _classCallCheck(this, PersonalInfoData);
+
+        this.age;
+        this.checkgender = true;
+        this.gender;
+        this.race;
+        this.checkspouse = false;
+        this.state = 'alabama';
+        this.county = 'autauga county';
+        this.countyLifeExpectancy;
+    };
+});
+define('services/stateData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var StateData = exports.StateData = function StateData() {
+        _classCallCheck(this, StateData);
+
+        this.stateSet = new Set();
+        this.stateToCountyMap = new Map();
+    };
+});
+define('services/user',['exports', 'aurelia-framework', '../services/personalInfoData', '../services/myHealthData', '../services/familyHealthData', '../services/occupationData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _familyHealthData, _occupationData) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.User = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var User = exports.User = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function User() {
+        _classCallCheck(this, User);
+
+        this.clientPersonalInfo = new _personalInfoData.PersonalInfoData();
+        this.spousePersonalInfo = new _personalInfoData.PersonalInfoData();
+
+        this.clientMyHealth = new _myHealthData.MyHealthData();
+        this.spouseMyHealth = new _myHealthData.MyHealthData();
+
+        this.clientFamilyHealth = new _familyHealthData.FamilyHealthData();
+        this.spouseFamilyHealth = new _familyHealthData.FamilyHealthData();
+
+        this.clientOccupation = new _occupationData.OccupationData();
+        this.spouseOccupation = new _occupationData.OccupationData();
+    }) || _class);
 });
 define('utilities/chart',["exports"], function (exports) {
     "use strict";
@@ -446,9 +626,10 @@ define('utilities/readFile',['exports', 'aurelia-framework', '../services/stateD
             jsonData.forEach(function (stateObject) {
                 if (self.stateData.stateToCountyMap.has(stateObject.State.toLowerCase())) {
                     var existingValues = self.stateData.stateToCountyMap.get(stateObject.State.toLowerCase());
-                    existingValues += " " + stateObject.County.toLowerCase() + ",";
+
+                    existingValues += " " + stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",";
                     self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), existingValues);
-                } else self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), stateObject.County.toLowerCase() + ",");
+                } else self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",");
             });
         };
 
@@ -516,118 +697,13 @@ define('utilities/slider',["exports", "ion-rangeslider"], function (exports, _io
         return slider;
     }();
 });
-define('services/familyHealthData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
-        _classCallCheck(this, FamilyHealthData);
-
-        this.motherHealthCheck = false;
-        this.fatherHealthCheck = false;
-    };
-});
-define('services/myHealthData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var MyHealthData = exports.MyHealthData = function MyHealthData() {
-        _classCallCheck(this, MyHealthData);
-
-        this.height;
-        this.weight;
-    };
-});
-define('services/occupationData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var OccupationData = exports.OccupationData = function OccupationData() {
-        _classCallCheck(this, OccupationData);
-
-        this.job;
-    };
-});
-define('services/personalInfoData',['exports'], function (exports) {
+define('utilities/calculateMyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
     });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var PersonalInfoData = exports.PersonalInfoData = function PersonalInfoData() {
-        _classCallCheck(this, PersonalInfoData);
-
-        this.age;
-        this.checkgender = true;
-        this.gender;
-        this.race;
-        this.checkspouse = false;
-        this.state = 'alabama';
-        this.county = 'autauga county';
-    };
-});
-define('services/stateData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var StateData = exports.StateData = function StateData() {
-        _classCallCheck(this, StateData);
-
-        this.stateSet = new Set();
-        this.stateToCountyMap = new Map();
-        this.countyToLifeExpectancy = new Map();
-    };
-});
-define('services/user',['exports', 'aurelia-framework', '../services/personalInfoData', '../services/myHealthData', '../services/familyHealthData', '../services/occupationData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _familyHealthData, _occupationData) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.User = undefined;
+    exports.CalculateMyHealth = undefined;
 
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
@@ -637,27 +713,72 @@ define('services/user',['exports', 'aurelia-framework', '../services/personalInf
 
     var _dec, _class;
 
-    var User = exports.User = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function User() {
-        _classCallCheck(this, User);
+    var CalculateMyHealth = exports.CalculateMyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function () {
+        function CalculateMyHealth(user) {
+            _classCallCheck(this, CalculateMyHealth);
 
-        this.clientPersonalInfo = new _personalInfoData.PersonalInfoData();
-        this.spousePersonalInfo = new _personalInfoData.PersonalInfoData();
+            this.user = user;
+        }
 
-        this.clientMyHealth = new _myHealthData.MyHealthData();
-        this.spouseMyHealth = new _myHealthData.MyHealthData();
+        CalculateMyHealth.prototype.calculateBMI = function calculateBMI() {
+            var metricWeight = this.user.clientMyHealth.weight * 0.45;
+            var metricHeight = this.user.clientMyHealth.height * 0.025;
+            var metricHeightSquared = metricHeight * metricHeight;
+            this.user.clientMyHealth.bmi = metricWeight / metricHeightSquared;
+        };
 
-        this.clientFamilyHealth = new _familyHealthData.FamilyHealthData();
-        this.spouseFamilyHealth = new _familyHealthData.FamilyHealthData();
+        return CalculateMyHealth;
+    }()) || _class);
+});
+define('utilities/calculateFamilyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
 
-        this.clientOccupation = new _occupationData.OccupationData();
-        this.spouseOccupation = new _occupationData.OccupationData();
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateFamilyHealth = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateFamilyHealth = exports.CalculateFamilyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateFamilyHealth(user) {
+        _classCallCheck(this, CalculateFamilyHealth);
+
+        this.user = user;
+    }) || _class);
+});
+define('utilities/calculateOccupation',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateOccupation = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateOccupation(user) {
+        _classCallCheck(this, CalculateOccupation);
+
+        this.user = user;
     }) || _class);
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><br><div id=\"home\"><h1>Life Expectancy Calculator</h1></div><hr><router-view></router-view></template>"; });
 define('text!css/styles.css', ['module'], function(module) { module.exports = "#home, h1, #clientorspouse, #submit {\r\n    text-align: center;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n    \r\n#personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    text-align: left;\r\n    margin: 0 auto;\r\n    width: 500px;\r\n}\r\n"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><br><h1>Personal Information</h1><br><hr><form id=\"personalinfo\" submit.delegate=\"submit()\"><div id=\"client\"><h2 id=\"clientorspouse\">Client</h2><br><div class=\"form-group\"><label class=\"col-sm-4\" for=\"age\">Age:</label><input style=\"width:400px\" id=\"age\" class=\"col-sm-6\"></div><br><br><br><label class=\"col-sm-2\" for=\"gender\">Gender:</label><span id=\"space\"></span><div class=\"btn-group col-sm-6\" click.delegate=\"gender()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><label class=\"col-sm-6\" for=\"checkspouse\">Do you have a spouse?</label><span id=\"space\"></span><div class=\"btn-group col-sm-4\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState()\" value.bind=\"user.clientPersonalInfo.state\"><option repeat.for=\"state of stateData.stateSet\">${state}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.county\"><option repeat.for=\"county of currentCountyArray\">${county}</option></select></div><br><br><div class=\"form-group\"><label class=\"col-sm-2\" for=\"race\">Race:</label><select class=\"form-control col-sm-6\" style=\"width:400px\" value.bind=\"user.clientPersonalInfo.race\"><option data-hidden=\"true\">Please Select</option><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><br><br><hr><div><h2 style=\"margin-top:50px\" class=\"col-sm-6\">Other Factors:</h2><div style=\"text-align:center\"><button class=\"btn btn-primary\" click.delegate=\"myhealth()\">My Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"familyhealth()\">My Family Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"occupation()\">My Occupation</button></div></div></div><hr><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 id=\"clientorspouse\">Co-Client</h2><hr></div><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></form></template>"; });
-define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"familyhealth\"><h1>Family Health</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
-define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><div id=\"myhealth\"><h1>My Health</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
-define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><div id=\"occupation\"><h1>Occupation</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><br><h1>Personal Information</h1><br><hr><form id=\"personalinfo\" submit.delegate=\"submit()\"><div id=\"client\"><h2 id=\"clientorspouse\">Client</h2><br><div class=\"form-group\"><label class=\"col-sm-4\" for=\"age\">Age:</label><input style=\"width:400px\" id=\"age\" class=\"col-sm-6\"></div><br><br><br><label class=\"col-sm-2\" for=\"gender\">Gender:</label><span id=\"space\"></span><div class=\"btn-group col-sm-6\" click.delegate=\"gender()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><label class=\"col-sm-6\" for=\"checkspouse\">Do you have a spouse?</label><span id=\"space\"></span><div class=\"btn-group col-sm-4\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState()\" value.bind=\"user.clientPersonalInfo.state\"><option repeat.for=\"state of stateData.stateSet\">${state}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy()\" value.bind=\"user.clientPersonalInfo.county\"><option repeat.for=\"county of currentCountyArray\">${county}</option></select></div><br><br><div class=\"form-group\"><label class=\"col-sm-2\" for=\"race\">Race:</label><select class=\"form-control col-sm-6\" style=\"width:400px\" value.bind=\"user.clientPersonalInfo.race\"><option data-hidden=\"true\">Please Select</option><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><br><br><hr><div><h2 style=\"margin-top:50px\" class=\"col-sm-6\">Other Factors:</h2><div style=\"text-align:center\"><button class=\"btn btn-primary\" click.delegate=\"myhealth()\">My Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"familyhealth()\">My Family Health</button><br><br><button class=\"btn btn-primary\" click.delegate=\"occupation()\">My Occupation</button></div></div></div><hr><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 id=\"clientorspouse\">Co-Client</h2><hr></div><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></form></template>"; });
+define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><form id=\"familyhealth\" submit.delegate=\"submit()\"><h1>Family Health</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
+define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><form id=\"myhealth\" submit.delegate=\"submit()\"><h1>My Health</h1><div class=\"form-group\"><label for=\"height\">Height</label><input type=\"text\" value.bind=\"user.clientMyHealth.height\" class=\"form-control\" placeholder=\"5'7\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><input type=\"text\" value.bind=\"user.clientMyHealth.weight\" class=\"form-control\" placeholder=\"155\"></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
+define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><form id=\"occupation\" submit.delegate=\"submit()\"><h1>Occupation</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button> <button class=\"btn btn-primary\" type=\"submit\">Submit</button></form></template>"; });
 define('text!results/results.html', ['module'], function(module) { module.exports = "<template><div id=\"results\"><h1>Results</h1><button class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map

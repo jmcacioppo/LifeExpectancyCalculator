@@ -1,7 +1,9 @@
 <template>
-    <div id="occupation">
+    <form id="occupation" submit.delegate="submit()">
         <h1>Occupation</h1>
+        
         <button class="btn btn-secondary" click.delegate="back()">Back</button>
-    </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
 
 </template>
