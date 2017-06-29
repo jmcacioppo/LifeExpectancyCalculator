@@ -1,7 +1,31 @@
 <template> 
-    <div id="myhealth">
+    <form id="myhealth" submit.delegate="submit()">
         <h1>My Health</h1>
 
+        <div class="form-group">
+            <label for="height">Height</label>
+            <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7">
+        </div>
+
+        <div class="form-group">
+            <label for="weight">Weight</label>
+            <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155">
+        </div>
+
+        <div class="form-group">
+            <label for="healthRank">How would you rank your health?</label>
+            <select class="form-control" value.bind="user.clientMyHealth.healthRank">
+                <option data-hidden="true">Please Select</option>
+                <option>Excellent</option>
+                <option>Good</option>
+                <option>Average</option>
+                <option>Bad</option>
+                <option>Terrible</option>
+            </select>
+        </div>
+
+
         <button class="btn btn-secondary" click.delegate="back()">Back</button>
-    </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
 </template>

@@ -27,11 +27,33 @@ export class personalinfo {
         this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
     }
 
+    //This method retrieves all of the counties from the clients current state
     checkState() {
         var state = this.user.clientPersonalInfo.state;
+        var self = this;
         this.currentCountyArray = [];
-        this.currentCountyArray = this.stateData.stateToCountyMap.get(state).split(',');
+        var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+        countyWithLifeArrays.forEach(function (data) {
+            var currentCountyInfo = data.split(":");
+            self.currentCountyArray.push(currentCountyInfo[0]);
+        });
         this.currentCountyArray.pop();
+    }
+
+    //This method checks the current clients or co-clients life expectancy
+    checkLifeExpectancy() {
+        var self = this;
+        var state = this.user.clientPersonalInfo.state;
+        var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+        countyWithLifeArrays.forEach(function (data) {
+            var currentCountyInfo = data.split(":");
+            //Life expectancy of male is index 2, life expectancy of female is index 1
+            var lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
+            //If county name is found in array, then get life expectancy
+            if(currentCountyInfo[0].indexOf(self.user.clientPersonalInfo.county) != -1) {
+                self.user.clientPersonalInfo.lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+            }
+        });
     }
 
     myhealth() {

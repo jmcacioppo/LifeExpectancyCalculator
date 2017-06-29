@@ -23,10 +23,11 @@ export class ReadFile {
         jsonData.forEach(function (stateObject){
             if(self.stateData.stateToCountyMap.has(stateObject.State.toLowerCase())) {
                    var existingValues = self.stateData.stateToCountyMap.get(stateObject.State.toLowerCase());
-                   existingValues += " " + stateObject.County.toLowerCase() + ",";
+                   // Format for each county => County : Male Life Expectancy : Female Life Expectancy
+                   existingValues += " " + stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",";
                    self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), existingValues);
             }
-            else  self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), stateObject.County.toLowerCase() + ",");
+            else  self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",");
         });
     }
 
