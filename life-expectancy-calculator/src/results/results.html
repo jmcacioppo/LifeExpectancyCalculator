@@ -1,9 +1,9 @@
 <template>
     <require from="highcharts/css/highcharts.css"></require>
     <div id="results">
-        <h1>Results</h1>
+        <h1 style="text-align: center">Results</h1>
         <div id="chart-container" style="width:100%; height:400px;"></div>
-        <button class="btn btn-secondary" click.delegate="back()">Back</button>
+        
             <div show.bind="userData.spouse.checkUserSelected" class="table-outter">
                 <table class="table table-hover table-bordered search-table">
                     <thead>
@@ -22,5 +22,12 @@
                     </tbody>
                 </table>
             </div>  
+
+        <hr style="clear:both">
+        <div id="back-button-div-home" class="col-md-10">
+            <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
+        </div>
     </div>
+
+    
 </template>
