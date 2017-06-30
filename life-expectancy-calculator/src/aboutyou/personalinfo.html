@@ -40,7 +40,6 @@
                 <div class="form-group">
                     <label for="race">Race</label>
                     <select class="form-control" value.bind="user.clientPersonalInfo.race">
-                        <option data-hidden="true">Please Select</option>
                         <option>White</option>
                         <option>Black</option>
                         <option>Hispanic</option>
@@ -52,6 +51,7 @@
                 <div class="form-group">
                     <label for="state">State</label>
                     <select class="form-control" change.delegate="checkState()" value.bind="user.clientPersonalInfo.state">
+                        <option>Please Select</option>
                         <option repeat.for="state of stateData.stateSet">${state}</option>
                     </select>
                 </div>
@@ -60,6 +60,7 @@
                 <div class="form-group">
                     <label for="county">County</label>
                     <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.clientPersonalInfo.county">
+                        <option>Please Select</option>
                         <option repeat.for="county of currentCountyArray">${county}</option>
                     </select>
                 </div>
@@ -89,7 +90,6 @@
                 <div class="form-group">
                     <label for="race">Race</label>
                     <select class="form-control" value.bind="user.spousePersonalInfo.race">
-                        <option data-hidden="true">Please Select</option>
                         <option>White</option>
                         <option>Black</option>
                         <option>Hispanic</option>
@@ -100,7 +100,8 @@
                 <!--============================STATE OF SPOUSE=========================-->
                 <div class="form-group">
                     <label for="state">State</label>
-                    <select class="form-control" change.delegate="checkState()" value.bind="user.spousePersonalInfo.state">
+                    <select class="form-control" change.delegate="checkStateSpouse()" value.bind="user.spousePersonalInfo.state">
+                        <option>Please Select</option>
                         <option repeat.for="state of stateData.stateSet">${state}</option>
                     </select>
                 </div>
@@ -108,7 +109,8 @@
                 <!--==========================COUNTY OF SPOUSE==========================-->
                 <div class="form-group">
                     <label for="county">County</label>
-                    <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.spousePersonalInfo.county">
+                    <select class="form-control" change.delegate="checkLifeExpectancySpouse()" value.bind="user.spousePersonalInfo.county">
+                        <option>Please Select</option>
                         <option repeat.for="county of currentCountyArray">${county}</option>
                     </select>
                 </div>

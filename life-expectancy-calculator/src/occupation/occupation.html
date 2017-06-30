@@ -1,9 +1,19 @@
 <template>
     <form id="occupation" submit.delegate="submit()">
-        <h1>Occupation</h1>
-        
-        <button class="btn btn-secondary" click.delegate="back()">Back</button>
-        <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
+        <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
+            <h1 style="text-align: center;">Occupation - Client</h1>
+        </div>
 
+        <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
+            <h1 style="text-align: center;">Occupation - Co-Client</h1>
+        </div>
+
+        <hr style="clear:both">
+        <div id="back-button-div" class="col-md-10">
+            <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
+        </div>
+        <div id="submit-button-div" class="col-md-2">
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>  
+    </form>
 </template>

@@ -1,7 +1,7 @@
 <template> 
     <form id="myhealth" submit.delegate="submit()">
-        <div class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}"> 
-            <h1>My Health - Client</h1>
+        <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}"> 
+            <h1 style="text-align: center;">My Health - Client</h1>
 
             <div show.bind="validHeight" class="alert alert-danger" role="alert">
                 <strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.
@@ -31,11 +31,15 @@
         </div>
 
         <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
-            <h1>My Health - Co-Client</h1>
+            <h1 style="text-align: center;">My Health - Co-Client</h1>
 
-            <div class="form-group">
+            <div show.bind="validHeightSpouse" class="alert alert-danger" role="alert">
+                <strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.
+            </div>
+
+            <div class="form-group ${heightErrorSpouse}">
                 <label for="height">Height</label>
-                <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7">
+                <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeightSpouse()">
             </div>
 
             <div class="form-group">

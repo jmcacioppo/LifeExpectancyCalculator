@@ -3,13 +3,13 @@ import {transient} from 'aurelia-framework';
 @transient()
 export class PersonalInfoData {
     constructor() {
-        this.age;
+        this.age = 30;
         this.checkgender = true;
-        this.gender;
-        this.race;
+        this.gender = "Male";
+        this.race = "White";
         this.checkspouse = false;
-        this.state = 'alabama';
-        this.county = 'autauga county';
+        this.state = "Please Select";
+        this.county = 'Please Select';
         this.countyLifeExpectancy;
     }
 }

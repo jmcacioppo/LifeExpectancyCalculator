@@ -35,34 +35,76 @@ export class personalinfo {
         this.user.clientPersonalInfo.checkspouse = !this.user.clientPersonalInfo.checkspouse;
     }
 
-    //This method retrieves all of the counties from the clients current state
+    //======================LIFE EXPECTANCY FROM STATES/COUNTIES==================
+    //This method retrieves all of the counties from the client's current state
     checkState() {
         var state = this.user.clientPersonalInfo.state;
-        var self = this;
-        this.currentCountyArray = [];
-        var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
-        countyWithLifeArrays.forEach(function (data) {
-            var currentCountyInfo = data.split(":");
-            self.currentCountyArray.push(currentCountyInfo[0]);
-        });
-        this.currentCountyArray.pop();
+        if(state != "Please Select") {
+            var self = this;
+            this.currentCountyArray = [];
+            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+            countyWithLifeArrays.forEach(function (data) {
+                var currentCountyInfo = data.split(":");
+                self.currentCountyArray.push(currentCountyInfo[0]);
+            });
+            this.currentCountyArray.pop();
+        }
+        else this.user.clientPersonalInfo.county = "Please Select";
     }
 
-    //This method checks the current clients or co-clients life expectancy
+    //This method checks the current client's life expectancy
     checkLifeExpectancy() {
-        var self = this;
-        var state = this.user.clientPersonalInfo.state;
-        var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
-        countyWithLifeArrays.forEach(function (data) {
-            var currentCountyInfo = data.split(":");
-            //Life expectancy of male is index 2, life expectancy of female is index 1
-            var lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
-            //If county name is found in array, then get life expectancy
-            if(currentCountyInfo[0].indexOf(self.user.clientPersonalInfo.county) != -1) {
-                self.user.clientPersonalInfo.lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
-            }
-        });
+        if(this.user.clientPersonalInfo.county != "Please Select") {
+            var self = this;
+            var state = this.user.clientPersonalInfo.state;
+            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+            countyWithLifeArrays.forEach(function (data) {
+                var currentCountyInfo = data.split(":");
+                //Life expectancy of male is index 2, life expectancy of female is index 1
+                var lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
+                //If county name is found in array, then get life expectancy
+                if(currentCountyInfo[0].indexOf(self.user.clientPersonalInfo.county) != -1) {
+                    self.user.clientPersonalInfo.lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                }
+            });
+        }
     }
+
+    //This method retrieves all of the counties from the co-client's current state
+    checkStateSpouse() {
+        var state = this.user.spousePersonalInfo.state;
+        if(state != "Please Select") {
+            var self = this;
+            this.currentCountyArray = [];
+            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+            countyWithLifeArrays.forEach(function (data) {
+                var currentCountyInfo = data.split(":");
+                self.currentCountyArray.push(currentCountyInfo[0]);
+            });
+            this.currentCountyArray.pop();
+        }
+        else this.user.spousePersonalInfo.county = "Please Select";
+    }
+
+    //This method checks the current co-client's life expectancy
+    checkLifeExpectancySpouse() {
+        if(this.user.spousePersonalInfo.county != "Please Select") {
+            var self = this;
+            var state = this.user.spousePersonalInfo.state;
+            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
+            countyWithLifeArrays.forEach(function (data) {
+                var currentCountyInfo = data.split(":");
+                //Life expectancy of male is index 2, life expectancy of female is index 1
+                var lifeExpectancy =  self.user.spousePersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
+                //If county name is found in array, then get life expectancy
+                if(currentCountyInfo[0].indexOf(self.user.spousePersonalInfo.county) != -1) {
+                    self.user.spousePersonalInfo.lifeExpectancy =  self.user.spousePersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                }
+            });
+        }
+    }
+    //===================END LIFE EXPECTANCY FROM STATES/COUNTIES==================
+
 
     myhealth() {
         this.router.navigate('#/myhealth');  
