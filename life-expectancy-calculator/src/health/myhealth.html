@@ -1,31 +1,63 @@
 <template> 
     <form id="myhealth" submit.delegate="submit()">
-        <h1>My Health - Client</h1>
+        <div class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}"> 
+            <h1>My Health - Client</h1>
 
-        <div class="form-group">
-            <label for="height">Height</label>
-            <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7">
+            <div class="form-group">
+                <label for="height">Height</label>
+                <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7">
+            </div>
+
+            <div class="form-group">
+                <label for="weight">Weight</label>
+                <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155">
+            </div>
+
+            <div class="form-group">
+                <label for="healthRank">How would you rank your health?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.healthRank">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Excellent</option>
+                    <option>Good</option>
+                    <option>Average</option>
+                    <option>Bad</option>
+                    <option>Terrible</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="weight">Weight</label>
-            <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155">
+        <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
+            <h1>My Health - Co-Client</h1>
+
+            <div class="form-group">
+                <label for="height">Height</label>
+                <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7">
+            </div>
+
+            <div class="form-group">
+                <label for="weight">Weight</label>
+                <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155">
+            </div>
+
+            <div class="form-group">
+                <label for="healthRank">How would you rank your health?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.healthRank">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Excellent</option>
+                    <option>Good</option>
+                    <option>Average</option>
+                    <option>Bad</option>
+                    <option>Terrible</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-group">
-            <label for="healthRank">How would you rank your health?</label>
-            <select class="form-control" value.bind="user.clientMyHealth.healthRank">
-                <option data-hidden="true">Please Select</option>
-                <option>Excellent</option>
-                <option>Good</option>
-                <option>Average</option>
-                <option>Bad</option>
-                <option>Terrible</option>
-            </select>
+        <hr style="clear:both">
+        <div id="back-button-div" class="col-md-10">
+            <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
         </div>
-
-
-        <button class="btn btn-secondary" click.delegate="back()">Back</button>
-        <button class="btn btn-primary" type="submit">Submit</button>
+        <div id="submit-button-div" class="col-md-2">
+            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>    
     </form>
 </template>

@@ -3,13 +3,14 @@ import {Router} from 'aurelia-router';
 import {User} from '../services/user';
 import {StateData} from '../services/stateData';
 import * as ionRangeSlider from "ion-rangeslider";
+import {Slider} from '../utilities/slider';
 
-
-@inject(Router, User, StateData)
+@inject(Router, User, StateData, Slider)
 export class personalinfo {
     currentCountyArray = [];
 
-    constructor(router, user, stateData) {
+    constructor(router, user, stateData, slider) {
+        this.slider = slider;
         this.router = router;
         this.user = user;
         this.stateData = stateData;
@@ -80,26 +81,6 @@ export class personalinfo {
     }
 
     attached() {
-        $("#age").ionRangeSlider({
-            grid: true,
-            min: 0,
-            max: 100,
-            from: 30,
-            step: 1,
-            onFinish: (data) => {
-                this.user.clientPersonalInfo.age = data.from;
-            }
-        });
-
-        $("#spouseage").ionRangeSlider({
-            grid: true,
-            min: 0,
-            max: 100,
-            from: 30,
-            step: 1,
-            onFinish: (data) => {
-                this.user.spousePersonalInfo.age = data.from;
-            }
-        });
+        this.slider.createAgeSlider();
     }
 }

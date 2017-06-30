@@ -1,9 +1,3 @@
-/*#home, h1, #clientorspouse, #submit {
-    text-align: center;
-    margin: 0 auto;
-    width: 800px;
-}*/
-    
 .hasSpouse {
 	width: 45%;
 	float: left;
@@ -20,28 +14,40 @@
 	width: 600px;
 }
 
-#button-div {
+/*========================BACK BUTTON========================*/
+#back-button-div {
 	margin: 0 auto;
     bottom: 0;
-	margin-bottom: 65px;
-	margin-right: 10%;
+}
+
+#back {
+	margin: 0 auto;
+    bottom: 0;
+}
+
+/*========================SUBMIT BUTTON========================*/
+#submit-button-div-home {
+	margin: 0 auto;
+    bottom: 0;
+	margin-left: 46%;
+}
+
+#submit-button-div {
+	margin: 0 auto;
+    bottom: 0;
 }
 
 #submit {
 	margin: 0 auto;
-	position: absolute;
     bottom: 0;
-	margin-bottom: 65px;
-	margin-right: 65%;
 }
 
 #personalinfo, #myhealth, #familyhealth, #occupation, #results {    
-    /*text-align: left;*/
     margin: 0 auto;
     width: 1000px;
 }
 
-/*FOOTER STYLING*/
+/*===========================FOOTER STYLING==========================*/
 html, body {
 	margin:0;
 	padding:0;
@@ -67,4 +73,4 @@ html, body {
 	left:0;
     text-align: center;
 }
-/*END FOOTER SLYING*/
+/*============================END FOOTER STYLING===========================*/
