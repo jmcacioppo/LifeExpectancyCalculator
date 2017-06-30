@@ -1,13 +1,116 @@
 <template>
+    <require from="ion-rangeslider/css/ion.rangeSlider.css"></require>
+    <require from="ion-rangeslider/css/ion.rangeSlider.skinHTML5.css"></require>
+    <require from="ion-rangeslider/css/normalize.css"></require>
+    
     <form id="familyhealth" submit.delegate="submit()">
         <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
             <h1 style="text-align: center;">Family Health - Client</h1>
+
+            <!--=====================AVERAGE LIFE EXPECTANCY============================-->
+            <div class="form-group" >
+                <label for="ageOfFam">Average Family Life Expectancy:</label>
+                <input style="width: 400px;" id="familyLifeExpectancy"></input>
+            </div>
+
+            <hr>
+            <h4><b>Does your family have a history of...</b></h4>
+            
+            <!--======================CHECK IF HEART DISEASE============================-->
+            <label style="padding-right: 10px;" for="heartdisease">Heart Disease?</label>
+            <div class="btn-group" click.delegate="heartdisease()" data-toggle="buttons">
+                <label class="btn ${user.clientFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--======================CHECK IF CANCER============================-->
+            <label style="padding-right: 10px;" for="cancer">Cancer?</label>
+            <div class="btn-group" click.delegate="cancer()" data-toggle="buttons">
+                <label class="btn ${user.clientFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--==================CHECK IF MENTAL HEALTH============================-->
+            <label style="padding-right: 10px;" for="mentalhealth">Mental Illness?</label>
+            <div class="btn-group" click.delegate="mentalhealth()" data-toggle="buttons">
+                <label class="btn ${user.clientFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--====================CHECK IF DIABETES============================-->
+            <label style="padding-right: 10px;" for="diabetes">Diabetes?</label>
+            <div class="btn-group" click.delegate="diabetes()" data-toggle="buttons">
+                <label class="btn ${user.clientFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
         </div>
 
-        <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
+        <div id="spouse" style="width: 45%; float:right;" show.bind="user.clientPersonalInfo.checkspouse">
             <h1 style="text-align: center;">Family Health - Co-Client</h1>
+
+            <!--=====================AVERAGE LIFE EXPECTANCY============================-->
+            <div class="form-group" >
+                <label for="ageOfFam">Average Family Life Expectancy:</label>
+                <input style="width: 400px;" id="spousefamilyLifeExpectancy"></input>
+            </div>
+
+            <hr>
+            <h4><b>Does your family have a history of...</b></h4>
+
+            <!--======================CHECK IF HEART DISEASE============================-->
+            <label style="padding-right: 10px;" for="heartdisease">Heart Disease?</label>
+            <div class="btn-group" click.delegate="spouseheartdisease()" data-toggle="buttons">
+                <label class="btn ${user.spouseFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--======================CHECK IF CANCER============================-->
+            <label style="padding-right: 10px;" for="cancer">Cancer?</label>
+            <div class="btn-group" click.delegate="spousecancer()" data-toggle="buttons">
+                <label class="btn ${user.spouseFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--==================CHECK IF MENTAL HEALTH============================-->
+            <label style="padding-right: 10px;" for="mentalhealth">Mental Illness?</label>
+            <div class="btn-group" click.delegate="spousementalhealth()" data-toggle="buttons">
+                <label class="btn ${user.spouseFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--====================CHECK IF DIABETES============================-->
+            <label style="padding-right: 10px;" for="diabetes">Diabetes?</label>
+            <div class="btn-group" click.delegate="spousediabetes()" data-toggle="buttons">
+                <label class="btn ${user.spouseFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>            
+
+            <br> <br> <br>
         </div>
 
+        <!--=========================BACK AND SUBMIT BUTTONS=======================-->
         <hr style="clear:both">
         <div id="back-button-div" class="col-md-10">
             <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>

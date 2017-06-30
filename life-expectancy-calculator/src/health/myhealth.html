@@ -7,16 +7,43 @@
                 <strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.
             </div>
 
+            <!--============================HEIGHT==============================-->
             <div class="form-group ${heightError}">
                 <label for="height">Height</label>
                 <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight()">
             </div>
 
+            <!--============================WEIGHT===========================-->
             <div class="form-group">
                 <label for="weight">Weight</label>
                 <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155">
             </div>
 
+            <!--=======================EXERCISE PER WEEK======================-->
+            <div class="form-group">
+                <label for="healthRank">How many times do you exercise per week?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.exercisePerWeek">
+                    <option data-hidden="true">Please Select</option>
+                    <option>0</option>
+                    <option>1-2</option>
+                    <option>3-4</option>
+                    <option>5+</option>
+                </select>
+            </div>
+
+            <!--=======================SLEEP PER WEEK======================-->
+            <div class="form-group">
+                <label for="healthRank">How many hours do you sleep per week?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.sleepPerWeek">
+                    <option data-hidden="true">Please Select</option>
+                    <option>0-4</option>
+                    <option>5-6</option>
+                    <option>7-8</option>
+                    <option>9+</option>
+                </select>
+            </div>
+
+            <!--===========================HEALTH RANK=======================-->
             <div class="form-group">
                 <label for="healthRank">How would you rank your health?</label>
                 <select class="form-control" value.bind="user.clientMyHealth.healthRank">
@@ -28,25 +55,75 @@
                     <option>Terrible</option>
                 </select>
             </div>
+
+            <hr>
+            <h2 style="text-align: center">Habits</h2>
+
+            <!--=======================ALCOHOL PER WEEK======================-->
+            <div class="form-group">
+                <label for="healthRank">How many alcoholic drinks do you consume per week?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.alcoholPerWeek">
+                    <option data-hidden="true">Please Select</option>
+                    <option>0-1</option>
+                    <option>2-7</option>
+                    <option>8+</option>
+                </select>
+            </div>
+
+            <!--======================SMOKING OF CLIENT============================-->
+            <label style="padding-right: 10px;" for="gender">Do you smoke?</label>
+            <div class="btn-group" click.delegate="smoking()" data-toggle="buttons">
+                <label class="btn ${user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
         </div>
 
-        <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
+        <div id="spouse" style="width: 45%; float:right;" show.bind="user.clientPersonalInfo.checkspouse">
             <h1 style="text-align: center;">My Health - Co-Client</h1>
 
             <div show.bind="validHeightSpouse" class="alert alert-danger" role="alert">
                 <strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.
             </div>
 
+            <!--============================HEIGHT==============================-->
             <div class="form-group ${heightErrorSpouse}">
                 <label for="height">Height</label>
                 <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeightSpouse()">
             </div>
 
+            <!--============================WEIGHT===========================-->
             <div class="form-group">
                 <label for="weight">Weight</label>
                 <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155">
             </div>
 
+            <!--=======================EXERCISE PER WEEK======================-->
+            <div class="form-group">
+                <label for="healthRank">How many times do you exercise per week?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.exercisePerWeek">
+                    <option data-hidden="true">Please Select</option>
+                    <option>0</option>
+                    <option>1-2</option>
+                    <option>3-4</option>
+                    <option>5+</option>
+                </select>
+            </div>
+
+            <!--=======================SLEEP PER WEEK======================-->
+            <div class="form-group">
+                <label for="healthRank">How many hours do you sleep per week?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.sleepPerWeek">
+                    <option data-hidden="true">Please Select</option>
+                    <option>0-4</option>
+                    <option>5-6</option>
+                    <option>7-8</option>
+                    <option>9+</option>
+                </select>
+            </div>
+
+            <!--===========================HEALTH RANK=======================-->
             <div class="form-group">
                 <label for="healthRank">How would you rank your health?</label>
                 <select class="form-control" value.bind="user.spouseMyHealth.healthRank">
@@ -58,8 +135,35 @@
                     <option>Terrible</option>
                 </select>
             </div>
+
+            <hr>
+            <h2 style="text-align: center">Habits</h2>
+
+            <!--=======================ALCOHOL PER WEEK======================-->
+            <div class="form-group">
+                <label for="healthRank">How many alcoholic drinks do you consume per week?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.alcoholPerWeek">
+                    <option data-hidden="true">Please Select</option>
+                    <option>0-1</option>
+                    <option>2-7</option>
+                    <option>8+</option>
+                </select>
+            </div>
+
+
+            <!--======================SMOKING OF CO-CLIENT============================-->
+            <label style="padding-right: 10px;" for="gender">Do you smoke?</label>
+            <div class="btn-group" click.delegate="smokingSpouse()" data-toggle="buttons">
+                <label class="btn ${user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+            <br> <br> <br>
         </div>
 
+        <!--=========================BACK AND SUBMIT BUTTONS=======================-->
+        <br>
         <hr style="clear:both">
         <div id="back-button-div" class="col-md-10">
             <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>

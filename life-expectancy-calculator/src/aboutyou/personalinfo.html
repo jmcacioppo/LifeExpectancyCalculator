@@ -47,6 +47,18 @@
                     </select>
                 </div>
 
+                <!--===========================MARITAL STATUS=========================-->
+                <div class="form-group">
+                    <label for="race">Marital Status</label>
+                    <select class="form-control" value.bind="user.clientPersonalInfo.maritalStatus">
+                        <option>Please Select</option>
+                        <option>Never Married</option>
+                        <option>Cohabitated</option>
+                        <option>Married</option>
+                        <option>Divorced</option>
+                    </select>
+                </div>
+
                 <!--============================STATE OF CLIENT=========================-->
                 <div class="form-group">
                     <label for="state">State</label>
@@ -66,8 +78,8 @@
                 </div>
             </div>
 
-            <div id="spouse" style="width: 45%; float:right; text-align: center;" show.bind="user.clientPersonalInfo.checkspouse">
-                <h2 id="clientorspouse">Co-Client</h2>
+            <div id="spouse" style="width: 45%; float:right;" show.bind="user.clientPersonalInfo.checkspouse">
+                <h2 style="text-align: center">Co-Client</h2>
 
                 <!--=========================AGE OF SPOUSE============================-->
                 <div class="form-group" >
@@ -94,6 +106,18 @@
                         <option>Black</option>
                         <option>Hispanic</option>
                         <option>Asian</option>
+                    </select>
+                </div>
+
+                <!--===========================MARITAL STATUS=========================-->
+                <div class="form-group">
+                    <label for="race">Marital Status</label>
+                    <select class="form-control" value.bind="user.spousePersonalInfo.maritalStatus">
+                        <option>Please Select</option>
+                        <option>Never Married</option>
+                        <option>Cohabitated</option>
+                        <option>Married</option>
+                        <option>Divorced</option>
                     </select>
                 </div>
 
@@ -128,6 +152,7 @@
             </div>
         </div>    
 
+        <!--========================SUBMIT BUTTON=======================-->
         <br> <br>
         <hr style="clear:both">
         

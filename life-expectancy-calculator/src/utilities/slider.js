@@ -31,4 +31,30 @@ export class Slider {
             }
         });
     }
+
+    createLifeExpectancySlider() {
+        $('#familyLifeExpectancy').ionRangeSlider({
+            grid: true,
+            min: 0,
+            max: 100,
+            from: 70,
+            step: 1,
+            onFinish: (data) => {
+                this.user.clientFamilyHealth.familyLifeExpectancy = data.from;
+            }
+        });
+
+        $('#spousefamilyLifeExpectancy').ionRangeSlider({
+            grid: true,
+            min: 0,
+            max: 100,
+            from: 70,
+            step: 1,
+            onFinish: (data) => {
+                this.user.spouseFamilyHealth.familyLifeExpectancy = data.from;
+            }
+        });
+    }
+
+    
 }
