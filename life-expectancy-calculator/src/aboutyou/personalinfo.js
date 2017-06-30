@@ -4,23 +4,24 @@ import {User} from '../services/user';
 import {StateData} from '../services/stateData';
 import * as ionRangeSlider from "ion-rangeslider";
 import {Slider} from '../utilities/slider';
+import {CalculateResults} from '../utilities/calculateResults';
 
-@inject(Router, User, StateData, Slider)
+@inject(Router, User, StateData, Slider, CalculateResults)
 export class personalinfo {
     currentCountyArray = [];
 
-    constructor(router, user, stateData, slider) {
+    constructor(router, user, stateData, slider, calculateResults) {
         this.slider = slider;
         this.router = router;
         this.user = user;
         this.stateData = stateData;
+        this.calculateResults = calculateResults;
         this.checkState();
     }
 
     gender() {
         this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
         this.user.clientPersonalInfo.gender = (this.user.clientPersonalInfo.checkgender) ? 'Male' : 'Female';
-
         console.log(this.user.clientPersonalInfo);
     }
 
@@ -77,6 +78,7 @@ export class personalinfo {
     }
 
     submit() {
+        this.calculateResults.getLifeTableData(this.user);
         this.router.navigate('#/results');  
     }
 
