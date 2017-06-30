@@ -7,6 +7,7 @@ import {CalculateMyHealth} from '../utilities/calculateMyHealth';
 export class myhealth {
     heightError = "";
     validHeight = false;
+    validHeightSpouse = false;
 
     constructor(router, user, calculateMyHealth) {
         this.calculateMyHealth = calculateMyHealth;
@@ -15,10 +16,26 @@ export class myhealth {
     }
 
     checkHeight() {
-        console.log(this.user.clientMyHealth.height);
         var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.clientMyHealth.height);
         this.validHeight = !valid;
         this.heightError = valid ? "" : "has-error";
+        if(valid) {
+            var feetAndInches = this.user.clientMyHealth.height.split("'");
+            this.user.clientMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
+        }
+        console.log(this.user.clientMyHealth.heightInInches);
+    }
+
+    checkHeightSpouse() {
+        console.log(this.user.spouseMyHealth.height);
+        var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.spouseMyHealth.height);
+        this.validHeightSpouse = !valid;
+        this.heightErrorSpouse = valid ? "" : "has-error";
+        if(valid) {
+            var feetAndInches = this.user.spouseMyHealth.height.split("'");
+            this.user.spouseMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
+        }
+        console.log(this.user.spouseMyHealth.heightInInches);
     }
 
     back() {
