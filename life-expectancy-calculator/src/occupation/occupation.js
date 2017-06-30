@@ -11,6 +11,35 @@ export class occupation {
         this.calculateOccupation = calculateOccupation;
     }
 
+    //EDUCATION
+    education() {
+        this.user.clientOccupation.checkEducation = !this.user.clientOccupation.checkEducation;
+    }
+
+    spouseeducation() {
+        this.user.spouseOccupation.checkEducation = !this.user.spouseOccupation.checkEducation;
+    }
+
+    //CONSTRUCTION
+    construction() {
+        this.user.clientOccupation.checkConstruction = !this.user.clientOccupation.checkConstruction;
+    }
+
+    spouseconstruction() {
+        this.user.spouseOccupation.checkConstruction = !this.user.spouseOccupation.checkConstruction;
+    }
+
+    //EMERGENCY RESPONDING
+    emergencyResponding() {
+        this.user.clientOccupation.checkEmergencyResponding = !this.user.clientOccupation.checkEmergencyResponding;
+    }
+
+    spouseemergencyResponding() {
+        this.user.spouseOccupation.checkEmergencyResponding = !this.user.spouseOccupation.checkEmergencyResponding;
+    }
+
+
+    //BUTTONS
     back() {
         this.router.navigate('#/personalinfo');  
     }

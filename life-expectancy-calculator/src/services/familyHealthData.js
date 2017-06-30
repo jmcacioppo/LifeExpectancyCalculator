@@ -1,6 +1,10 @@
 export class FamilyHealthData {
     constructor() {
-        this.motherHealthCheck = false;
-        this.fatherHealthCheck = false;
+        this.familyLifeExpectancy = 70;
+        this.checkHeartDisease = false;
+        this.checkCancer = false;
+        this.checkMentalHealth = false;
+        this.checkDiabetes = false;
+        
     }
 }

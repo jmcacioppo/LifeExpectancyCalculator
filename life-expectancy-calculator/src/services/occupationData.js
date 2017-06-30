@@ -1,5 +1,7 @@
 export class OccupationData {
     constructor() {
-        this.job;
+        this.checkEducation = false;
+        this.checkConstruction = false;
+        this.checkEmergencyResponding = false;
     }
 }

@@ -4,6 +4,12 @@ export class MyHealthData {
         this.heightInInches;
         this.weight;
         this.bmi;
+
+        this.exercisePerWeek;
+        this.sleepPerWeek;
         this.healthRank;
+
+        this.alcoholPerWeek;
+        this.checksmoking;
     }
 }

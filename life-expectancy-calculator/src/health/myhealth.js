@@ -38,6 +38,14 @@ export class myhealth {
         console.log(this.user.spouseMyHealth.heightInInches);
     }
 
+    smoking() {
+        this.user.clientMyHealth.checksmoking = !this.user.clientMyHealth.checksmoking;
+    }
+
+    smokingSpouse() {
+        this.user.spouseMyHealth.checksmoking = !this.user.spouseMyHealth.checksmoking;
+    }
+
     back() {
         console.log(this.user.clientMyHealth);
         this.router.navigate('#/personalinfo');  
