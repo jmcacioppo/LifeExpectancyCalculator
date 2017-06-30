@@ -165,7 +165,7 @@ define('main',['exports', './environment'], function (exports, _environment) {
     });
   }
 });
-define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../services/stateData', 'ion-rangeslider', '../utilities/slider'], function (exports, _aureliaFramework, _aureliaRouter, _user, _stateData, _ionRangeslider, _slider) {
+define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../services/stateData', 'ion-rangeslider', '../utilities/slider', '../utilities/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _stateData, _ionRangeslider, _slider, _calculateResults) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -200,8 +200,8 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
 
     var _dec, _class;
 
-    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _stateData.StateData, _slider.Slider), _dec(_class = function () {
-        function personalinfo(router, user, stateData, slider) {
+    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _stateData.StateData, _slider.Slider, _calculateResults.CalculateResults), _dec(_class = function () {
+        function personalinfo(router, user, stateData, slider, calculateResults) {
             _classCallCheck(this, personalinfo);
 
             this.currentCountyArray = [];
@@ -210,13 +210,13 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
             this.router = router;
             this.user = user;
             this.stateData = stateData;
+            this.calculateResults = calculateResults;
             this.checkState();
         }
 
         personalinfo.prototype.gender = function gender() {
             this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
             this.user.clientPersonalInfo.gender = this.user.clientPersonalInfo.checkgender ? 'Male' : 'Female';
-
             console.log(this.user.clientPersonalInfo);
         };
 
@@ -306,6 +306,7 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
         };
 
         personalinfo.prototype.submit = function submit() {
+            this.calculateResults.getLifeTableData(this.user);
             this.router.navigate('#/results');
         };
 
@@ -314,6 +315,51 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
         };
 
         return personalinfo;
+    }()) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
+define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.occupation = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var occupation = exports.occupation = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateOccupation.CalculateOccupation), _dec(_class = function () {
+        function occupation(router, user, calculateOccupation) {
+            _classCallCheck(this, occupation);
+
+            this.router = router;
+            this.user = user;
+            this.calculateOccupation = calculateOccupation;
+        }
+
+        occupation.prototype.back = function back() {
+            this.router.navigate('#/personalinfo');
+        };
+
+        occupation.prototype.submit = function submit() {
+            this.router.navigate('#/personalinfo');
+        };
+
+        return occupation;
     }()) || _class);
 });
 define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateFamilyHealth'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateFamilyHealth) {
@@ -418,81 +464,6 @@ define('health/myhealth',['exports', 'aurelia-framework', 'aurelia-router', '../
         return myhealth;
     }()) || _class);
 });
-define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.occupation = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var occupation = exports.occupation = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateOccupation.CalculateOccupation), _dec(_class = function () {
-        function occupation(router, user, calculateOccupation) {
-            _classCallCheck(this, occupation);
-
-            this.router = router;
-            this.user = user;
-            this.calculateOccupation = calculateOccupation;
-        }
-
-        occupation.prototype.back = function back() {
-            this.router.navigate('#/personalinfo');
-        };
-
-        occupation.prototype.submit = function submit() {
-            this.router.navigate('#/personalinfo');
-        };
-
-        return occupation;
-    }()) || _class);
-});
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
-define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.results = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var results = exports.results = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function () {
-        function results(router) {
-            _classCallCheck(this, results);
-
-            this.router = router;
-        }
-
-        results.prototype.back = function back() {
-            this.router.navigate('#/personalinfo');
-        };
-
-        return results;
-    }()) || _class);
-});
 define('services/familyHealthData',["exports"], function (exports) {
     "use strict";
 
@@ -555,8 +526,8 @@ define('services/occupationData',["exports"], function (exports) {
         this.job;
     };
 });
-define('services/personalInfoData',["exports", "aurelia-framework"], function (exports, _aureliaFramework) {
-    "use strict";
+define('services/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+    'use strict';
 
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -576,12 +547,13 @@ define('services/personalInfoData',["exports", "aurelia-framework"], function (e
 
         this.age = 30;
         this.checkgender = true;
-        this.gender = "Male";
-        this.race = "White";
+        this.gender = 'male';
+        this.race = 'white';
         this.checkspouse = false;
         this.state = "Please Select";
         this.county = 'Please Select';
         this.countyLifeExpectancy;
+        this.expectedAge;
     }) || _class);
 });
 define('services/stateData',["exports"], function (exports) {
@@ -635,6 +607,36 @@ define('services/user',['exports', 'aurelia-framework', '../services/personalInf
         this.clientOccupation = new _occupationData.OccupationData();
         this.spouseOccupation = new _occupationData.OccupationData();
     }) || _class);
+});
+define('results/results',['exports', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaFramework, _aureliaRouter) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.results = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var results = exports.results = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router), _dec(_class = function () {
+        function results(router) {
+            _classCallCheck(this, results);
+
+            this.router = router;
+        }
+
+        results.prototype.back = function back() {
+            this.router.navigate('#/personalinfo');
+        };
+
+        return results;
+    }()) || _class);
 });
 define('utilities/calculateFamilyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
     'use strict';
@@ -712,6 +714,110 @@ define('utilities/calculateOccupation',['exports', 'aurelia-framework', '../serv
 
         this.user = user;
     }) || _class);
+});
+define('utilities/calculateResults',['exports', 'aurelia-framework', 'aurelia-fetch-client', '../services/user'], function (exports, _aureliaFramework, _aureliaFetchClient, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateResults = undefined;
+
+    function _asyncToGenerator(fn) {
+        return function () {
+            var gen = fn.apply(this, arguments);
+            return new Promise(function (resolve, reject) {
+                function step(key, arg) {
+                    try {
+                        var info = gen[key](arg);
+                        var value = info.value;
+                    } catch (error) {
+                        reject(error);
+                        return;
+                    }
+
+                    if (info.done) {
+                        resolve(value);
+                    } else {
+                        return Promise.resolve(value).then(function (value) {
+                            step("next", value);
+                        }, function (err) {
+                            step("throw", err);
+                        });
+                    }
+                }
+
+                return step("next");
+            });
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateResults = exports.CalculateResults = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient, _user.User), _dec(_class = function () {
+        function CalculateResults(httpClient, user) {
+            _classCallCheck(this, CalculateResults);
+
+            this.httpClient = httpClient;
+            this.user = user;
+        }
+
+        CalculateResults.prototype.getLifeTableData = function () {
+            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(user) {
+                var data, data2;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.httpClient.fetch('/api/life-table/' + user.clientPersonalInfo.race.toLowerCase() + '-' + user.clientPersonalInfo.gender.toLowerCase() + '.json');
+
+                            case 2:
+                                data = _context.sent;
+                                _context.next = 5;
+                                return data.json();
+
+                            case 5:
+                                data2 = _context.sent;
+
+                                this.setUserExpectedAge(data2, user);
+
+                            case 7:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getLifeTableData(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return getLifeTableData;
+        }();
+
+        CalculateResults.prototype.setUserExpectedAge = function setUserExpectedAge(data, user) {
+            data.forEach(function (value) {
+                var currentAgeArray = value.Age.split("-");
+                if (parseInt(currentAgeArray[0]) === user.clientPersonalInfo.age || parseInt(currentAgeArray[1]) === user.clientPersonalInfo.age) {
+                    console.log(currentAgeArray[0]);
+                    console.log(currentAgeArray[1]);
+                    console.log(value.ExpectedAge);
+                    user.clientPersonalInfo.expectedAge = parseInt(value.ExpectedAge);
+                }
+            });
+            console.log(user.clientPersonalInfo.expectedAge);
+        };
+
+        return CalculateResults;
+    }()) || _class);
 });
 define('utilities/chart',["exports"], function (exports) {
     "use strict";
