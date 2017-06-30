@@ -11,6 +11,7 @@ export class PersonalInfoData {
         this.state = "Please Select";
         this.county = 'Please Select';
         this.countyLifeExpectancy;
-        this.expectedAge;
+        this.expectedYearsLeft;
+        this.testTuples = [];
     }
 }
