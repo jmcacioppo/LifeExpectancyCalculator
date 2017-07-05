@@ -33,10 +33,8 @@ export class CalculateResults {
         });
     }
 
-    addExerciseExpectancy(person, personResults) {
-        var expectedLife = person.ethnicityLifeExpectancy;
-        var addedExercise = person.exerciseLifeExpectancy;
-        personResults.overallLifeExpectancy = expectedLife + addedExercise;
+    addExerciseExpectancy(personResults) {
+        personResults.overallLifeExpectancy = personResults.ethnicity + personResults.exercise;
     }
 
     //Averages the life expectancy from the life table and life expectancy county table
