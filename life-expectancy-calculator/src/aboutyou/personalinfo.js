@@ -80,7 +80,7 @@ export class personalinfo {
         await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
         this.user.clientResults.ethnicity = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
 
-        this.calculateResults.addExerciseExpectancy(this.user.clientResults);
+        this.calculateResults.addMyHealthExpectancy(this.user.clientResults);
 
         console.log("=======CLIENT=======");
         console.log(this.user.clientPersonalInfo);
@@ -90,7 +90,7 @@ export class personalinfo {
             await this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
             this.user.spouseResults.ethnicity = this.user.spousePersonalInfo.ethnicityLifeExpectancy;
 
-            this.calculateResults.addExerciseExpectancy(this.user.spouseResults);
+            this.calculateResults.addMyHealthExpectancy(this.user.spouseResults);
         
             console.log("=======SPOUSE=======");
             console.log(this.user.spousePersonalInfo);

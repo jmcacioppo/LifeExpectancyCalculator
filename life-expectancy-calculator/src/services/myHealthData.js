@@ -5,14 +5,18 @@ export class MyHealthData {
         this.weight;
         this.bmi;
         this.formHeightWeight = false;
+        this.exerciseLifeExpectancy;
 
         this.exercisePerWeek;
         this.sleepPerWeek;
         this.healthRank;
 
         this.alcoholPerWeek;
-        this.checksmoking;
 
-        this.exerciseLifeExpectancy;
+        this.checksmoking = false;
+        this.checkStillSmoking = true;
+        this.kindOfSmoker = true;
+        this.ageQuitSmoking;
+        this.smokerLifeExpectancy;
     }
 }

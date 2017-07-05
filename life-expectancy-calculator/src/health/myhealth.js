@@ -84,15 +84,13 @@ export class myhealth {
         return currentPerson;
     }
 
-    smoking() {
-        this.user.clientMyHealth.checksmoking = !this.user.clientMyHealth.checksmoking;
-    }
-
-    smokingSpouse() {
-        this.user.spouseMyHealth.checksmoking = !this.user.spouseMyHealth.checksmoking;
-    }
+    //CHECK SMOKING
     smoking(person) {
         person.checksmoking = !person.checksmoking;
+    }
+
+    stillSmoking(person) {
+        person.checkStillSmoking = !person.checkStillSmoking;
     }
 
     back() {
@@ -100,18 +98,29 @@ export class myhealth {
     }
 
     submit() {
-        //this.calculateMyHealth.calculateExercise();
         console.log(this.user.clientMyHealth);
         console.log(this.user.spouseMyHealth);
+
+        //BMI AND EXERCISE CALCULATIONS
         this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
         this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
         this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+
+        //SMOKER CALCULATIONS
+        this.calculateMyHealth.calculateSmoker(this.user.clientMyHealth);
+        this.user.clientResults.smoker = this.user.clientMyHealth.smokerLifeExpectancy;
+
         console.log(this.user.clientMyHealth);
 
         if(this.user.clientPersonalInfo.checkspouse) {
+            //BMI AND EXERCISE CALCULATIONS
             this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
             this.calculateMyHealth.calculateExercise(this.user.spouseMyHealth);
             this.user.spouseResults.exercise = this.user.spouseMyHealth.exerciseLifeExpectancy;
+            
+            //SMOKER CALCULATIONS
+            this.calculateMyHealth.calculateSmoker(this.user.spouseMyHealth);
+            this.user.spouseResults.smoker = this.user.spouseMyHealth.smokerLifeExpectancy;
             console.log(this.user.spouseMyHealth);
         }
         this.router.navigate('#/personalinfo');  
