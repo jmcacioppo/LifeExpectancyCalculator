@@ -59,9 +59,9 @@ export class CalculateMyHealth {
             var kindOfSmoker = person.kindOfSmoker;
             
             //CHECK KIND OF SMOKER
-            if(kindOfSmoker === 'Light') smokerLifeExpectancy = 0;
-            else if(kindOfSmoker === 'Average') smokerLifeExpectancy -= 6.84;
-            else if(kindOfSmoker === 'Heavy') smokerLifeExpectancy -= 8.84;
+            if(kindOfSmoker.indexOf("Light") !== -1) smokerLifeExpectancy = -4.8;
+            else if(kindOfSmoker.indexOf("Average") !== -1) smokerLifeExpectancy -= 6.8;
+            else if(kindOfSmoker.indexOf("Heavy") !== -1) smokerLifeExpectancy -= 8.8;
 
             //Add years if they quit smoking
             if(!stillSmoking) { 
