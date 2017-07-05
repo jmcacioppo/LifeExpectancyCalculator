@@ -29,12 +29,10 @@ export class myhealth {
         if(person.validWeight) {
             this.calculateBMI(person);
         }
-        console.log(person);
     }
 
     //This calculates the BMI once both of the height and weight have been entered
     calculateBMI(person) {
-        console.log(person.validHeight);
         if(person.validHeight) {
             this.calculateMyHealth.calculateBMI(person);
             person.validBMI = true;

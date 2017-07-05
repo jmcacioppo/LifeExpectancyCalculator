@@ -1,7 +1,7 @@
-<template> 
+<template>
     <require from="jquery-ui-dist/jquery-ui.css"></require>
     <form id="myhealth" submit.delegate="submit()">
-        <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}"> 
+        <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
             <h1 style="text-align: center;">My Health - Client</h1>
 
             <div show.bind="validHeight" class="alert alert-danger" role="alert">
@@ -9,7 +9,7 @@
             </div>
 
             <div>
-                <div class="${user.clientMyHealth.formHeightWeight ? 'col-md-9' : 'none'}">
+                <div class="${user.clientMyHealth.formHeightWeight ? 'col-md-8' : 'none'}">
                     <!--============================HEIGHT==============================-->
                     <div class="form-group ${heightError}">
                         <label for="height">Height</label>
@@ -23,12 +23,12 @@
                         <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                         <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI(user.clientMyHealth)">
                     </div>
-                     <div id="client-bmi-alert" class="alert alert-success" show.bind="user.clientMyHealth.validBMI" >
+                    <div id="client-bmi-alert" class="alert alert-success" show.bind="user.clientMyHealth.validBMI">
                         <strong> BMI: ${user.clientMyHealth.bmi}</strong>
                     </div>
                 </div>
-                <div show.bind="user.clientMyHealth.validBMI" class="${user.clientMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
-                    <img src.bind="user.clientMyHealth.iconType" style="width:160px; height:260px;" >
+                <div show.bind="user.clientMyHealth.validBMI" class="${user.clientMyHealth.formHeightWeight ? 'col-md-2' : 'none'}">
+                    <img src.bind="user.clientMyHealth.iconType" style="width:160px; height:240px;">
                 </div>
             </div>
 
@@ -105,7 +105,7 @@
             </div>
 
             <div>
-                <div class="${user.spouseMyHealth.formHeightWeight ? 'col-md-9' : 'none'}">
+                <div class="${user.spouseMyHealth.formHeightWeight ? 'col-md-6' : 'none'}">
                     <!--============================HEIGHT==============================-->
                     <div class="form-group ${heightError}">
                         <label for="height">Height</label>
@@ -119,12 +119,12 @@
                         <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                         <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI(user.spouseMyHealth)">
                     </div>
-                     <div id="client-bmi-alert" class="alert alert-success" show.bind="user.spouseMyHealth.validBMI" >
+                    <div id="client-bmi-alert" class="alert alert-success" show.bind="user.spouseMyHealth.validBMI">
                         <strong> BMI: ${user.spouseMyHealth.bmi}</strong>
                     </div>
                 </div>
                 <div show.bind="user.spouseMyHealth.validBMI" class="${user.spouseMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
-                    <img src.bind="user.spouseMyHealth.iconType" style="width:160px; height:260px;" >
+                    <img src.bind="user.spouseMyHealth.iconType" style="width:160px; height:240px;">
                 </div>
             </div>
 
@@ -201,6 +201,6 @@
         </div>
         <div id="submit-button-div" class="col-md-2">
             <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-        </div>    
+        </div>
     </form>
 </template>
