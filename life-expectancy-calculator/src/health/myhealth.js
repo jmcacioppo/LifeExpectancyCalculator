@@ -9,7 +9,7 @@ import {CalculateMyHealth} from '../utilities/calculateMyHealth';
 @inject(Router, User, CalculateMyHealth)
 export class myhealth {
     heightError = "";
-    formHeightWeight = "";
+    formHeightWeight = false;
     validHeight = false;
     validHeightSpouse = false;
     validBMIClient = false;
@@ -32,13 +32,11 @@ export class myhealth {
             var feetAndInches = this.user.clientMyHealth.height.split("'");
             this.user.clientMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
         }
-        //console.log(this.user.clientMyHealth.heightInInches);
     }
 
     //Checks for valid height for the spouse. 
     checkHeightSpouse() {
         //TODO: DONT LET CLICK SUBMIT WITHOUT PROPER HEIGHT
-        console.log(this.user.spouseMyHealth.height);
         var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.spouseMyHealth.height);
         this.validHeightSpouse = !valid;
         this.heightErrorSpouse = valid ? "" : "has-error";
@@ -46,7 +44,6 @@ export class myhealth {
             var feetAndInches = this.user.spouseMyHealth.height.split("'");
             this.user.spouseMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
         }
-        //console.log(this.user.spouseMyHealth.heightInInches);
     }
 
     //This calculates the BMI once both of the height and weight have been entered
@@ -55,14 +52,13 @@ export class myhealth {
             this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
             this.validBMIClient = true;
             this.iconClientType = "./src/health/" + this.setIconType(this.user.clientMyHealth.bmi, false) + ".jpg";
-            console.log(this.iconClientType)
         }
         if(!this.validHeightSpouse) {
             this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
             this.validBMISpouse = true;
             this.iconSpouseType = this.setIconType(this.user.spouseMyHealth.bmi, true) + ".jpg";
         }
-        this.formHeightWeight = "form-height-weight";
+        this.user.clientMyHealth.formHeightWeight = true;
     }
 
     //Determines the icon types give the client/spouse. If client is passed in then, spouse = false.
@@ -85,7 +81,6 @@ export class myhealth {
                 currentPerson = "extremely-obese";
                 break;
         }
-        console.log(currentPerson);
         return currentPerson;
     }
 

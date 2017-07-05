@@ -9,7 +9,7 @@
             </div>
 
             <div>
-                <div class="${formHeightWeight}">
+                <div class="${user.clientMyHealth.formHeightWeight ? 'col-md-9' : 'none'}">
                     <!--============================HEIGHT==============================-->
                     <div class="form-group ${heightError}">
                         <label for="height">Height</label>
@@ -27,8 +27,8 @@
                         <strong> BMI: ${user.clientMyHealth.bmi}</strong>
                     </div>
                 </div>
-                <div>
-                    <img src.bind="iconClientType" style="width:160px; height:260px;" show.bind="validBMIClient">
+                <div show.bind="validBMIClient" class="${user.clientMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
+                    <img src.bind="iconClientType" style="width:160px; height:260px;" >
                 </div>
             </div>
 
