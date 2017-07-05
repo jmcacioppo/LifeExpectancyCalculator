@@ -8,22 +8,34 @@
                 <strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.
             </div>
 
-            <!--============================HEIGHT==============================-->
-            <div class="form-group ${heightError}">
-                <label for="height">Height</label>
-                <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
-                <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight()">
+            <div>
+                <div class="${formHeightWeight}">
+                    <!--============================HEIGHT==============================-->
+                    <div class="form-group ${heightError}">
+                        <label for="height">Height</label>
+                        <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
+                        <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight()">
+                    </div>
+
+                    <!--============================WEIGHT===========================-->
+                    <div class="form-group">
+                        <label for="weight">Weight</label>
+                        <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
+                        <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI()">
+                    </div>
+                     <div id="client-bmi-alert" class="alert alert-success" show.bind="validBMIClient" >
+                        <strong> BMI: ${user.clientMyHealth.bmi}</strong>
+                    </div>
+                </div>
+                <div>
+                    <img src="./src/health/{iconType}.jpg" style="width:160px; height:260px;" show.bind="validBMIClient">
+                </div>
             </div>
 
-            <!--============================WEIGHT===========================-->
-            <div class="form-group">
-                <label for="weight">Weight</label>
-                <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
-                <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155">
-            </div>
+            <!--=============================BMI=============================-->
 
             <!--=======================EXERCISE PER WEEK======================-->
-            <div class="form-group">
+            <div class="form-group" style="clear:both">
                 <label for="healthRank">How many hours do you exercise per week?</label>
                 <span id="exercise-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                 <select class="form-control" value.bind="user.clientMyHealth.exercisePerWeek">
@@ -93,17 +105,22 @@
             </div>
 
             <!--============================HEIGHT==============================-->
-            <div class="form-group ${heightErrorSpouse}">
+            <div class="form-group ${heightErrorSpouse} ${formHeightWeight}">
                 <label for="height">Height</label>
                 <span id="-spouse-height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeightSpouse()">
             </div>
 
             <!--============================WEIGHT===========================-->
-            <div class="form-group">
+            <div class="form-group ${formHeightWeight}">
                 <label for="weight">Weight</label>
                 <span id="spouse-weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155">
+            </div>
+
+            <!--=======================BMI======================-->
+            <div class="alert alert-success">
+                <strong> BMI: </strong> <p value.bind="user.spouseMyHealth.bmi">
             </div>
 
             <!--=======================EXERCISE PER WEEK======================-->
