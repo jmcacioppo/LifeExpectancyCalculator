@@ -27,17 +27,7 @@ export class ReadFile {
                    existingValues += " " + stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",";
                    self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), existingValues);
             }
-            else  self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",");
-        });
-    }
-
-    //Given a county name this method will return the life expectancy for that county
-    getCountyLifeExpectancy(jsonData) {
-        var self = this;
-        jsonData.forEach(function (stateObject) {
-            if(self.stateData.countyToLifeExpectancy.has(stateObject.County.toLowerCase())) {
-                
-            }
+            else self.stateData.stateToCountyMap.set(stateObject.State.toLowerCase(), stateObject.County.toLowerCase() + ":" + stateObject.Male + ":" + stateObject.Female + ",");
         });
     }
 }

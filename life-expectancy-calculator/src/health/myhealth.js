@@ -53,6 +53,7 @@ export class myhealth {
 
     submit() {
         this.calculateMyHealth.calculateBMI();
+        this.calculateMyHealth.calculateExercise();
         console.log(this.user.clientMyHealth);
         this.router.navigate('#/personalinfo');  
     }
