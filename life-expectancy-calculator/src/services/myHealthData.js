@@ -4,6 +4,7 @@ export class MyHealthData {
         this.heightInInches;
         this.weight;
         this.bmi;
+        this.formHeightWeight = false;
 
         this.exercisePerWeek;
         this.sleepPerWeek;
