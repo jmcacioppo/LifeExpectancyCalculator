@@ -54,31 +54,38 @@ export class myhealth {
         if(!this.validHeight) {
             this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
             this.validBMIClient = true;
-            iconClientType = setIconType(this.user.clientMyHealth.bmi, false);
+            this.iconClientType = "./src/health/" + this.setIconType(this.user.clientMyHealth.bmi, false) + ".jpg";
+            console.log(this.iconClientType)
         }
         if(!this.validHeightSpouse) {
             this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
             this.validBMISpouse = true;
-            iconsetIconType(this.user.spouseMyHealth.bmi, true);
+            this.iconSpouseType = this.setIconType(this.user.spouseMyHealth.bmi, true) + ".jpg";
         }
         this.formHeightWeight = "form-height-weight";
     }
 
     //Determines the icon types give the client/spouse. If client is passed in then, spouse = false.
     setIconType(person, spouse) {
-        var currentPerson = spouse ? iconClientType : iconSpouseType;
+        var currentPerson = spouse ? this.iconClientType : this.iconSpouseType;
         switch(this.user.clientMyHealth.bmi) {
-            case person.bmi < 18:
+            case person.bmi < 18.5:
                 currentPerson = "underweight";
-            case person.bmi > 18 && person.bmi < 23:
+                break;
+            case person.bmi >= 18.5 && person.bmi < 25:
                 currentPerson = "normal";
-            case person.bmi > 23 && person.bmi < 30:
+                break;
+            case person.bmi >= 25 && person.bmi < 30:
                 currenPerson = "overweight";
+                break;
             case person.bmi > 30 && person.bmi < 35:
                 currentPerson = "obese";
-            case person.bmi > 35:
+                break;
+            default:
                 currentPerson = "extremely-obese";
+                break;
         }
+        console.log(currentPerson);
         return currentPerson;
     }
 
