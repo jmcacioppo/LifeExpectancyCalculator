@@ -48,7 +48,6 @@ export class personalinfo {
     //This method checks the current client's life expectancy
     checkLifeExpectancy(person) {
         if(person.county != "Please Select") {
-            var self = this;
             var state = person.state;
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
@@ -57,7 +56,7 @@ export class personalinfo {
                 var lifeExpectancy =  person.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
                 //If county name is found in array, then get life expectancy
                 if(currentCountyInfo[0].indexOf(person.county) != -1) {
-                    person.lifeExpectancy =  person.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                    person.countyLifeExpectancy =  person.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
                 }
             });
         }
@@ -79,20 +78,26 @@ export class personalinfo {
     async submit() {
         //Get life expectancy based on age, gender, and ethnicity
         await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
-        this.calculateResults.addExerciseExpectancy(this.user.clientPersonalInfo, this.user.clientResults);
-        
-        console.log("===CLIENT===");
+        this.user.clientResults.ethnicity = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
+
+        this.calculateResults.addExerciseExpectancy(this.user.clientResults);
+
+        console.log("=======CLIENT=======");
         console.log(this.user.clientPersonalInfo);
         console.log(this.user.clientResults);
 
         if(this.user.clientPersonalInfo.checkspouse){
             await this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
-            this.calculateResults.addExerciseExpectancy(this.user.spousePersonalInfo, this.user.spouseResults);
+            this.user.spouseResults.ethnicity = this.user.spousePersonalInfo.ethnicityLifeExpectancy;
+
+            this.calculateResults.addExerciseExpectancy(this.user.spouseResults);
+        
+            console.log("=======SPOUSE=======");
+            console.log(this.user.spousePersonalInfo);
+            console.log(this.user.spouseResults);
         } 
 
-        console.log("===SPOUSE===");
-        console.log(this.user.spousePersonalInfo);
-        console.log(this.user.spouseResults);
+        
         this.router.navigate('#/results');  
     }
 

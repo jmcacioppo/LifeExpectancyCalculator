@@ -77,7 +77,7 @@
 
             <!--======================SMOKING OF CLIENT============================-->
             <label style="padding-right: 10px;" for="gender">Do you smoke?</label>
-            <div class="btn-group" click.delegate="smoking()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="smoking(user.clientMyHealth)" data-toggle="buttons">
                 <label class="btn ${user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
@@ -162,7 +162,7 @@
 
             <!--======================SMOKING OF CO-CLIENT============================-->
             <label style="padding-right: 10px;" for="gender">Do you smoke?</label>
-            <div class="btn-group" click.delegate="smokingSpouse()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="smoking(user.spouseMyHealth)" data-toggle="buttons">
                 <label class="btn ${user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
