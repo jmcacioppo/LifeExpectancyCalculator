@@ -27,7 +27,7 @@
 
                 <!--======================GENDER OF CLIENT============================-->
                 <label style="padding-right: 10px;" for="gender">Gender: </label>
-                <div class="btn-group" click.delegate="gender()" data-toggle="buttons">
+                <div class="btn-group" click.delegate="gender(user.clientPersonalInfo)" data-toggle="buttons">
                     <label class="btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
                         <input type="radio">Male</label>
                     <label class="btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
@@ -62,7 +62,7 @@
                 <!--============================STATE OF CLIENT=========================-->
                 <div class="form-group">
                     <label for="state">State</label>
-                    <select class="form-control" change.delegate="checkState()" value.bind="user.clientPersonalInfo.state">
+                    <select class="form-control" change.delegate="checkState(user.clientPersonalInfo)" value.bind="user.clientPersonalInfo.state">
                         <option>Please Select</option>
                         <option repeat.for="state of stateData.stateSet">${state}</option>
                     </select>
@@ -71,7 +71,7 @@
                 <!--==========================COUNTY OF CLIENT==========================-->
                 <div class="form-group">
                     <label for="county">County</label>
-                    <select class="form-control" change.delegate="checkLifeExpectancy()" value.bind="user.clientPersonalInfo.county">
+                    <select class="form-control" change.delegate="checkLifeExpectancy(user.clientPersonalInfo)" value.bind="user.clientPersonalInfo.county">
                         <option>Please Select</option>
                         <option repeat.for="county of currentCountyArray">${county}</option>
                     </select>
@@ -89,7 +89,7 @@
 
                 <!--======================GENDER OF SPOUSE============================-->
                 <label style="padding-right: 10px;" for="gender">Gender: </label>
-                <div class="btn-group" click.delegate="spousegender()" data-toggle="buttons">
+                <div class="btn-group" click.delegate="gender(user.spousePersonalInfo)" data-toggle="buttons">
                     <label class="btn ${user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
                         <input type="radio">Male</label>
                     <label class="btn ${!user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}">
@@ -124,7 +124,7 @@
                 <!--============================STATE OF SPOUSE=========================-->
                 <div class="form-group">
                     <label for="state">State</label>
-                    <select class="form-control" change.delegate="checkStateSpouse()" value.bind="user.spousePersonalInfo.state">
+                    <select class="form-control" change.delegate="checkState(user.spousePersonalInfo)" value.bind="user.spousePersonalInfo.state">
                         <option>Please Select</option>
                         <option repeat.for="state of stateData.stateSet">${state}</option>
                     </select>
@@ -133,7 +133,7 @@
                 <!--==========================COUNTY OF SPOUSE==========================-->
                 <div class="form-group">
                     <label for="county">County</label>
-                    <select class="form-control" change.delegate="checkLifeExpectancySpouse()" value.bind="user.spousePersonalInfo.county">
+                    <select class="form-control" change.delegate="checkLifeExpectancy(user.spousePersonalInfo)" value.bind="user.spousePersonalInfo.county">
                         <option>Please Select</option>
                         <option repeat.for="county of currentCountyArray">${county}</option>
                     </select>
