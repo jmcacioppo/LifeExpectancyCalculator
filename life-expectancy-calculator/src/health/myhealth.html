@@ -14,21 +14,21 @@
                     <div class="form-group ${heightError}">
                         <label for="height">Height</label>
                         <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
-                        <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight()">
+                        <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight(user.clientMyHealth)">
                     </div>
 
                     <!--============================WEIGHT===========================-->
                     <div class="form-group">
                         <label for="weight">Weight</label>
                         <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
-                        <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI()">
+                        <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI(user.clientMyHealth)">
                     </div>
-                     <div id="client-bmi-alert" class="alert alert-success" show.bind="validBMIClient" >
+                     <div id="client-bmi-alert" class="alert alert-success" show.bind="user.clientMyHealth.validBMI" >
                         <strong> BMI: ${user.clientMyHealth.bmi}</strong>
                     </div>
                 </div>
-                <div show.bind="validBMIClient" class="${user.clientMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
-                    <img src.bind="iconClientType" style="width:160px; height:260px;" >
+                <div show.bind="user.clientMyHealth.validBMI" class="${user.clientMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
+                    <img src.bind="user.clientMyHealth.iconType" style="width:160px; height:260px;" >
                 </div>
             </div>
 
@@ -104,23 +104,28 @@
                 <strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.
             </div>
 
-            <!--============================HEIGHT==============================-->
-            <div class="form-group ${heightErrorSpouse} ${formHeightWeight}">
-                <label for="height">Height</label>
-                <span id="-spouse-height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
-                <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeightSpouse()">
-            </div>
+            <div>
+                <div class="${user.spouseMyHealth.formHeightWeight ? 'col-md-9' : 'none'}">
+                    <!--============================HEIGHT==============================-->
+                    <div class="form-group ${heightError}">
+                        <label for="height">Height</label>
+                        <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
+                        <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight(user.spouseMyHealth)">
+                    </div>
 
-            <!--============================WEIGHT===========================-->
-            <div class="form-group ${formHeightWeight}">
-                <label for="weight">Weight</label>
-                <span id="spouse-weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
-                <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155">
-            </div>
-
-            <!--=======================BMI======================-->
-            <div class="alert alert-success">
-                <strong> BMI: </strong> <p value.bind="user.spouseMyHealth.bmi">
+                    <!--============================WEIGHT===========================-->
+                    <div class="form-group">
+                        <label for="weight">Weight</label>
+                        <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
+                        <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI(user.spouseMyHealth)">
+                    </div>
+                     <div id="client-bmi-alert" class="alert alert-success" show.bind="user.spouseMyHealth.validBMI" >
+                        <strong> BMI: ${user.spouseMyHealth.bmi}</strong>
+                    </div>
+                </div>
+                <div show.bind="user.spouseMyHealth.validBMI" class="${user.spouseMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
+                    <img src.bind="user.spouseMyHealth.iconType" style="width:160px; height:260px;" >
+                </div>
             </div>
 
             <!--=======================EXERCISE PER WEEK======================-->
