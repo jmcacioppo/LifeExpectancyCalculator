@@ -71,7 +71,7 @@ export class myhealth {
         });
 
         $('#exercise-tooltip').tooltip( {
-            content: "For every 1 minute of exercise you get 7 minutes of extra life. -National Institute of Health"
+            content: "For every 1 minute of exercise you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
         });
     }
 }
