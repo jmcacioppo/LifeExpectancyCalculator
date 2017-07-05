@@ -8,6 +8,7 @@ export class ResultsData {
 
         //MY HEALTH EXPECTANCIES
         this.exercise;
+        this.smoker;
         
         //FAMILY HEALTH EXPECTANCIES
 

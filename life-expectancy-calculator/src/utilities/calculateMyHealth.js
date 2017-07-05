@@ -49,4 +49,30 @@ export class CalculateMyHealth {
             else if(bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
         }
     }
+
+    calculateSmoker(person) {
+        var checksmoking = person.checksmoking;
+        var smokerLifeExpectancy = 0;
+
+        if(checksmoking) { //Do calculations if they have smoked
+            var stillSmoking = person.checkStillSmoking;
+            var kindOfSmoker = person.kindOfSmoker;
+            
+            //CHECK KIND OF SMOKER
+            if(kindOfSmoker === 'Light') smokerLifeExpectancy = 0;
+            else if(kindOfSmoker === 'Average') smokerLifeExpectancy -= 6.84;
+            else if(kindOfSmoker === 'Heavy') smokerLifeExpectancy -= 8.84;
+
+            //Add years if they quit smoking
+            if(!stillSmoking) { 
+                var age = person.ageQuitSmoking;
+                if(age.indexOf("25") !== -1) smokerLifeExpectancy += 10;
+                else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 9;
+                else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 6;
+                else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
+            }
+        }
+
+        person.smokerLifeExpectancy = smokerLifeExpectancy;
+    }
 }

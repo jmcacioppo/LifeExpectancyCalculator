@@ -88,12 +88,62 @@
             </div>
 
             <!--======================SMOKING OF CLIENT============================-->
-            <label style="padding-right: 10px;" for="gender">Do you smoke?</label>
+            <label style="padding-right: 10px;" for="smoking">Have you ever smoked?</label>
             <div class="btn-group" click.delegate="smoking(user.clientMyHealth)" data-toggle="buttons">
                 <label class="btn ${user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+
+            <!--=================CHECK IF THEY STILL SMOKE NOW==========================-->
+            <div show.bind="user.clientMyHealth.checksmoking">
+                <label style="padding-right: 10px;" for="smoking">Do you still smoke?</label>
+                <div class="btn-group" click.delegate="stillSmoking(user.clientMyHealth)" data-toggle="buttons">
+                    <label class="btn ${user.clientMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes</label>
+                    <label class="btn ${!user.clientMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No</label>
+                </div>
+            </div>
+
+            <br>
+
+            <!--=================AVERAGE OR HEAVY IF STILL SMOKING=========================-->
+            <div show.bind="user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking" class="form-group">
+                <label for="healthRank">What kind of smoker are you?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.kindOfSmoker">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Light</option>
+                    <option>Average</option>
+                    <option>Heavy</option>
+                </select>
+            </div>
+
+            <!--=================AVERAGE OF HEAVY IF QUITTED==========================-->
+            <div show.bind="!user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking" class="form-group">
+                <label for="healthRank">What kind of smoker were you?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.kindOfSmoker">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Light</option>
+                    <option>Average</option>
+                    <option>Heavy</option>
+                </select>
+            </div>
+
+            <!--=================AGE OF QUITTING SMOKING==========================-->
+            <div show.bind="!user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking" class="form-group">
+                <label for="healthRank">At what age did you quit smoking?</label>
+                <select class="form-control" value.bind="user.clientMyHealth.ageQuitSmoking">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Before 25</option>
+                    <option>25-34</option>
+                    <option>35-44</option>
+                    <option>45-59</option>
+                    <option>60+</option>
+                </select>
             </div>
         </div>
 
@@ -178,13 +228,66 @@
 
 
             <!--======================SMOKING OF CO-CLIENT============================-->
-            <label style="padding-right: 10px;" for="gender">Do you smoke?</label>
+            <label style="padding-right: 10px;" for="gender">Have you ever smoked?</label>
             <div class="btn-group" click.delegate="smoking(user.spouseMyHealth)" data-toggle="buttons">
                 <label class="btn ${user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">No</label>
             </div>
+
+            <br> <br>
+
+            <!--=================CHECK IF THEY STILL SMOKE NOW==========================-->
+            <div show.bind="user.spouseMyHealth.checksmoking">
+                <label style="padding-right: 10px;" for="smoking">Do you still smoke?</label>
+                <div class="btn-group" click.delegate="stillSmoking(user.spouseMyHealth)" data-toggle="buttons">
+                    <label class="btn ${user.spouseMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">Yes</label>
+                    <label class="btn ${!user.spouseMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}">
+                        <input type="radio">No</label>
+                </div>
+            </div>
+
+            <br>
+
+            <!--=================AVERAGE OR HEAVY IF STILL SMOKING=========================-->
+            <div show.bind="user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking" class="form-group">
+                <label for="healthRank">What kind of smoker are you?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.kindOfSmoker">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Light</option>
+                    <option>Average</option>
+                    <option>Heavy</option>
+                </select>
+            </div>
+
+            <!--=================AVERAGE OF HEAVY IF QUITTED==========================-->
+            <div show.bind="!user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking" class="form-group">
+                <label for="healthRank">What kind of smoker were you?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.kindOfSmoker">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Light</option>
+                    <option>Average</option>
+                    <option>Heavy</option>
+                </select>
+            </div>
+
+            <br>
+
+            <!--=================AGE OF QUITTING SMOKING==========================-->
+            <div show.bind="!user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking" class="form-group">
+                <label for="healthRank">At what age did you quit smoking?</label>
+                <select class="form-control" value.bind="user.spouseMyHealth.ageQuitSmoking">
+                    <option data-hidden="true">Please Select</option>
+                    <option>Before 25</option>
+                    <option>25-34</option>
+                    <option>35-44</option>
+                    <option>45-59</option>
+                    <option>60+</option>
+                </select>
+            </div>
+
             <br> <br> <br>
         </div>
 
