@@ -111,29 +111,38 @@ export class myhealth {
 
     //This takes care of setting up the content for the tooltips
     attached() {
-        //=====================MY HEALTH TOOLTIPS============================
+        //=====================CLIENT TOOLTIPS============================
         $('#height-tooltip').tooltip( {
-            content: "Your height is used to calculate your BMI (Body Mass Index)."
+            content: "Your height is used to calculate your <b>Body Mass Index (BMI)</b>."
         });
 
         $('#weight-tooltip').tooltip( {
-            content: "Your weight is used to calculate your BMI (Body Mass Index)."
+            content: "Your weight is used to calculate your <b>Body Mass Index (BMI)</b>."
         });
 
         $('#exercise-tooltip').tooltip( {
-            content: "For every 1 minute of exercise you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
+            content: "For every 1 minute of exercise, you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
         });
 
+        $('#health-rank-tooltip').tooltip({
+            content: "How you view your health impacts your life expectancy."
+        })
+
+        //=====================SPOUSE TOOLTIPS============================
         $('#spouse-height-tooltip').tooltip( {
-            content: "Your height is used to calculate your BMI (Body Mass Index)."
+            content: "Your height is used to calculate your <b>Body Mass Index (BMI)</b>."
         });
 
         $('#spouse-weight-tooltip').tooltip( {
-            content: "Your weight is used to calculate your BMI (Body Mass Index)."
+            content: "Your weight is used to calculate your <b>Body Mass Index (BMI)</b>."
         });
 
         $('#spouse-exercise-tooltip').tooltip( {
-            content: "For every 1 minute of exercise you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
+            content: "For every 1 minute of exercise, you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
         });
+
+        $('#spouse-health-rank-tooltip').tooltip({
+            content: "How you view your health impacts your life expectancy."
+        })
     }
 }
