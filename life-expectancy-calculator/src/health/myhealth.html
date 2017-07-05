@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div show.bind="user.clientMyHealth.validBMI" class="${user.clientMyHealth.formHeightWeight ? 'col-md-2' : 'none'}">
-                    <img src.bind="user.clientMyHealth.iconType" style="width:160px; height:240px;">
+                    <img src.bind="user.clientMyHealth.iconType" style="width:150px; height:220px;">
                 </div>
             </div>
 
@@ -155,7 +155,7 @@
             </div>
 
             <div>
-                <div class="${user.spouseMyHealth.formHeightWeight ? 'col-md-6' : 'none'}">
+                <div class="${user.spouseMyHealth.formHeightWeight ? 'col-md-8' : 'none'}">
                     <!--============================HEIGHT==============================-->
                     <div class="form-group ${heightError}">
                         <label for="height">Height</label>
@@ -173,8 +173,8 @@
                         <strong> BMI: ${user.spouseMyHealth.bmi}</strong>
                     </div>
                 </div>
-                <div show.bind="user.spouseMyHealth.validBMI" class="${user.spouseMyHealth.formHeightWeight ? 'col-md-3' : 'none'}">
-                    <img src.bind="user.spouseMyHealth.iconType" style="width:160px; height:240px;">
+                <div show.bind="user.spouseMyHealth.validBMI" class="${user.spouseMyHealth.formHeightWeight ? 'col-md-2' : 'none'}">
+                    <img src.bind="user.spouseMyHealth.iconType" style="width:150px; height:220px;">
                 </div>
             </div>
 
