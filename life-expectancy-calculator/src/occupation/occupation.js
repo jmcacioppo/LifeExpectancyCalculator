@@ -12,32 +12,19 @@ export class occupation {
     }
 
     //EDUCATION
-    education() {
-        this.user.clientOccupation.checkEducation = !this.user.clientOccupation.checkEducation;
-    }
-
-    spouseeducation() {
-        this.user.spouseOccupation.checkEducation = !this.user.spouseOccupation.checkEducation;
+    education(person) {
+        person.checkEducation = !person.checkEducation;
     }
 
     //CONSTRUCTION
-    construction() {
-        this.user.clientOccupation.checkConstruction = !this.user.clientOccupation.checkConstruction;
-    }
-
-    spouseconstruction() {
-        this.user.spouseOccupation.checkConstruction = !this.user.spouseOccupation.checkConstruction;
+    construction(person) {
+        person.checkConstruction = !person.checkConstruction;
     }
 
     //EMERGENCY RESPONDING
-    emergencyResponding() {
-        this.user.clientOccupation.checkEmergencyResponding = !this.user.clientOccupation.checkEmergencyResponding;
+    emergencyResponding(person) {
+        person.checkEmergencyResponding = !person.checkEmergencyResponding;
     }
-
-    spouseemergencyResponding() {
-        this.user.spouseOccupation.checkEmergencyResponding = !this.user.spouseOccupation.checkEmergencyResponding;
-    }
-
 
     //BUTTONS
     back() {

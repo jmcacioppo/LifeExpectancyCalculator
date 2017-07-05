@@ -8,7 +8,7 @@
             
             <!--======================CHECK IF EDUCATION============================-->
             <label style="padding-right: 10px;" for="education">Education?</label>
-            <div class="btn-group" click.delegate="education()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="education(user.clientOccupation)" data-toggle="buttons">
                 <label class="btn ${user.clientOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.clientOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
@@ -18,7 +18,7 @@
             <br> <br>
             <!--======================CHECK IF CONSTRUCTION============================-->
             <label style="padding-right: 10px;" for="construction">Construction?</label>
-            <div class="btn-group" click.delegate="construction()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="construction(user.clientOccupation)" data-toggle="buttons">
                 <label class="btn ${user.clientOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.clientOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
@@ -28,7 +28,7 @@
             <br> <br>
             <!--======================CHECK IF EMERGENCY RESPONDER============================-->
             <label style="padding-right: 10px;" for="emergencyResponding">Emergency Responding?</label>
-            <div class="btn-group" click.delegate="emergencyResponding()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="emergencyResponding(user.clientOccupation)" data-toggle="buttons">
                 <label class="btn ${user.clientOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.clientOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
@@ -44,7 +44,7 @@
             
             <!--======================CHECK IF EDUCATION============================-->
             <label style="padding-right: 10px;" for="education">Education?</label>
-            <div class="btn-group" click.delegate="spouseeducation()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="education(user.spouseOccupation)" data-toggle="buttons">
                 <label class="btn ${user.spouseOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.spouseOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
@@ -54,7 +54,7 @@
             <br> <br>
             <!--======================CHECK IF CONSTRUCTION============================-->
             <label style="padding-right: 10px;" for="construction">Construction?</label>
-            <div class="btn-group" click.delegate="spouseconstruction()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="construction(user.spouseOccupation)" data-toggle="buttons">
                 <label class="btn ${user.spouseOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.spouseOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
@@ -64,7 +64,7 @@
             <br> <br>
             <!--======================CHECK IF EMERGENCY RESPONDER============================-->
             <label style="padding-right: 10px;" for="emergencyResponding">Emergency Responding?</label>
-            <div class="btn-group" click.delegate="spouseemergencyResponding()" data-toggle="buttons">
+            <div class="btn-group" click.delegate="emergencyResponding(user.spouseOccupation)" data-toggle="buttons">
                 <label class="btn ${user.spouseOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.spouseOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">

@@ -13,12 +13,6 @@ export class results {
         this.calculateResults = calculateResults;
     }
 
-    activate() {
-        // this.calculateResults.addExerciseExpectancy();
-        // console.log(this.user.clientPersonalInfo);
-        // console.log(this.user.clientResults);
-    }
-
     attached() {
         this.chart.createChart('chart-container');
     }
