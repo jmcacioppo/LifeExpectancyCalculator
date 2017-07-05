@@ -8,11 +8,11 @@ export class CalculateMyHealth {
     }
 
     //this calculates the body mass index(if you're wondering, tweet me @JesseCochran1)
-    calculateBMI() {
-        var metricWeight = this.user.clientMyHealth.weight * 0.45;
-        var metricHeight = this.user.clientMyHealth.heightInInches * 0.025;
+    calculateBMI(person) {
+        var metricWeight = person.weight * 0.45;
+        var metricHeight = person.heightInInches * 0.025;
         var metricHeightSquared = metricHeight * metricHeight;
-        this.user.clientMyHealth.bmi = metricWeight / metricHeightSquared;
+        person.bmi = metricWeight / metricHeightSquared;
     }
 
     //this calculates added/decreased life expectancy based on how many hours of exercise per week

@@ -9,8 +9,13 @@ import {CalculateMyHealth} from '../utilities/calculateMyHealth';
 @inject(Router, User, CalculateMyHealth)
 export class myhealth {
     heightError = "";
+    formHeightWeight = "";
     validHeight = false;
     validHeightSpouse = false;
+    validBMIClient = false;
+    validBMISpouse = false;
+    iconClientType = "underweight";
+    iconSpouseType = "underweight";
 
     constructor(router, user, calculateMyHealth) {
         this.calculateMyHealth = calculateMyHealth;
@@ -18,6 +23,7 @@ export class myhealth {
         this.user = user;
     }
 
+    //Checks for valid height for the client.
     checkHeight() {
         var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.clientMyHealth.height);
         this.validHeight = !valid;
@@ -29,8 +35,9 @@ export class myhealth {
         console.log(this.user.clientMyHealth.heightInInches);
     }
 
+    //Checks for valid height for the spouse. 
     checkHeightSpouse() {
-        //DONT LET CLICK SUBMIT WITHOUT PROPER HEIGHT
+        //TODO: DONT LET CLICK SUBMIT WITHOUT PROPER HEIGHT
         console.log(this.user.spouseMyHealth.height);
         var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.spouseMyHealth.height);
         this.validHeightSpouse = !valid;
@@ -40,6 +47,39 @@ export class myhealth {
             this.user.spouseMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
         }
         console.log(this.user.spouseMyHealth.heightInInches);
+    }
+
+    //This calculates the BMI once both of the height and weight have been entered
+    calculateBMI() {
+        if(!this.validHeight) {
+            this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
+            this.validBMIClient = true;
+            iconClientType = setIconType(this.user.clientMyHealth.bmi, false);
+        }
+        if(!this.validHeightSpouse) {
+            this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
+            this.validBMISpouse = true;
+            iconsetIconType(this.user.spouseMyHealth.bmi, true);
+        }
+        this.formHeightWeight = "form-height-weight";
+    }
+
+    //Determines the icon types give the client/spouse. If client is passed in then, spouse = false.
+    setIconType(person, spouse) {
+        var currentPerson = spouse ? iconClientType : iconSpouseType;
+        switch(this.user.clientMyHealth.bmi) {
+            case person.bmi < 18:
+                currentPerson = "underweight";
+            case person.bmi > 18 && person.bmi < 23:
+                currentPerson = "normal";
+            case person.bmi > 23 && person.bmi < 30:
+                currenPerson = "overweight";
+            case person.bmi > 30 && person.bmi < 35:
+                currentPerson = "obese";
+            case person.bmi > 35:
+                currentPerson = "extremely-obese";
+        }
+        return currentPerson;
     }
 
     smoking() {
@@ -56,12 +96,13 @@ export class myhealth {
     }
 
     submit() {
-        this.calculateMyHealth.calculateBMI();
-        this.calculateMyHealth.calculateExercise();
+        //this.calculateMyHealth.calculateExercise();
         console.log(this.user.clientMyHealth);
+        console.log(this.user.spouseMyHealth);
         this.router.navigate('#/personalinfo');  
     }
 
+    //This takes care of setting up the content for the tooltips
     attached() {
         //=====================MY HEALTH TOOLTIPS============================
         $('#height-tooltip').tooltip( {
