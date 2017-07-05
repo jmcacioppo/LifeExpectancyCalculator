@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import 'jquery-ui-dist';
-
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
@@ -9,13 +8,7 @@ import {CalculateMyHealth} from '../utilities/calculateMyHealth';
 @inject(Router, User, CalculateMyHealth)
 export class myhealth {
     heightError = "";
-    formHeightWeight = false;
-    validHeight = false;
-    validHeightSpouse = false;
-    validBMIClient = false;
-    validBMISpouse = false;
-    iconClientType = "underweight";
-    iconSpouseType = "underweight";
+    formHeightWeight = "";
 
     constructor(router, user, calculateMyHealth) {
         this.calculateMyHealth = calculateMyHealth;
@@ -24,64 +17,54 @@ export class myhealth {
     }
 
     //Checks for valid height for the client.
-    checkHeight() {
+    checkHeight(person) {
         var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.clientMyHealth.height);
-        this.validHeight = !valid;
+        person.validHeight = valid;
         this.heightError = valid ? "" : "has-error";
         if(valid) {
-            var feetAndInches = this.user.clientMyHealth.height.split("'");
-            this.user.clientMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
+            var feetAndInches = person.height.split("'");
+            person.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
         }
-    }
-
-    //Checks for valid height for the spouse. 
-    checkHeightSpouse() {
-        //TODO: DONT LET CLICK SUBMIT WITHOUT PROPER HEIGHT
-        var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.spouseMyHealth.height);
-        this.validHeightSpouse = !valid;
-        this.heightErrorSpouse = valid ? "" : "has-error";
-        if(valid) {
-            var feetAndInches = this.user.spouseMyHealth.height.split("'");
-            this.user.spouseMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
+        //This handles the case where they first entered their weight
+        if(person.validWeight) {
+            this.calculateBMI(person);
         }
     }
 
     //This calculates the BMI once both of the height and weight have been entered
-    calculateBMI() {
-        if(!this.validHeight) {
-            this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
-            this.validBMIClient = true;
-            this.iconClientType = "./src/health/" + this.setIconType(this.user.clientMyHealth.bmi, false) + ".jpg";
+    calculateBMI(person) {
+        if(person.validHeight) {
+            this.calculateMyHealth.calculateBMI(person);
+            person.validBMI = true;
+            this.setIconType(person, false)
+            person.iconType = "./src/health/" + person.iconType + ".jpg";
         }
-        if(!this.validHeightSpouse) {
-            this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
-            this.validBMISpouse = true;
-            this.iconSpouseType = this.setIconType(this.user.spouseMyHealth.bmi, true) + ".jpg";
-        }
-        this.user.clientMyHealth.formHeightWeight = true;
+        person.validWeight = true;
+        person.formHeightWeight = true;
     }
 
     //Determines the icon types give the client/spouse. If client is passed in then, spouse = false.
     setIconType(person, spouse) {
-        var currentPerson = spouse ? this.iconClientType : this.iconSpouseType;
-        switch(this.user.clientMyHealth.bmi) {
+        console.log(person.bmi);
+        switch(true) {
             case person.bmi < 18.5:
-                currentPerson = "underweight";
+                person.iconType = "underweight";
                 break;
             case person.bmi >= 18.5 && person.bmi < 25:
-                currentPerson = "normal";
+                person.iconType = "normal";
                 break;
             case person.bmi >= 25 && person.bmi < 30:
-                currenPerson = "overweight";
+                person.iconType = "overweight";
                 break;
             case person.bmi > 30 && person.bmi < 35:
-                currentPerson = "obese";
+                person.iconType = "obese";
                 break;
             default:
-                currentPerson = "extremely-obese";
+                person.iconType = "extremely-obese";
                 break;
         }
-        return currentPerson;
+        console.log(person.iconType);
+        return person;
     }
 
     //CHECK SMOKING

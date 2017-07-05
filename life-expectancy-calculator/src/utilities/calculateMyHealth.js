@@ -12,7 +12,7 @@ export class CalculateMyHealth {
         var metricWeight = person.weight * 0.45;
         var metricHeight = person.heightInInches * 0.025;
         var metricHeightSquared = metricHeight * metricHeight;
-        person.bmi = metricWeight / metricHeightSquared;
+        person.bmi = (metricWeight / metricHeightSquared).toPrecision(4);
     }
 
     //this calculates added/decreased life expectancy based on how many hours of exercise per week
