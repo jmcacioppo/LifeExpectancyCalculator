@@ -9,7 +9,7 @@ export class Chart {
     }
 
     createChart(containerID) {
-        console.log(this.user.clientPersonalInfo.testTuples);
+        //console.log(this.user.clientPersonalInfo.testTuples);
         Highcharts.chart(containerID, {
                 title: {
                     text: 'Life Expectancy'

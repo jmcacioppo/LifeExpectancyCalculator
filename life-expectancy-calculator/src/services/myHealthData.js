@@ -11,5 +11,7 @@ export class MyHealthData {
 
         this.alcoholPerWeek;
         this.checksmoking;
+
+        this.exerciseLifeExpectancy;
     }
 }

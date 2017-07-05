@@ -14,4 +14,21 @@ export class CalculateMyHealth {
         var metricHeightSquared = metricHeight * metricHeight;
         this.user.clientMyHealth.bmi = metricWeight / metricHeightSquared;
     }
+
+    //this calculates added/decreased life expectancy based on how many hours of exercise per week
+    calculateExercise() {
+        var exercisePerWeek = this.user.clientMyHealth.exercisePerWeek;
+        if(exercisePerWeek.indexOf("Less") !== -1) {
+            this.user.clientMyHealth.exerciseLifeExpectancy = 1.8;
+        }
+        else if(exercisePerWeek.indexOf("Approximately") !== -1) {
+            this.user.clientMyHealth.exerciseLifeExpectancy = 3.4;
+        }
+        else if(exercisePerWeek.indexOf("More") !== -1) {
+            this.user.clientMyHealth.exerciseLifeExpectancy = 4.5;
+        }
+        else {
+            this.user.clientMyHealth.exerciseLifeExpectancy = 0;
+        }
+    }
 }

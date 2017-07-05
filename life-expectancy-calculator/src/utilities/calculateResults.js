@@ -28,13 +28,22 @@ export class CalculateResults {
             currentAgeArray[1] = parseInt(value.Age.slice(3, 5));
             if(currentAgeArray[0] === user.clientPersonalInfo.age || currentAgeArray[1] === user.clientPersonalInfo.age) {
                 user.clientPersonalInfo.expectedYearsLeft = parseInt(value.ExpectedAge);
+                user.clientPersonalInfo.ethnicityLifeExpectancy = user.clientPersonalInfo.expectedYearsLeft + user.clientPersonalInfo.age;
             }
         });
     }
 
+    addExerciseExpectancy() {
+        var expectedLife = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
+        var addedExercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+        console.log(this.user.clientPersonalInfo.ethnicityLifeExpectancy);
+        console.log(this.user.clientMyHealth.exerciseLifeExpectancy);
+        this.user.clientResults.overallLifeExpectancy = expectedLife + addedExercise;
+    }
+
     //Averages the life expectancy from the life table and life expectancy county table
     averageLifeExpectancy() {
-        var averagedLifeExpectancy = ((this.user.clientPersonalInfo.expectedYearsLeft + this.user.clientPersonalInfo.age) + this.user.clientPersonalInfo.ageAndRaceLifeExpectancy ) / 2;
+        var averagedLifeExpectancy = ((this.user.clientPersonalInfo.expectedYearsLeft + this.user.clientPersonalInfo.age) + this.user.clientPersonalInfo.ethnicityLifeExpectancy ) / 2;
         //TODO: Set this variable to new life expectancy if we decide to in future
     }
     

@@ -3,6 +3,7 @@ import {PersonalInfoData} from '../services/personalInfoData';
 import {MyHealthData} from '../services/myHealthData';
 import {FamilyHealthData} from '../services/familyHealthData';
 import {OccupationData} from '../services/occupationData';
+import {ResultsData} from '../services/resultsData';
 
 @singleton()
 export class User {
@@ -18,5 +19,8 @@ export class User {
 
         this.clientOccupation = new OccupationData();
         this.spouseOccupation = new OccupationData();
+
+        this.clientResults = new ResultsData();
+        this.spouseResults = new ResultsData();
     }
 }

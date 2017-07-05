@@ -119,8 +119,11 @@ export class personalinfo {
         this.router.navigate('#/occupation');  
     }
 
-    submit() {
-        this.calculateResults.getLifeTableData(this.user);
+    async submit() {
+        await this.calculateResults.getLifeTableData(this.user);
+        this.calculateResults.addExerciseExpectancy();
+        console.log(this.user.clientPersonalInfo);
+        console.log(this.user.clientResults);
         this.router.navigate('#/results');  
     }
 

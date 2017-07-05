@@ -16,5 +16,7 @@ export class PersonalInfoData {
         this.countyLifeExpectancy;
         this.expectedYearsLeft;
         this.testTuples = [];
+
+        this.ethnicityLifeExpectancy;
     }
 }

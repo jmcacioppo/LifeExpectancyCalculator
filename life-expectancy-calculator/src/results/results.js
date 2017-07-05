@@ -2,13 +2,21 @@ import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
 import {Chart} from '../utilities/chart';
+import {CalculateResults} from '../utilities/calculateResults';
 
-@inject(Router, User, Chart)
+@inject(Router, User, Chart, CalculateResults)
 export class results {
-    constructor(router, user, chart) {
+    constructor(router, user, chart, calculateResults) {
         this.router = router;
         this.user = user;
         this.chart = chart;
+        this.calculateResults = calculateResults;
+    }
+
+    activate() {
+        // this.calculateResults.addExerciseExpectancy();
+        // console.log(this.user.clientPersonalInfo);
+        // console.log(this.user.clientResults);
     }
 
     attached() {
