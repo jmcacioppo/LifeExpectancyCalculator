@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import 'jquery-ui-dist';
+
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
@@ -27,6 +30,7 @@ export class myhealth {
     }
 
     checkHeightSpouse() {
+        //DONT LET CLICK SUBMIT WITHOUT PROPER HEIGHT
         console.log(this.user.spouseMyHealth.height);
         var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.spouseMyHealth.height);
         this.validHeightSpouse = !valid;
@@ -56,5 +60,32 @@ export class myhealth {
         this.calculateMyHealth.calculateExercise();
         console.log(this.user.clientMyHealth);
         this.router.navigate('#/personalinfo');  
+    }
+
+    attached() {
+        //=====================MY HEALTH TOOLTIPS============================
+        $('#height-tooltip').tooltip( {
+            content: "Your height is used to calculate your BMI (Body Mass Index)."
+        });
+
+        $('#weight-tooltip').tooltip( {
+            content: "Your weight is used to calculate your BMI (Body Mass Index)."
+        });
+
+        $('#exercise-tooltip').tooltip( {
+            content: "For every 1 minute of exercise you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
+        });
+
+        $('#spouse-height-tooltip').tooltip( {
+            content: "Your height is used to calculate your BMI (Body Mass Index)."
+        });
+
+        $('#spouse-weight-tooltip').tooltip( {
+            content: "Your weight is used to calculate your BMI (Body Mass Index)."
+        });
+
+        $('#spouse-exercise-tooltip').tooltip( {
+            content: "For every 1 minute of exercise you get 7 minutes of extra life.<br><b>- National Institute of Health</b>"
+        });
     }
 }

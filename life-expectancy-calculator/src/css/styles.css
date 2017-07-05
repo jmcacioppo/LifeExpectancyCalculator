@@ -1,3 +1,12 @@
+/*========================GLYPHICON COLOR========================*/
+
+.glyphicon-question-sign {
+    color: #006dcc;
+	margin:5px;
+}
+
+/*========================END GLYPHICON COLOR========================*/
+
 .hasSpouse {
 	width: 45%;
 	float: left;
