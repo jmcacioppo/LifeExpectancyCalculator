@@ -16,20 +16,12 @@ export class personalinfo {
         this.user = user;
         this.stateData = stateData;
         this.calculateResults = calculateResults;
-        this.checkState();
     }
 
-    gender() {
-        this.user.clientPersonalInfo.checkgender = !this.user.clientPersonalInfo.checkgender;
-        this.user.clientPersonalInfo.gender = (this.user.clientPersonalInfo.checkgender) ? 'Male' : 'Female';
-        console.log(this.user.clientPersonalInfo);
-    }
-
-    spousegender() {
-        this.user.spousePersonalInfo.checkgender = !this.user.spousePersonalInfo.checkgender;
-        this.user.spousePersonalInfo.gender = (this.user.spousePersonalInfo.checkgender) ? 'Male' : 'Female';
-        console.log(this.user.clientPersonalInfo);
-        console.log(this.user.spousePersonalInfo);
+    gender(person) {
+        person.checkgender = !person.checkgender;
+        person.gender = person.checkgender ? 'Male' : 'Female';
+        console.log(person);
     }
 
     checkspouse() {
@@ -38,8 +30,8 @@ export class personalinfo {
 
     //======================LIFE EXPECTANCY FROM STATES/COUNTIES==================
     //This method retrieves all of the counties from the client's current state
-    checkState() {
-        var state = this.user.clientPersonalInfo.state;
+    checkState(person) {
+        var state = person.state;
         if(state != "Please Select") {
             var self = this;
             this.currentCountyArray = [];
@@ -50,62 +42,26 @@ export class personalinfo {
             });
             this.currentCountyArray.pop();
         }
-        else this.user.clientPersonalInfo.county = "Please Select";
+        else person.county = "Please Select";
     }
 
     //This method checks the current client's life expectancy
-    checkLifeExpectancy() {
-        if(this.user.clientPersonalInfo.county != "Please Select") {
-            var self = this;
-            var state = this.user.clientPersonalInfo.state;
+    checkLifeExpectancy(person) {
+        if(person.county != "Please Select") {
+            var state = person.state;
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
                 //Life expectancy of male is index 2, life expectancy of female is index 1
-                var lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
+                var lifeExpectancy =  person.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
                 //If county name is found in array, then get life expectancy
-                if(currentCountyInfo[0].indexOf(self.user.clientPersonalInfo.county) != -1) {
-                    self.user.clientPersonalInfo.lifeExpectancy =  self.user.clientPersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
-                }
-            });
-        }
-    }
-
-    //This method retrieves all of the counties from the co-client's current state
-    checkStateSpouse() {
-        var state = this.user.spousePersonalInfo.state;
-        if(state != "Please Select") {
-            var self = this;
-            this.currentCountyArray = [];
-            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
-            countyWithLifeArrays.forEach(function (data) {
-                var currentCountyInfo = data.split(":");
-                self.currentCountyArray.push(currentCountyInfo[0]);
-            });
-            this.currentCountyArray.pop();
-        }
-        else this.user.spousePersonalInfo.county = "Please Select";
-    }
-
-    //This method checks the current co-client's life expectancy
-    checkLifeExpectancySpouse() {
-        if(this.user.spousePersonalInfo.county != "Please Select") {
-            var self = this;
-            var state = this.user.spousePersonalInfo.state;
-            var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
-            countyWithLifeArrays.forEach(function (data) {
-                var currentCountyInfo = data.split(":");
-                //Life expectancy of male is index 2, life expectancy of female is index 1
-                var lifeExpectancy =  self.user.spousePersonalInfo.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
-                //If county name is found in array, then get life expectancy
-                if(currentCountyInfo[0].indexOf(self.user.spousePersonalInfo.county) != -1) {
-                    self.user.spousePersonalInfo.lifeExpectancy =  self.user.spousePersonalInfo.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                if(currentCountyInfo[0].indexOf(person.county) != -1) {
+                    person.countyLifeExpectancy =  person.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
                 }
             });
         }
     }
     //===================END LIFE EXPECTANCY FROM STATES/COUNTIES==================
-
 
     myhealth() {
         this.router.navigate('#/myhealth');  
@@ -120,10 +76,28 @@ export class personalinfo {
     }
 
     async submit() {
-        await this.calculateResults.getLifeTableData(this.user);
-        this.calculateResults.addExerciseExpectancy();
+        //Get life expectancy based on age, gender, and ethnicity
+        await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
+        this.user.clientResults.ethnicity = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
+
+        this.calculateResults.addExerciseExpectancy(this.user.clientResults);
+
+        console.log("=======CLIENT=======");
         console.log(this.user.clientPersonalInfo);
         console.log(this.user.clientResults);
+
+        if(this.user.clientPersonalInfo.checkspouse){
+            await this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
+            this.user.spouseResults.ethnicity = this.user.spousePersonalInfo.ethnicityLifeExpectancy;
+
+            this.calculateResults.addExerciseExpectancy(this.user.spouseResults);
+        
+            console.log("=======SPOUSE=======");
+            console.log(this.user.spousePersonalInfo);
+            console.log(this.user.spouseResults);
+        } 
+
+        
         this.router.navigate('#/results');  
     }
 

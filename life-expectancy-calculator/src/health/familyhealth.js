@@ -14,41 +14,24 @@ export class familyhealth {
     }
 
     //HEART DISEASE
-    heartdisease() {
-        this.user.clientFamilyHealth.checkHeartDisease = !this.user.clientFamilyHealth.checkHeartDisease;
-    }
-
-    spouseheartdisease() {
-        this.user.spouseFamilyHealth.checkHeartDisease = !this.user.spouseFamilyHealth.checkHeartDisease;
+    heartdisease(person) {
+        person.checkHeartDisease = !person.checkHeartDisease;
     }
 
     //CANCER
-    cancer() {
-        this.user.clientFamilyHealth.checkCancer = !this.user.clientFamilyHealth.checkCancer;
-    }
-
-    spousecancer() {
-        this.user.spouseFamilyHealth.checkCancer = !this.user.spouseFamilyHealth.checkCancer;
+    cancer(person) {
+        person.checkCancer = !person.checkCancer;
     }
 
     //MENTAL HEALTH
-    mentalhealth() {
-        this.user.clientFamilyHealth.checkMentalHealth = !this.user.clientFamilyHealth.checkMentalHealth;
-    }
-
-    spousementalhealth() {
-        this.user.spouseFamilyHealth.checkMentalHealth = !this.user.spouseFamilyHealth.checkMentalHealth;
+    mentalhealth(person) {
+        person.checkMentalHealth = !person.checkMentalHealth;
     }
 
     //DIABETES
-    diabetes() {
-        this.user.clientFamilyHealth.checkDiabetes = !this.user.clientFamilyHealth.checkDiabetes;
+    diabetes(person) {
+        person.checkDiabetes = !person.checkDiabetes;
     }
-
-    spousediabetes() {
-        this.user.spouseFamilyHealth.checkDiabetes = !this.user.spouseFamilyHealth.checkDiabetes;
-    }
-
 
     //BUTTONS
     back() {

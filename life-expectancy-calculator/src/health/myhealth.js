@@ -32,7 +32,7 @@ export class myhealth {
             var feetAndInches = this.user.clientMyHealth.height.split("'");
             this.user.clientMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
         }
-        console.log(this.user.clientMyHealth.heightInInches);
+        //console.log(this.user.clientMyHealth.heightInInches);
     }
 
     //Checks for valid height for the spouse. 
@@ -46,7 +46,7 @@ export class myhealth {
             var feetAndInches = this.user.spouseMyHealth.height.split("'");
             this.user.spouseMyHealth.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);
         }
-        console.log(this.user.spouseMyHealth.heightInInches);
+        //console.log(this.user.spouseMyHealth.heightInInches);
     }
 
     //This calculates the BMI once both of the height and weight have been entered
@@ -89,9 +89,11 @@ export class myhealth {
     smokingSpouse() {
         this.user.spouseMyHealth.checksmoking = !this.user.spouseMyHealth.checksmoking;
     }
+    smoking(person) {
+        person.checksmoking = !person.checksmoking;
+    }
 
     back() {
-        console.log(this.user.clientMyHealth);
         this.router.navigate('#/personalinfo');  
     }
 
@@ -99,6 +101,17 @@ export class myhealth {
         //this.calculateMyHealth.calculateExercise();
         console.log(this.user.clientMyHealth);
         console.log(this.user.spouseMyHealth);
+        this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
+        this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
+        this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+        console.log(this.user.clientMyHealth);
+
+        if(this.user.clientPersonalInfo.checkspouse) {
+            this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
+            this.calculateMyHealth.calculateExercise(this.user.spouseMyHealth);
+            this.user.spouseResults.exercise = this.user.spouseMyHealth.exerciseLifeExpectancy;
+            console.log(this.user.spouseMyHealth);
+        }
         this.router.navigate('#/personalinfo');  
     }
 
