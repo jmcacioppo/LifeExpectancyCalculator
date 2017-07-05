@@ -10,18 +10,21 @@
             <!--============================HEIGHT==============================-->
             <div class="form-group ${heightError}">
                 <label for="height">Height</label>
+                <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight()">
             </div>
 
             <!--============================WEIGHT===========================-->
             <div class="form-group">
                 <label for="weight">Weight</label>
+                <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                 <input type="text" value.bind="user.clientMyHealth.weight" class="form-control" placeholder="155">
             </div>
 
             <!--=======================EXERCISE PER WEEK======================-->
             <div class="form-group">
                 <label for="healthRank">How many times do you exercise per week?</label>
+                <span id="exercise-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                 <select class="form-control" value.bind="user.clientMyHealth.exercisePerWeek">
                     <option data-hidden="true">Please Select</option>
                     <option>0</option>

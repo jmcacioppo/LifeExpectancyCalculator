@@ -1,3 +1,6 @@
+import $ from 'jquery';
+import 'jquery-ui-dist';
+
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
@@ -55,5 +58,20 @@ export class myhealth {
         this.calculateMyHealth.calculateBMI();
         console.log(this.user.clientMyHealth);
         this.router.navigate('#/personalinfo');  
+    }
+
+    attached() {
+        //=====================MY HEALTH TOOLTIPS============================
+        $('#height-tooltip').tooltip( {
+            content: "Your height is used to calculate your BMI (Body Mass Index)."
+        });
+
+        $('#weight-tooltip').tooltip( {
+            content: "Your weight is used to calculate your BMI (Body Mass Index)."
+        });
+
+        $('#exercise-tooltip').tooltip( {
+            content: "For every 1 minute of exercise you get 7 minutes of extra life. -National Institute of Health"
+        });
     }
 }
