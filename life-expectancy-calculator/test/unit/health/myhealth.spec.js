@@ -1,4 +1,4 @@
-import {CalculateMyHealth} from '../../../src/utilities/calculateMyHealth';
+import {CalculateMyHealth} from '../../../src/utilities/calculations/calculateMyHealth';
 import {User} from '../../../src/services/user';
 
 //Test the myhealth page

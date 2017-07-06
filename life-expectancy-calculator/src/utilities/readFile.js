@@ -1,5 +1,5 @@
 import {inject} from 'aurelia-framework';
-import {StateData} from '../services/stateData';
+import {StateData} from '../services/data/stateData';
 
 @inject(StateData)
 export class ReadFile {

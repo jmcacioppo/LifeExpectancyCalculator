@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
-import {CalculateOccupation} from '../utilities/calculateOccupation';
+import {CalculateOccupation} from '../utilities/calculations/calculateOccupation';
 
 @inject(Router, User, CalculateOccupation)
 export class occupation {
