@@ -7,7 +7,6 @@ import {CalculateMyHealth} from '../utilities/calculations/calculateMyHealth';
 
 @inject(Router, User, CalculateMyHealth)
 export class myhealth {
-    heightError = "";
     formHeightWeight = "";
 
     constructor(router, user, calculateMyHealth) {
@@ -18,9 +17,9 @@ export class myhealth {
 
     //Checks for valid height for the client.
     checkHeight(person) {
-        var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(this.user.clientMyHealth.height);
+        var valid = /^[2-9]' ?(?:\d|1[0-1])"?$/.test(person.height);
         person.validHeight = valid;
-        this.heightError = valid ? "" : "has-error";
+        person.heightError = valid ? "" : "has-error";
         if(valid) {
             var feetAndInches = person.height.split("'");
             person.heightInInches = parseInt(feetAndInches[0]) * 12 + parseInt(feetAndInches[1]);

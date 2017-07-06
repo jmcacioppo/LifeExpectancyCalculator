@@ -11,7 +11,7 @@
             <div>
                 <div class="${user.clientMyHealth.formHeightWeight ? 'col-md-8' : 'none'}">
                     <!--============================HEIGHT==============================-->
-                    <div class="form-group ${heightError}">
+                    <div class="form-group ${user.clientMyHealth.heightError}">
                         <label for="height">Height</label>
                         <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                         <input type="text" value.bind="user.clientMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight(user.clientMyHealth)">
@@ -156,7 +156,7 @@
             <div>
                 <div class="${user.spouseMyHealth.formHeightWeight ? 'col-md-8' : 'none'}">
                     <!--============================HEIGHT==============================-->
-                    <div class="form-group ${heightError}">
+                    <div class="form-group ${user.spouseMyHealth.heightError}">
                         <label for="height">Height</label>
                         <span id="height-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                         <input type="text" value.bind="user.spouseMyHealth.height" class="form-control" placeholder="5'7" change.trigger="checkHeight(user.spouseMyHealth)">
@@ -168,7 +168,7 @@
                         <span id="weight-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
                         <input type="text" value.bind="user.spouseMyHealth.weight" class="form-control" placeholder="155" change.trigger="calculateBMI(user.spouseMyHealth)">
                     </div>
-                    <div id="client-bmi-alert" class="alert alert-success" show.bind="user.spouseMyHealth.validBMI">
+                    <div id="spouse-bmi-alert" class="alert alert-success" show.bind="user.spouseMyHealth.validBMI">
                         <strong> BMI: ${user.spouseMyHealth.bmi}</strong>
                     </div>
                 </div>
