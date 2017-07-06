@@ -81,12 +81,16 @@ export class myhealth {
     }
 
     submit() {
-        console.log(this.user.clientMyHealth);
-        console.log(this.user.spouseMyHealth);
-
         //BMI AND EXERCISE CALCULATIONS
         this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
-        this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
+
+        if(this.user.clientMyHealth.exercisePerWeek && this.user.clientMyHealth.exercisePerWeek != "Please Select") {
+            if(this.user.clientMyHealth.bmi) this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
+            else alert("We need a BMI");
+            this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+        }
+
+            this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
         this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
 
         //SMOKER CALCULATIONS

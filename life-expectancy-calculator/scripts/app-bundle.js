@@ -509,10 +509,13 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
         };
 
         myhealth.prototype.submit = function submit() {
-            console.log(this.user.clientMyHealth);
-            console.log(this.user.spouseMyHealth);
-
             this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
+
+            if (this.user.clientMyHealth.exercisePerWeek && this.user.clientMyHealth.exercisePerWeek != "Please Select") {
+                if (this.user.clientMyHealth.bmi) this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);else alert("We need a BMI");
+                this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+            }
+
             this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
             this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
 
@@ -570,15 +573,6 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
         return myhealth;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
     'use strict';
 
@@ -626,6 +620,15 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
 
         return occupation;
     }()) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
 });
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/chart', '../utilities/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _chart, _calculateResults) {
     'use strict';
@@ -708,7 +711,7 @@ define('services/myHealthData',["exports"], function (exports) {
                 this.weight;
                 this.bmi;
                 this.formHeightWeight = false;
-                this.exerciseLifeExpectancy;
+                this.exerciseLifeExpectancy = 0;
 
                 this.validHeight = false;
                 this.validWeight = false;
@@ -920,22 +923,27 @@ define('utilities/calculateMyHealth',['exports', 'aurelia-framework', '../servic
         };
 
         CalculateMyHealth.prototype.calculateExercise = function calculateExercise(person) {
-            var exercisePerWeek = person.exercisePerWeek;
-            var bmi = person.bmi;
+            var exerciseLifeExpectancy = 0;
 
-            if (exercisePerWeek.indexOf("0") !== -1) {
-                person.exerciseLifeExpectancy = 0;
-                if (bmi >= 18.5 && bmi < 25) person.exerciseLifeExpectancy -= 4.7;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 3.9;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 5.0;else if (bmi >= 35) person.exerciseLifeExpectancy -= 7.2;
-            } else if (exercisePerWeek.indexOf("Less") !== -1) {
-                person.exerciseLifeExpectancy = 1.8;
-                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 2.4;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 1.8;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 3.2;else if (bmi >= 35) person.exerciseLifeExpectancy -= 6.2;
-            } else if (exercisePerWeek.indexOf("Approximately") !== -1) {
-                person.exerciseLifeExpectancy = 3.4;
-                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
-            } else if (exercisePerWeek.indexOf("More") !== -1) {
-                person.exerciseLifeExpectancy = 4.5;
-                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
+            if (person.exercisePerWeek) {
+                var bmi = person.bmi;
+
+                if (person.exercisePerWeek.indexOf("0") !== -1) {
+                    exerciseLifeExpectancy = 0;
+                    if (bmi >= 18.5 && bmi < 25) exerciseLifeExpectancy -= 4.7;else if (bmi >= 25 && bmi < 30) exerciseLifeExpectancy -= 3.9;else if (bmi >= 30 && bmi < 35) exerciseLifeExpectancy -= 5.0;else if (bmi >= 35) exerciseLifeExpectancy -= 7.2;
+                } else if (person.exercisePerWeek.indexOf("Less") !== -1) {
+                    exerciseLifeExpectancy = 1.8;
+                    if (bmi >= 18.5 && bmi <= 24.9) exerciseLifeExpectancy -= 2.4;else if (bmi >= 25 && bmi < 30) exerciseLifeExpectancy -= 1.8;else if (bmi >= 30 && bmi < 35) exerciseLifeExpectancy -= 3.2;else if (bmi >= 35) exerciseLifeExpectancy -= 6.2;
+                } else if (person.exercisePerWeek.indexOf("Approximately") !== -1) {
+                    exerciseLifeExpectancy = 3.4;
+                    if (bmi >= 18.5 && bmi <= 24.9) exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) exerciseLifeExpectancy -= 4.5;
+                } else if (person.exercisePerWeek.indexOf("More") !== -1) {
+                    exerciseLifeExpectancy = 4.5;
+                    if (bmi >= 18.5 && bmi <= 24.9) exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) exerciseLifeExpectancy -= 4.5;
+                }
             }
+
+            person.exerciseLifeExpectancy = exerciseLifeExpectancy;
         };
 
         CalculateMyHealth.prototype.calculateSmoker = function calculateSmoker(person) {
@@ -946,11 +954,27 @@ define('utilities/calculateMyHealth',['exports', 'aurelia-framework', '../servic
                 var stillSmoking = person.checkStillSmoking;
                 var kindOfSmoker = person.kindOfSmoker;
 
-                if (kindOfSmoker.indexOf("Light") !== -1) smokerLifeExpectancy = -4.8;else if (kindOfSmoker.indexOf("Average") !== -1) smokerLifeExpectancy -= 6.8;else if (kindOfSmoker.indexOf("Heavy") !== -1) smokerLifeExpectancy -= 8.8;
+                if (kindOfSmoker.indexOf("Light") !== -1) {
+                    smokerLifeExpectancy = -4.8;
 
-                if (!stillSmoking) {
-                    var age = person.ageQuitSmoking;
-                    if (age.indexOf("25") !== -1) smokerLifeExpectancy += 10;else if (age.indexOf("35") !== -1) smokerLifeExpectancy += 9;else if (age.indexOf("45") !== -1) smokerLifeExpectancy += 6;else if (age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
+                    if (!stillSmoking) {
+                        var age = person.ageQuitSmoking;
+                        if (age.indexOf("25") !== -1) smokerLifeExpectancy += 4.8;else if (age.indexOf("35") !== -1) smokerLifeExpectancy += 4.8;else if (age.indexOf("45") !== -1) smokerLifeExpectancy += 4.8;else if (age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
+                    }
+                } else if (kindOfSmoker.indexOf("Average") !== -1) {
+                    smokerLifeExpectancy -= 6.8;
+
+                    if (!stillSmoking) {
+                        var age = person.ageQuitSmoking;
+                        if (age.indexOf("25") !== -1) smokerLifeExpectancy += 6.8;else if (age.indexOf("35") !== -1) smokerLifeExpectancy += 6.8;else if (age.indexOf("45") !== -1) smokerLifeExpectancy += 6;else if (age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
+                    }
+                } else if (kindOfSmoker.indexOf("Heavy") !== -1) {
+                    smokerLifeExpectancy -= 8.8;
+
+                    if (!stillSmoking) {
+                        var age = person.ageQuitSmoking;
+                        if (age.indexOf("25") !== -1) smokerLifeExpectancy += 8.8;else if (age.indexOf("35") !== -1) smokerLifeExpectancy += 8.8;else if (age.indexOf("45") !== -1) smokerLifeExpectancy += 6;else if (age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
+                    }
                 }
             }
 
