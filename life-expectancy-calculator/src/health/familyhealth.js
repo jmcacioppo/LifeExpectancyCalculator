@@ -1,7 +1,7 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
-import {CalculateFamilyHealth} from '../utilities/calculateFamilyHealth';
+import {CalculateFamilyHealth} from '../utilities/calculations/calculateFamilyHealth';
 import {Slider} from '../utilities/slider';
 
 @inject(Router, User, CalculateFamilyHealth, Slider)

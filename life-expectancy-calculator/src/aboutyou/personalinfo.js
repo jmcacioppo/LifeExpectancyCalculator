@@ -1,10 +1,10 @@
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
-import {StateData} from '../services/stateData';
+import {StateData} from '../services/data/stateData';
 import * as ionRangeSlider from "ion-rangeslider";
 import {Slider} from '../utilities/slider';
-import {CalculateResults} from '../utilities/calculateResults';
+import {CalculateResults} from '../utilities/calculations/calculateResults';
 
 @inject(Router, User, StateData, Slider, CalculateResults)
 export class personalinfo {

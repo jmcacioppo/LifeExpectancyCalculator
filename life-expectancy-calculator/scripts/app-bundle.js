@@ -165,7 +165,7 @@ define('main',['exports', './environment'], function (exports, _environment) {
     });
   }
 });
-define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../services/stateData', 'ion-rangeslider', '../utilities/slider', '../utilities/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _stateData, _ionRangeslider, _slider, _calculateResults) {
+define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../services/data/stateData', 'ion-rangeslider', '../utilities/slider', '../utilities/calculations/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _stateData, _ionRangeslider, _slider, _calculateResults) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -355,7 +355,7 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
         return personalinfo;
     }()) || _class);
 });
-define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateFamilyHealth', '../utilities/slider'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateFamilyHealth, _slider) {
+define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateFamilyHealth', '../utilities/slider'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateFamilyHealth, _slider) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -412,7 +412,7 @@ define('health/familyhealth',['exports', 'aurelia-framework', 'aurelia-router', 
         return familyhealth;
     }()) || _class);
 });
-define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateMyHealth', 'jquery-ui-dist'], function (exports, _jquery, _aureliaFramework, _aureliaRouter, _user, _calculateMyHealth) {
+define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateMyHealth', 'jquery-ui-dist'], function (exports, _jquery, _aureliaFramework, _aureliaRouter, _user, _calculateMyHealth) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -467,7 +467,7 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
                 this.calculateMyHealth.calculateBMI(person);
                 person.validBMI = true;
                 this.setIconType(person, false);
-                person.iconType = "./src/health/" + person.iconType + ".jpg";
+                person.iconType = "./src/health/images" + person.iconType + ".jpg";
             }
             person.validWeight = true;
             person.formHeightWeight = true;
@@ -570,16 +570,7 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
         return myhealth;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
-define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
+define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -627,7 +618,16 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         return occupation;
     }()) || _class);
 });
-define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/chart', '../utilities/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _chart, _calculateResults) {
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
+define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/chart', '../utilities/calculations/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _chart, _calculateResults) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -664,175 +664,7 @@ define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../
         return results;
     }()) || _class);
 });
-define('services/familyHealthData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
-        _classCallCheck(this, FamilyHealthData);
-
-        this.familyLifeExpectancy = 70;
-        this.checkHeartDisease = false;
-        this.checkCancer = false;
-        this.checkMentalHealth = false;
-        this.checkDiabetes = false;
-    };
-});
-define('services/myHealthData',["exports"], function (exports) {
-        "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var MyHealthData = exports.MyHealthData = function MyHealthData() {
-                _classCallCheck(this, MyHealthData);
-
-                this.height;
-                this.heightInInches;
-                this.weight;
-                this.bmi;
-                this.formHeightWeight = false;
-                this.exerciseLifeExpectancy;
-
-                this.validHeight = false;
-                this.validWeight = false;
-                this.validBMI = false;
-                this.iconType = "underweight";
-
-                this.exercisePerWeek;
-                this.sleepPerWeek;
-                this.healthRank;
-
-                this.alcoholPerWeek;
-
-                this.checksmoking = false;
-                this.checkStillSmoking = true;
-                this.kindOfSmoker = true;
-                this.ageQuitSmoking;
-                this.smokerLifeExpectancy;
-        };
-});
-define('services/occupationData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var OccupationData = exports.OccupationData = function OccupationData() {
-        _classCallCheck(this, OccupationData);
-
-        this.checkEducation = false;
-        this.checkConstruction = false;
-        this.checkEmergencyResponding = false;
-    };
-});
-define('services/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.PersonalInfoData = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
-        _classCallCheck(this, PersonalInfoData);
-
-        this.checkspouse = false;
-
-        this.age = 30;
-        this.checkgender = true;
-        this.gender = 'male';
-        this.race = 'white';
-        this.maritalStatus;
-
-        this.state = "Please Select";
-        this.county = 'Please Select';
-        this.countyLifeExpectancy;
-        this.expectedYearsLeft;
-        this.testTuples = [];
-
-        this.ethnicityLifeExpectancy;
-    }) || _class);
-});
-define('services/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-        exports.ResultsData = undefined;
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var _dec, _class;
-
-        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
-                _classCallCheck(this, ResultsData);
-
-                this.ethnicity;
-
-                this.exercise;
-                this.smoker;
-
-                this.overallLifeExpectancy;
-        }) || _class);
-});
-define('services/stateData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var StateData = exports.StateData = function StateData() {
-        _classCallCheck(this, StateData);
-
-        this.stateSet = new Set();
-        this.stateToCountyMap = new Map();
-    };
-});
-define('services/user',['exports', 'aurelia-framework', '../services/personalInfoData', '../services/myHealthData', '../services/familyHealthData', '../services/occupationData', '../services/resultsData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _familyHealthData, _occupationData, _resultsData) {
+define('services/user',['exports', 'aurelia-framework', '../services/data/personalInfoData', '../services/data/myHealthData', '../services/data/familyHealthData', '../services/data/occupationData', '../services/data/resultsData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _familyHealthData, _occupationData, _resultsData) {
         'use strict';
 
         Object.defineProperty(exports, "__esModule", {
@@ -866,239 +698,6 @@ define('services/user',['exports', 'aurelia-framework', '../services/personalInf
                 this.clientResults = new _resultsData.ResultsData();
                 this.spouseResults = new _resultsData.ResultsData();
         }) || _class);
-});
-define('utilities/calculateFamilyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateFamilyHealth = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateFamilyHealth = exports.CalculateFamilyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateFamilyHealth(user) {
-        _classCallCheck(this, CalculateFamilyHealth);
-
-        this.user = user;
-    }) || _class);
-});
-define('utilities/calculateMyHealth',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateMyHealth = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateMyHealth = exports.CalculateMyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function () {
-        function CalculateMyHealth(user) {
-            _classCallCheck(this, CalculateMyHealth);
-
-            this.user = user;
-        }
-
-        CalculateMyHealth.prototype.calculateBMI = function calculateBMI(person) {
-            var metricWeight = person.weight * 0.45;
-            var metricHeight = person.heightInInches * 0.025;
-            var metricHeightSquared = metricHeight * metricHeight;
-            person.bmi = (metricWeight / metricHeightSquared).toPrecision(4);
-        };
-
-        CalculateMyHealth.prototype.calculateExercise = function calculateExercise(person) {
-            var exercisePerWeek = person.exercisePerWeek;
-            var bmi = person.bmi;
-
-            if (exercisePerWeek.indexOf("0") !== -1) {
-                person.exerciseLifeExpectancy = 0;
-                if (bmi >= 18.5 && bmi < 25) person.exerciseLifeExpectancy -= 4.7;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 3.9;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 5.0;else if (bmi >= 35) person.exerciseLifeExpectancy -= 7.2;
-            } else if (exercisePerWeek.indexOf("Less") !== -1) {
-                person.exerciseLifeExpectancy = 1.8;
-                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 2.4;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 1.8;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 3.2;else if (bmi >= 35) person.exerciseLifeExpectancy -= 6.2;
-            } else if (exercisePerWeek.indexOf("Approximately") !== -1) {
-                person.exerciseLifeExpectancy = 3.4;
-                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
-            } else if (exercisePerWeek.indexOf("More") !== -1) {
-                person.exerciseLifeExpectancy = 4.5;
-                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
-            }
-        };
-
-        CalculateMyHealth.prototype.calculateSmoker = function calculateSmoker(person) {
-            var checksmoking = person.checksmoking;
-            var smokerLifeExpectancy = 0;
-
-            if (checksmoking) {
-                var stillSmoking = person.checkStillSmoking;
-                var kindOfSmoker = person.kindOfSmoker;
-
-                if (kindOfSmoker.indexOf("Light") !== -1) smokerLifeExpectancy = -4.8;else if (kindOfSmoker.indexOf("Average") !== -1) smokerLifeExpectancy -= 6.8;else if (kindOfSmoker.indexOf("Heavy") !== -1) smokerLifeExpectancy -= 8.8;
-
-                if (!stillSmoking) {
-                    var age = person.ageQuitSmoking;
-                    if (age.indexOf("25") !== -1) smokerLifeExpectancy += 10;else if (age.indexOf("35") !== -1) smokerLifeExpectancy += 9;else if (age.indexOf("45") !== -1) smokerLifeExpectancy += 6;else if (age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
-                }
-            }
-
-            person.smokerLifeExpectancy = smokerLifeExpectancy;
-        };
-
-        return CalculateMyHealth;
-    }()) || _class);
-});
-define('utilities/calculateOccupation',['exports', 'aurelia-framework', '../services/user'], function (exports, _aureliaFramework, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateOccupation = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateOccupation(user) {
-        _classCallCheck(this, CalculateOccupation);
-
-        this.user = user;
-    }) || _class);
-});
-define('utilities/calculateResults',['exports', 'aurelia-framework', 'aurelia-fetch-client', '../services/user'], function (exports, _aureliaFramework, _aureliaFetchClient, _user) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.CalculateResults = undefined;
-
-    function _asyncToGenerator(fn) {
-        return function () {
-            var gen = fn.apply(this, arguments);
-            return new Promise(function (resolve, reject) {
-                function step(key, arg) {
-                    try {
-                        var info = gen[key](arg);
-                        var value = info.value;
-                    } catch (error) {
-                        reject(error);
-                        return;
-                    }
-
-                    if (info.done) {
-                        resolve(value);
-                    } else {
-                        return Promise.resolve(value).then(function (value) {
-                            step("next", value);
-                        }, function (err) {
-                            step("throw", err);
-                        });
-                    }
-                }
-
-                return step("next");
-            });
-        };
-    }
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var CalculateResults = exports.CalculateResults = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient, _user.User), _dec(_class = function () {
-        function CalculateResults(httpClient, user) {
-            _classCallCheck(this, CalculateResults);
-
-            this.httpClient = httpClient;
-            this.user = user;
-        }
-
-        CalculateResults.prototype.getLifeTableData = function () {
-            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(person) {
-                var data, data2;
-                return regeneratorRuntime.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                _context.next = 2;
-                                return this.httpClient.fetch('/api/life-table/' + person.race.toLowerCase() + '-' + person.gender.toLowerCase() + '.json');
-
-                            case 2:
-                                data = _context.sent;
-                                _context.next = 5;
-                                return data.json();
-
-                            case 5:
-                                data2 = _context.sent;
-
-                                this.setUserExpectedAge(data2, person);
-                                this.getTestTuples(data2, person);
-
-                            case 8:
-                            case 'end':
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getLifeTableData(_x) {
-                return _ref.apply(this, arguments);
-            }
-
-            return getLifeTableData;
-        }();
-
-        CalculateResults.prototype.setUserExpectedAge = function setUserExpectedAge(data, person) {
-            data.forEach(function (value) {
-                var currentAgeArray = [];
-                currentAgeArray[0] = parseInt(value.Age.slice(0, 2));
-                currentAgeArray[1] = parseInt(value.Age.slice(3, 5));
-                if (currentAgeArray[0] === person.age || currentAgeArray[1] === person.age) {
-                    person.expectedYearsLeft = parseInt(value.ExpectedAge);
-                    person.ethnicityLifeExpectancy = person.expectedYearsLeft + person.age;
-                }
-            });
-        };
-
-        CalculateResults.prototype.addMyHealthExpectancy = function addMyHealthExpectancy(personResults) {
-            personResults.overallLifeExpectancy = personResults.ethnicity;
-            personResults.overallLifeExpectancy += personResults.exercise;
-            personResults.overallLifeExpectancy += personResults.smoker;
-        };
-
-        CalculateResults.prototype.getTestTuples = function getTestTuples(jsonData, person) {
-            var tempArr = [];
-            jsonData.forEach(function (value) {
-                tempArr.push([value.Age, 1 - value.Probability]);
-            });
-            person.testTuples = tempArr;
-        };
-
-        return CalculateResults;
-    }()) || _class);
 });
 define('utilities/chart',['exports', 'aurelia-framework', 'highcharts', '../services/user'], function (exports, _aureliaFramework, _highcharts, _user) {
     'use strict';
@@ -1178,7 +777,7 @@ define('utilities/chart',['exports', 'aurelia-framework', 'highcharts', '../serv
         return Chart;
     }()) || _class);
 });
-define('utilities/readFile',['exports', 'aurelia-framework', '../services/stateData'], function (exports, _aureliaFramework, _stateData) {
+define('utilities/readFile',['exports', 'aurelia-framework', '../services/data/stateData'], function (exports, _aureliaFramework, _stateData) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -1319,6 +918,407 @@ define('utilities/slider',['exports', 'aurelia-framework', '../services/user', '
         };
 
         return Slider;
+    }()) || _class);
+});
+define('services/data/familyHealthData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
+        _classCallCheck(this, FamilyHealthData);
+
+        this.familyLifeExpectancy = 70;
+        this.checkHeartDisease = false;
+        this.checkCancer = false;
+        this.checkMentalHealth = false;
+        this.checkDiabetes = false;
+    };
+});
+define('services/data/myHealthData',["exports"], function (exports) {
+        "use strict";
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var MyHealthData = exports.MyHealthData = function MyHealthData() {
+                _classCallCheck(this, MyHealthData);
+
+                this.height;
+                this.heightInInches;
+                this.weight;
+                this.bmi;
+                this.formHeightWeight = false;
+                this.exerciseLifeExpectancy;
+
+                this.validHeight = false;
+                this.validWeight = false;
+                this.validBMI = false;
+                this.iconType = "underweight";
+
+                this.exercisePerWeek;
+                this.sleepPerWeek;
+                this.healthRank;
+
+                this.alcoholPerWeek;
+
+                this.checksmoking = false;
+                this.checkStillSmoking = true;
+                this.kindOfSmoker = true;
+                this.ageQuitSmoking;
+                this.smokerLifeExpectancy;
+        };
+});
+define('services/data/occupationData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var OccupationData = exports.OccupationData = function OccupationData() {
+        _classCallCheck(this, OccupationData);
+
+        this.checkEducation = false;
+        this.checkConstruction = false;
+        this.checkEmergencyResponding = false;
+    };
+});
+define('services/data/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.PersonalInfoData = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
+        _classCallCheck(this, PersonalInfoData);
+
+        this.checkspouse = false;
+
+        this.age = 30;
+        this.checkgender = true;
+        this.gender = 'male';
+        this.race = 'white';
+        this.maritalStatus;
+
+        this.state = "Please Select";
+        this.county = 'Please Select';
+        this.countyLifeExpectancy;
+        this.expectedYearsLeft;
+        this.testTuples = [];
+
+        this.ethnicityLifeExpectancy;
+    }) || _class);
+});
+define('services/data/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+        exports.ResultsData = undefined;
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var _dec, _class;
+
+        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
+                _classCallCheck(this, ResultsData);
+
+                this.ethnicity;
+
+                this.exercise;
+                this.smoker;
+
+                this.overallLifeExpectancy;
+        }) || _class);
+});
+define('services/data/stateData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var StateData = exports.StateData = function StateData() {
+        _classCallCheck(this, StateData);
+
+        this.stateSet = new Set();
+        this.stateToCountyMap = new Map();
+    };
+});
+define('utilities/calculations/calculateFamilyHealth',['exports', 'aurelia-framework', '../../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateFamilyHealth = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateFamilyHealth = exports.CalculateFamilyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateFamilyHealth(user) {
+        _classCallCheck(this, CalculateFamilyHealth);
+
+        this.user = user;
+    }) || _class);
+});
+define('utilities/calculations/calculateMyHealth',['exports', 'aurelia-framework', '../../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateMyHealth = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateMyHealth = exports.CalculateMyHealth = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function () {
+        function CalculateMyHealth(user) {
+            _classCallCheck(this, CalculateMyHealth);
+
+            this.user = user;
+        }
+
+        CalculateMyHealth.prototype.calculateBMI = function calculateBMI(person) {
+            var metricWeight = person.weight * 0.45;
+            var metricHeight = person.heightInInches * 0.025;
+            var metricHeightSquared = metricHeight * metricHeight;
+            person.bmi = (metricWeight / metricHeightSquared).toPrecision(4);
+        };
+
+        CalculateMyHealth.prototype.calculateExercise = function calculateExercise(person) {
+            var exercisePerWeek = person.exercisePerWeek;
+            var bmi = person.bmi;
+
+            if (exercisePerWeek.indexOf("0") !== -1) {
+                person.exerciseLifeExpectancy = 0;
+                if (bmi >= 18.5 && bmi < 25) person.exerciseLifeExpectancy -= 4.7;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 3.9;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 5.0;else if (bmi >= 35) person.exerciseLifeExpectancy -= 7.2;
+            } else if (exercisePerWeek.indexOf("Less") !== -1) {
+                person.exerciseLifeExpectancy = 1.8;
+                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 2.4;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 1.8;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 3.2;else if (bmi >= 35) person.exerciseLifeExpectancy -= 6.2;
+            } else if (exercisePerWeek.indexOf("Approximately") !== -1) {
+                person.exerciseLifeExpectancy = 3.4;
+                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
+            } else if (exercisePerWeek.indexOf("More") !== -1) {
+                person.exerciseLifeExpectancy = 4.5;
+                if (bmi >= 18.5 && bmi <= 24.9) person.exerciseLifeExpectancy -= 0;else if (bmi >= 25 && bmi < 30) person.exerciseLifeExpectancy -= 0;else if (bmi >= 30 && bmi < 35) person.exerciseLifeExpectancy -= 1.6;else if (bmi >= 35) person.exerciseLifeExpectancy -= 4.5;
+            }
+        };
+
+        CalculateMyHealth.prototype.calculateSmoker = function calculateSmoker(person) {
+            var checksmoking = person.checksmoking;
+            var smokerLifeExpectancy = 0;
+
+            if (checksmoking) {
+                var stillSmoking = person.checkStillSmoking;
+                var kindOfSmoker = person.kindOfSmoker;
+
+                if (kindOfSmoker.indexOf("Light") !== -1) smokerLifeExpectancy = -4.8;else if (kindOfSmoker.indexOf("Average") !== -1) smokerLifeExpectancy -= 6.8;else if (kindOfSmoker.indexOf("Heavy") !== -1) smokerLifeExpectancy -= 8.8;
+
+                if (!stillSmoking) {
+                    var age = person.ageQuitSmoking;
+                    if (age.indexOf("25") !== -1) smokerLifeExpectancy += 10;else if (age.indexOf("35") !== -1) smokerLifeExpectancy += 9;else if (age.indexOf("45") !== -1) smokerLifeExpectancy += 6;else if (age.indexOf("60") !== -1) smokerLifeExpectancy += 3;
+                }
+            }
+
+            person.smokerLifeExpectancy = smokerLifeExpectancy;
+        };
+
+        return CalculateMyHealth;
+    }()) || _class);
+});
+define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framework', '../../services/user'], function (exports, _aureliaFramework, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateOccupation = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User), _dec(_class = function CalculateOccupation(user) {
+        _classCallCheck(this, CalculateOccupation);
+
+        this.user = user;
+    }) || _class);
+});
+define('utilities/calculations/calculateResults',['exports', 'aurelia-framework', 'aurelia-fetch-client', '../../services/user'], function (exports, _aureliaFramework, _aureliaFetchClient, _user) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.CalculateResults = undefined;
+
+    function _asyncToGenerator(fn) {
+        return function () {
+            var gen = fn.apply(this, arguments);
+            return new Promise(function (resolve, reject) {
+                function step(key, arg) {
+                    try {
+                        var info = gen[key](arg);
+                        var value = info.value;
+                    } catch (error) {
+                        reject(error);
+                        return;
+                    }
+
+                    if (info.done) {
+                        resolve(value);
+                    } else {
+                        return Promise.resolve(value).then(function (value) {
+                            step("next", value);
+                        }, function (err) {
+                            step("throw", err);
+                        });
+                    }
+                }
+
+                return step("next");
+            });
+        };
+    }
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var CalculateResults = exports.CalculateResults = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient, _user.User), _dec(_class = function () {
+        function CalculateResults(httpClient, user) {
+            _classCallCheck(this, CalculateResults);
+
+            this.httpClient = httpClient;
+            this.user = user;
+        }
+
+        CalculateResults.prototype.getLifeTableData = function () {
+            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(person) {
+                var data, data2;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                _context.next = 2;
+                                return this.httpClient.fetch('/api/life-table/' + person.race.toLowerCase() + '-' + person.gender.toLowerCase() + '.json');
+
+                            case 2:
+                                data = _context.sent;
+                                _context.next = 5;
+                                return data.json();
+
+                            case 5:
+                                data2 = _context.sent;
+
+                                this.setUserExpectedAge(data2, person);
+                                this.getTestTuples(data2, person);
+
+                            case 8:
+                            case 'end':
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getLifeTableData(_x) {
+                return _ref.apply(this, arguments);
+            }
+
+            return getLifeTableData;
+        }();
+
+        CalculateResults.prototype.setUserExpectedAge = function setUserExpectedAge(data, person) {
+            data.forEach(function (value) {
+                var currentAgeArray = [];
+                currentAgeArray[0] = parseInt(value.Age.slice(0, 2));
+                currentAgeArray[1] = parseInt(value.Age.slice(3, 5));
+                if (currentAgeArray[0] === person.age || currentAgeArray[1] === person.age) {
+                    person.expectedYearsLeft = parseInt(value.ExpectedAge);
+                    person.ethnicityLifeExpectancy = person.expectedYearsLeft + person.age;
+                }
+            });
+        };
+
+        CalculateResults.prototype.addMyHealthExpectancy = function addMyHealthExpectancy(personResults) {
+            personResults.overallLifeExpectancy = personResults.ethnicity;
+            personResults.overallLifeExpectancy += personResults.exercise;
+            personResults.overallLifeExpectancy += personResults.smoker;
+        };
+
+        CalculateResults.prototype.getTestTuples = function getTestTuples(jsonData, person) {
+            var tempArr = [];
+            jsonData.forEach(function (value) {
+                tempArr.push([value.Age, 1 - value.Probability]);
+            });
+            person.testTuples = tempArr;
+        };
+
+        return CalculateResults;
     }()) || _class);
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><div id=\"app\"><div id=\"content\"><div id=\"home\"><h1 style=\"font-size:36px;text-align:center\"><b>Life Expectancy Calculator<b></b></b></h1></div><hr><router-view></router-view></div><br><br><br><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });

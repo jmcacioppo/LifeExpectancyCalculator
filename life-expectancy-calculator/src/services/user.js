@@ -1,9 +1,9 @@
 import {singleton} from 'aurelia-framework';
-import {PersonalInfoData} from '../services/personalInfoData';
-import {MyHealthData} from '../services/myHealthData';
-import {FamilyHealthData} from '../services/familyHealthData';
-import {OccupationData} from '../services/occupationData';
-import {ResultsData} from '../services/resultsData';
+import {PersonalInfoData} from '../services/data/personalInfoData';
+import {MyHealthData} from '../services/data/myHealthData';
+import {FamilyHealthData} from '../services/data/familyHealthData';
+import {OccupationData} from '../services/data/occupationData';
+import {ResultsData} from '../services/data/resultsData';
 
 @singleton()
 export class User {

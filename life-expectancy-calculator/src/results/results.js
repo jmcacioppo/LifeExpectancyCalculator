@@ -2,7 +2,7 @@ import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
 import {Chart} from '../utilities/chart';
-import {CalculateResults} from '../utilities/calculateResults';
+import {CalculateResults} from '../utilities/calculations/calculateResults';
 
 @inject(Router, User, Chart, CalculateResults)
 export class results {
