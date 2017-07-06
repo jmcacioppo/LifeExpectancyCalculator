@@ -1,507 +1,406 @@
 [
   {
     "Age": "00–01",
-    "Probability": 0.00462,
-    "ExpectedAge": 84.2
+    "Number": 100000
   },
   {
-    "Age": "01–02",
-    "Probability": 0.000263,
-    "ExpectedAge": 83.6
+    "Age": "01-02",
+    "Number": 99438
   },
   {
     "Age": "02–03",
-    "Probability": 0.000201,
-    "ExpectedAge": 82.6
+    "Number": 99393
   },
   {
     "Age": "03–04",
-    "Probability": 0.00016,
-    "ExpectedAge": 81.7
+    "Number": 99362
   },
   {
     "Age": "04–05",
-    "Probability": 0.000114,
-    "ExpectedAge": 80.7
+    "Number": 99341
   },
   {
     "Age": "05–06",
-    "Probability": 0.000099,
-    "ExpectedAge": 79.7 
+    "Number": 99323
   },
   {
     "Age": "06–07",
-    "Probability": 0.000082,
-    "ExpectedAge": 78.7
+    "Number": 99306
   },
   {
     "Age": "07–08",
-    "Probability": 0.000073,
-    "ExpectedAge": 77.7
+    "Number": 99291
   },
   {
     "Age": "08–09",
-    "Probability": 0.000072,
-    "ExpectedAge": 76.7
+    "Number": 99277
   },
   {
     "Age": "09–10",
-    "Probability": 0.000077,
-    "ExpectedAge": 75.7
+    "Number": 99265
   },
   {
     "Age": "10–11",
-    "Probability": 0.000088,
-    "ExpectedAge": 74.7
+    "Number": 99254
   },
   {
     "Age": "11–12",
-    "Probability": 0.000103,
-    "ExpectedAge": 73.7
+    "Number": 99244
   },
   {
     "Age": "12–13",
-    "Probability": 0.00012,
-    "ExpectedAge": 72.7
+    "Number": 99233
   },
   {
     "Age": "13–14",
-    "Probability": 0.000137,
-    "ExpectedAge": 71.7
+    "Number": 99218
   },
   {
     "Age": "14–15",
-    "Probability": 0.000153,
-    "ExpectedAge": 70.7
+    "Number": 99198
   },
   {
     "Age": "15–16",
-    "Probability": 0.000171,
-    "ExpectedAge": 69.8
+    "Number": 99170
   },
   {
     "Age": "16–17",
-    "Probability": 0.000192,
-    "ExpectedAge": 68.8
+    "Number": 99133
   },
   {
     "Age": "17–18",
-    "Probability": 0.000214,
-    "ExpectedAge": 67.8
+    "Number": 99088
   },
   {
     "Age": "18–19",
-    "Probability": 0.000239,
-    "ExpectedAge": 66.8
+    "Number": 99033
   },
   {
     "Age": "19–20",
-    "Probability": 0.000265,
-    "ExpectedAge": 65.8
+    "Number": 98964
   },
   {
     "Age": "20–21",
-    "Probability": 0.000293,
-    "ExpectedAge": 64.8
+    "Number": 98881
   },
   {
     "Age": "21–22",
-    "Probability": 0.000319,
-    "ExpectedAge": 63.8
+    "Number": 98783
   },
   {
     "Age": "22–23",
-    "Probability": 0.000337,
-    "ExpectedAge": 62.9
+    "Number": 98672
   },
   {
     "Age": "23–24",
-    "Probability": 0.000345,
-    "ExpectedAge": 61.9
+    "Number": 98552
   },
   {
     "Age": "24–25",
-    "Probability": 0.000346,
-    "ExpectedAge": 60.9
+    "Number": 98426
   },
   {
     "Age": "25–26",
-    "Probability": 0.000344,
-    "ExpectedAge": 59.9
+    "Number": 98297
   },
   {
     "Age": "26–27",
-    "Probability": 0.000346,
-    "ExpectedAge": 58.9
+    "Number": 98166
   },
   {
     "Age": "27–28",
-    "Probability": 0.000354,
-    "ExpectedAge": 58
+    "Number": 98032
   },
   {
     "Age": "28–29",
-    "Probability": 0.000374,
-    "ExpectedAge": 57
+    "Number": 97895
   },
   {
     "Age": "29–30",
-    "Probability": 0.000401,
-    "ExpectedAge": 56
+    "Number": 97755
   },
   {
     "Age": "30–31",
-    "Probability": 0.000431,
-    "ExpectedAge": 55
+    "Number": 97610
   },
   {
     "Age": "31–32",
-    "Probability": 0.00046,
-    "ExpectedAge": 54.1
+    "Number": 97461
   },
   {
     "Age": "32–33",
-    "Probability": 0.000487,
-    "ExpectedAge": 53.1
+    "Number": 97307
   },
   {
     "Age": "33–34",
-    "Probability": 0.000509,
-    "ExpectedAge": 52.1
+    "Number": 97150
   },
   {
     "Age": "34–35",
-    "Probability": 0.000531,
-    "ExpectedAge": 51.1
+    "Number": 96990
   },
   {
     "Age": "35–36",
-    "Probability": 0.000557,
-    "ExpectedAge": 50.2
+    "Number": 96828
   },
   {
     "Age": "36–37",
-    "Probability": 0.000588,
-    "ExpectedAge": 49.2
+    "Number": 96663
   },
   {
     "Age": "37–38",
-    "Probability": 0.000627,
-    "ExpectedAge": 48.2
+    "Number": 96493
   },
   {
     "Age": "38–39",
-    "Probability": 0.000672,
-    "ExpectedAge": 47.2
+    "Number": 96316
   },
   {
     "Age": "39–40",
-    "Probability": 0.000726,
-    "ExpectedAge": 46.3
+    "Number": 96130
   },
   {
     "Age": "40–41",
-    "Probability": 0.000783,
-    "ExpectedAge": 45.3
+    "Number": 95932
   },
   {
     "Age": "41–42",
-    "Probability": 0.00085,
-    "ExpectedAge": 44.3
+    "Number": 95722
   },
   {
     "Age": "42–43",
-    "Probability": 0.000934,
-    "ExpectedAge": 43.4
+    "Number": 95496
   },
   {
     "Age": "43–44",
-    "Probability": 0.001042,
-    "ExpectedAge": 42.4
+    "Number": 95255
   },
   {
     "Age": "44–45",
-    "Probability": 0.001173,
-    "ExpectedAge": 41.5
+    "Number": 94996
   },
   {
     "Age": "45–46",
-    "Probability": 0.001318,
-    "ExpectedAge": 40.5
+    "Number": 94715
   },
   {
     "Age": "46–47",
-    "Probability": 0.001473,
-    "ExpectedAge": 39.6
+    "Number": 94412
   },
   {
     "Age": "47–48",
-    "Probability": 0.001639,
-    "ExpectedAge": 38.6
+    "Number": 94083
   },
   {
     "Age": "48–49",
-    "Probability": 0.001812,
-    "ExpectedAge": 37.7
+    "Number": 93722
   },
   {
     "Age": "49–50",
-    "Probability": 0.001991,
-    "ExpectedAge": 36.8
+    "Number": 93324
   },
   {
     "Age": "50–51",
-    "Probability": 0.002183,
-    "ExpectedAge": 35.8
+    "Number": 92885
   },
   {
     "Age": "51–52",
-    "Probability": 0.002386,
-    "ExpectedAge": 34.9
+    "Number": 92406
   },
   {
     "Age": "52–53",
-    "Probability": 0.002591,
-    "ExpectedAge": 34
+    "Number": 91888
   },
   {
     "Age": "53–54",
-    "Probability": 0.002797,
-    "ExpectedAge": 33.1
+    "Number": 91330
   },
   {
     "Age": "54–55",
-    "Probability": 0.00301,
-    "ExpectedAge": 32.2
+    "Number": 90728
   },
   {
     "Age": "55–56",
-    "Probability": 0.003234,
-    "ExpectedAge": 31.3
+    "Number": 90080
   },
   {
     "Age": "56–57",
-    "Probability": 0.00348,
-    "ExpectedAge": 30.4
+    "Number": 89382
   },
   {
     "Age": "57–58",
-    "Probability": 0.003764,
-    "ExpectedAge": 29.5
+    "Number": 88635
   },
   {
     "Age": "58–59",
-    "Probability": 0.004099,
-    "ExpectedAge": 28.6
+    "Number": 87838
   },
   {
     "Age": "59–60",
-    "Probability": 0.004483,
-    "ExpectedAge": 27.7
+    "Number": 86994
   },
   {
     "Age": "60–61",
-    "Probability": 0.00492,
-    "ExpectedAge": 26.8
+    "Number": 86101
   },
   {
     "Age": "61–62",
-    "Probability": 0.00539,
-    "ExpectedAge": 25.9
+    "Number": 85158
   },
   {
     "Age": "62–63",
-    "Probability": 0.005864,
-    "ExpectedAge": 25.1
+    "Number": 84161
   },
   {
     "Age": "63–64",
-    "Probability": 0.006315,
-    "ExpectedAge": 24.2
+    "Number": 83107
   },
   {
     "Age": "64–65",
-    "Probability": 0.006753,
-    "ExpectedAge": 23.4
+    "Number": 81996
   },
   {
     "Age": "65–66",
-    "Probability": 0.00723,
-    "ExpectedAge": 22.5
+    "Number": 80825
   },
   {
     "Age": "66–67",
-    "Probability": 0.007778,
-    "ExpectedAge": 21.7
+    "Number": 79594
   },
   {
     "Age": "67–68",
-    "Probability": 0.008389,
-    "ExpectedAge": 20.9
+    "Number": 78296
   },
   {
     "Age": "68–69",
-    "Probability": 0.009085,
-    "ExpectedAge": 20
+    "Number": 76923
   },
   {
     "Age": "69–70",
-    "Probability": 0.009892,
-    "ExpectedAge": 19.2
+    "Number": 75465
   },
   {
     "Age": "70–71",
-    "Probability": 0.010795,
-    "ExpectedAge": 18.4
+    "Number": 73909
   },
   {
     "Age": "71–72",
-    "Probability": 0.011847,
-    "ExpectedAge": 17.6
+    "Number": 72242
   },
   {
     "Age": "72–73",
-    "Probability": 0.013149,
-    "ExpectedAge": 16.8
+    "Number": 70454
   },
   {
     "Age": "73–74",
-    "Probability": 0.014752,
-    "ExpectedAge": 16
+    "Number": 68543
   },
   {
     "Age": "74–75",
-    "Probability": 0.01663,
-    "ExpectedAge": 15.2
+    "Number": 66505
   },
   {
     "Age": "75–76",
-    "Probability": 0.018707,
-    "ExpectedAge": 14.5
+    "Number": 64341
   },
   {
     "Age": "76–77",
-    "Probability": 0.02092,
-    "ExpectedAge": 13.8
+    "Number": 62061
   },
   {
     "Age": "77–78",
-    "Probability": 0.023375,
-    "ExpectedAge": 13
+    "Number": 59644
   },
   {
     "Age": "78–79",
-    "Probability": 0.026129,
-    "ExpectedAge": 12.3
+    "Number": 57070
   },
   {
     "Age": "79–80",
-    "Probability": 0.029206,
-    "ExpectedAge": 11.7
+    "Number": 54340
   },
   {
     "Age": "80–81",
-    "Probability": 0.032486,
-    "ExpectedAge": 11
+    "Number": 51465
   },
   {
     "Age": "81–82",
-    "Probability": 0.036081,
-    "ExpectedAge": 10.3
+    "Number": 48446
   },
   {
     "Age": "82–83",
-    "Probability": 0.040544,
-    "ExpectedAge": 9.7
+    "Number": 45293
   },
   {
     "Age": "83–84",
-    "Probability": 0.045635,
-    "ExpectedAge": 9.1
+    "Number": 42035
   },
   {
     "Age": "84–85",
-    "Probability": 0.051703,
-    "ExpectedAge": 8.5
+    "Number": 38687
   },
   {
     "Age": "85–86",
-    "Probability": 0.057828,
-    "ExpectedAge": 8
+    "Number": 35254
   },
   {
     "Age": "86–87",
-    "Probability": 0.065571,
-    "ExpectedAge": 7.4
+    "Number": 31778
   },
   {
     "Age": "87–88",
-    "Probability": 0.074212,
-    "ExpectedAge": 6.9
+    "Number": 28276
   },
   {
     "Age": "88–89",
-    "Probability": 0.083817,
-    "ExpectedAge": 6.4
+    "Number": 24801
   },
   {
     "Age": "89–90",
-    "Probability": 0.094446,
-    "ExpectedAge": 6
+    "Number": 21412
   },
   {
     "Age": "90–91",
-    "Probability": 0.106154,
-    "ExpectedAge": 5.5
+    "Number": 18166
   },
   {
     "Age": "91–92",
-    "Probability": 0.11898,
-    "ExpectedAge": 5.1
+    "Number": 15122
   },
   {
     "Age": "92–93",
-    "Probability": 0.13295,
-    "ExpectedAge": 4.7
+    "Number": 12329
   },
   {
     "Age": "93–94",
-    "Probability": 0.148071,
-    "ExpectedAge": 4.4
+    "Number": 9829
   },
   {
     "Age": "94–95",
-    "Probability": 0.164327,
-    "ExpectedAge": 4.1
+    "Number": 7648
   },
   {
     "Age": "95–96",
-    "Probability": 0.181676,
-    "ExpectedAge": 3.8
+    "Number": 5798
   },
   {
     "Age": "96–97",
-    "Probability": 0.200047,
-    "ExpectedAge": 3.5
+    "Number": 4276
   },
   {
     "Age": "97–98",
-    "Probability": 0.219342,
-    "ExpectedAge": 3.2
+    "Number": 3062
   },
   {
     "Age": "98–99",
-    "Probability": 0.239433,
-    "ExpectedAge": 3
+    "Number": 2127
   },
   {
     "Age": "99–100",
-    "Probability": 0.260167,
-    "ExpectedAge": 2.8
+    "Number": 1430
   },
   {
     "Age": "100-200",
-    "Probability": 1,
-    "ExpectedAge": 2.6
+    "Number": 931
   }
 ]
