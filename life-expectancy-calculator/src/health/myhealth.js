@@ -79,36 +79,59 @@ export class myhealth {
     }
 
     submit() {
-        //BMI AND EXERCISE CALCULATIONS
-        this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
+        var check = true;
 
-        if(this.user.clientMyHealth.exercisePerWeek && this.user.clientMyHealth.exercisePerWeek != "Please Select") {
-            if(this.user.clientMyHealth.bmi) this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
-            else alert("We need a BMI");
-            this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+        //EXERCISE
+        function exerciseCalculations(person, calc, results) {
+            if(person.exercisePerWeek && person.exercisePerWeek != "Please Select") {
+                if(person.bmi) {
+                    calc.calculateExercise(person);
+                    results.exercise = person.exerciseLifeExpectancy;
+                }
+                else {
+                    check = false;
+                    alert("We need a BMI to factor in your exercise per week");
+                }
+            }
+        }
+        
+        function smokerCalculations(person, calc, results) {
+            if(person.checksmoking) {
+                if(person.kindOfSmoker && person.kindOfSmoker != "Please Select") {
+                    if(person.checkStillSmoking) {
+                        calc.calculateSmoker(person);
+                        results.smoker = person.smokerLifeExpectancy;
+                    }
+                }
+                else {
+                    check = false;
+                    alert("Enter what kind of smoker you are");
+                }
+
+                if(!person.checkStillSmoking && person.ageQuitSmoking && person.ageQuitSmoking != "Please Select") {
+                    calc.calculateSmoker(person);
+                    results.smoker = person.smokerLifeExpectancy;
+                }
+                else if(!person.checkStillSmoking && (person.ageQuitSmoking || person.ageQuitSmoking != "Please Select")) {
+                    check = false;
+                    alert("Enter what age you quit smoking");
+                }
+            }
         }
 
-            this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
-        this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+        //this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
 
-        //SMOKER CALCULATIONS
-        this.calculateMyHealth.calculateSmoker(this.user.clientMyHealth);
-        this.user.clientResults.smoker = this.user.clientMyHealth.smokerLifeExpectancy;
-
+        exerciseCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
+        smokerCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
         console.log(this.user.clientMyHealth);
 
         if(this.user.clientPersonalInfo.checkspouse) {
-            //BMI AND EXERCISE CALCULATIONS
-            this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
-            this.calculateMyHealth.calculateExercise(this.user.spouseMyHealth);
-            this.user.spouseResults.exercise = this.user.spouseMyHealth.exerciseLifeExpectancy;
-            
-            //SMOKER CALCULATIONS
-            this.calculateMyHealth.calculateSmoker(this.user.spouseMyHealth);
-            this.user.spouseResults.smoker = this.user.spouseMyHealth.smokerLifeExpectancy;
+            exerciseCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
+            smokerCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
             console.log(this.user.spouseMyHealth);
         }
-        this.router.navigate('#/personalinfo');  
+        
+        if(check) this.router.navigate('#/personalinfo');  
     }
 
     //This takes care of setting up the content for the tooltips
