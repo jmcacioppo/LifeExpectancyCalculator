@@ -11,6 +11,7 @@ export class occupation {
         this.calculateOccupation = calculateOccupation;
     }
 
+    //DRAG AND DROP
     allowDrop(ev) {
         ev.preventDefault();
     }
@@ -26,20 +27,16 @@ export class occupation {
         ev.currentTarget.appendChild(document.getElementById(data));
     }
 
-    //EDUCATION
-    education(person) {
-        person.checkEducation = !person.checkEducation;
+    //INCOME
+    income(person) {
+        person.checkincome = !person.checkincome;
     }
 
-    //CONSTRUCTION
-    construction(person) {
-        person.checkConstruction = !person.checkConstruction;
+    //CHECK OCCUPATION TYPE
+    checkOccupation(person, occupationName) {
+        person.type = occupationName.type;
     }
 
-    //EMERGENCY RESPONDING
-    emergencyResponding(person) {
-        person.checkEmergencyResponding = !person.checkEmergencyResponding;
-    }
 
     //BUTTONS
     back() {
@@ -47,6 +44,30 @@ export class occupation {
     }
 
     submit() {
-        this.router.navigate('#/personalinfo');
+        var check = true;
+        if(this.user.clientOccupation.checkincome) {
+            if(!isNaN(this.user.clientOccupation.income)) {
+                this.calculateOccupation.calculateIncome(this.user.clientOccupation, this.user.clientPersonalInfo.gender, this.user.clientResults);
+            }
+            else {
+                check = false;
+                alert('Enter a valid income');
+            }
+        }
+     
+        
+        if(this.user.clientPersonalInfo.checkspouse) {
+            if(this.user.spouseOccupation.checkincome) {
+                if(!isNaN(this.user.spouseOccupation.income)) {
+                    this.calculateOccupation.calculateIncome(this.user.spouseOccupation, this.user.spousePersonalInfo.gender, this.user.spouseResults);
+                }
+                else {
+                    check = false;
+                    alert('Enter a valid income');
+                }
+            }
+        }
+        
+        if(check) this.router.navigate('#/personalinfo');
     }
 }
