@@ -78,9 +78,8 @@ export class personalinfo {
     async submit() {
         //Get life expectancy based on age, gender, and ethnicity
         await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
-        this.user.clientResults.ethnicity = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
-
-        this.calculateResults.addMyHealthExpectancy(this.user.clientResults);
+        this.calculateResults.calculateEducation(this.user.clientPersonalInfo, this.user.clientResults)
+        this.calculateResults.addExpectancies(this.user.clientResults);
 
         console.log("=======CLIENT=======");
         console.log(this.user.clientPersonalInfo);
@@ -88,15 +87,13 @@ export class personalinfo {
 
         if(this.user.clientPersonalInfo.checkspouse){
             await this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
-            this.user.spouseResults.ethnicity = this.user.spousePersonalInfo.ethnicityLifeExpectancy;
-
-            this.calculateResults.addMyHealthExpectancy(this.user.spouseResults);
+            this.calculateResults.calculateEducation(this.user.spousePersonalInfo, this.user.spouseResults)
+            this.calculateResults.addExpectancies(this.user.spouseResults);
         
             console.log("=======SPOUSE=======");
             console.log(this.user.spousePersonalInfo);
             console.log(this.user.spouseResults);
         } 
-
         
         this.router.navigate('#/results');  
     }

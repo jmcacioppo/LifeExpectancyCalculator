@@ -1,0 +1,22 @@
+#drag-and-drop-container {
+    margin: 0 auto;
+}
+
+#first-drag-group, #drop-box {
+    border: solid .5px black;
+    text-align: center;
+    height: 400px;
+}
+
+#buttons {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 6px;
+    margin-bottom:10px;
+}

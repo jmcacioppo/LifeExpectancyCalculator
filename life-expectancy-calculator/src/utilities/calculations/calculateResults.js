@@ -33,17 +33,22 @@ export class CalculateResults {
         });
     }
 
-    addMyHealthExpectancy(personResults) {
-        personResults.overallLifeExpectancy = personResults.ethnicity;
-        personResults.overallLifeExpectancy += personResults.exercise;
-        personResults.overallLifeExpectancy += personResults.smoker;        
+    //Education calculation
+    calculateEducation(person, results) {
+        console.log(person.education);
     }
 
-    //Averages the life expectancy from the life table and life expectancy county table
-    // averageLifeExpectancy(person) {
-    //     var averagedLifeExpectancy = ((person.expectedYearsLeft + person.age) + person.ethnicityLifeExpectancy ) / 2;
-    //     TODO: Set this variable to new life expectancy if we decide to in future
-    //}
+    addExpectancies(personResults) {
+        //MyHealth Factors
+        personResults.overallLifeExpectancy += personResults.exercise;
+        personResults.overallLifeExpectancy += personResults.smoker;
+
+        //FamilyHealth Factors
+
+
+        //Occupation Factors
+        personResults.overallLifeExpectancy += personResults.income;
+    }
     
     //Gets test tuples for chart data
     getTestTuples(jsonData, person) {
