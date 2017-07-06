@@ -5,17 +5,19 @@ import {StateData} from '../services/data/stateData';
 import * as ionRangeSlider from "ion-rangeslider";
 import {Slider} from '../utilities/slider';
 import {CalculateResults} from '../utilities/calculations/calculateResults';
+import {CalculateOccupation} from '../utilities/calculations/calculateOccupation';
 
-@inject(Router, User, StateData, Slider, CalculateResults)
+@inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation)
 export class personalinfo {
     currentCountyArray = [];
 
-    constructor(router, user, stateData, slider, calculateResults) {
+    constructor(router, user, stateData, slider, calculateResults, calculateOccupation) {
         this.slider = slider;
         this.router = router;
         this.user = user;
         this.stateData = stateData;
         this.calculateResults = calculateResults;
+        this.calculateOccupation = calculateOccupation;
     }
 
     gender(person) {
@@ -72,6 +74,7 @@ export class personalinfo {
     }
 
     occupation() {
+        this.calculateOccupation.loadOccupation();
         this.router.navigate('#/occupation');  
     }
 

@@ -1,7 +1,5 @@
 export class OccupationData {
-    constructor() {
-        this.checkEducation = false;
-        this.checkConstruction = false;
-        this.checkEmergencyResponding = false;
-    }
+    occupationCategorySet = new Set();
+    categoryToJobMap = new Map();
+    occupationChangeInLifeExpectancy = 0;
 }
