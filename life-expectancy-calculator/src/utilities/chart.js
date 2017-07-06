@@ -26,7 +26,7 @@ export class Chart {
                 },
                 yAxis: {
                     title: {
-                        text: 'Probability'
+                        text: 'Chance of Living'
                     }
                 },
                 series: [{
@@ -34,10 +34,10 @@ export class Chart {
                     data:  this.user.clientPersonalInfo.testTuples
                 }, {
                     name: 'Co-client',
-                    data: this.user.clientPersonalInfo.testTuples
+                    data:  this.user.clientPersonalInfo.testTuples2
                 }, {
                     name: 'Average',
-                    data: this.user.clientPersonalInfo.testTuples
+                    data:  this.user.clientPersonalInfo.testTuples3
                 }]
             }); 
     }

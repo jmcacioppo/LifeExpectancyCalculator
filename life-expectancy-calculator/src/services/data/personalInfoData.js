@@ -8,7 +8,7 @@ export class PersonalInfoData {
         this.age = 30;
         this.checkgender = true;
         this.gender = 'male';
-        this.race = 'white';
+        this.race = 'black';
         this.maritalStatus;
 
         this.state = "Please Select";
@@ -16,6 +16,8 @@ export class PersonalInfoData {
         this.countyLifeExpectancy;
         this.expectedYearsLeft;
         this.testTuples = [];
+        this.testTuples2 = [];
+        this.testTuples3 = [];
 
         this.ethnicityLifeExpectancy;
     }

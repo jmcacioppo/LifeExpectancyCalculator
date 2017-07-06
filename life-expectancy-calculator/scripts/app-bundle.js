@@ -758,7 +758,7 @@ define('utilities/chart',['exports', 'aurelia-framework', 'highcharts', '../serv
                 },
                 yAxis: {
                     title: {
-                        text: 'Probability'
+                        text: 'Chance of Living'
                     }
                 },
                 series: [{
@@ -766,10 +766,10 @@ define('utilities/chart',['exports', 'aurelia-framework', 'highcharts', '../serv
                     data: this.user.clientPersonalInfo.testTuples
                 }, {
                     name: 'Co-client',
-                    data: this.user.clientPersonalInfo.testTuples
+                    data: this.user.clientPersonalInfo.testTuples2
                 }, {
                     name: 'Average',
-                    data: this.user.clientPersonalInfo.testTuples
+                    data: this.user.clientPersonalInfo.testTuples3
                 }]
             });
         };
@@ -1029,7 +1029,7 @@ define('services/data/personalInfoData',['exports', 'aurelia-framework'], functi
         this.age = 30;
         this.checkgender = true;
         this.gender = 'male';
-        this.race = 'white';
+        this.race = 'black';
         this.maritalStatus;
 
         this.state = "Please Select";
@@ -1037,6 +1037,8 @@ define('services/data/personalInfoData',['exports', 'aurelia-framework'], functi
         this.countyLifeExpectancy;
         this.expectedYearsLeft;
         this.testTuples = [];
+        this.testTuples2 = [];
+        this.testTuples3 = [];
 
         this.ethnicityLifeExpectancy;
     }) || _class);
@@ -1258,7 +1260,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
 
         CalculateResults.prototype.getLifeTableData = function () {
             var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(person) {
-                var data, data2;
+                var results, resultsData;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                     while (1) {
                         switch (_context.prev = _context.next) {
@@ -1267,15 +1269,15 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
                                 return this.httpClient.fetch('/api/life-table/' + person.race.toLowerCase() + '-' + person.gender.toLowerCase() + '.json');
 
                             case 2:
-                                data = _context.sent;
+                                results = _context.sent;
                                 _context.next = 5;
-                                return data.json();
+                                return results.json();
 
                             case 5:
-                                data2 = _context.sent;
+                                resultsData = _context.sent;
 
-                                this.setUserExpectedAge(data2, person);
-                                this.getTestTuples(data2, person);
+                                this.setUserExpectedAge(resultsData, person);
+                                this.getTestTuples(resultsData, person);
 
                             case 8:
                             case 'end':
@@ -1312,10 +1314,23 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
 
         CalculateResults.prototype.getTestTuples = function getTestTuples(jsonData, person) {
             var tempArr = [];
+            var tempArr2 = [];
+            var tempArr3 = [];
+
             jsonData.forEach(function (value) {
-                tempArr.push([value.Age, 1 - value.Probability]);
+                tempArr.push([value.Age, value.Number]);
+            });
+            jsonData.forEach(function (value) {
+                tempArr2.push([parseInt(value.Age) + 3, value.Number]);
+            });
+            jsonData.forEach(function (value) {
+                tempArr3.push([parseInt(value.Age) - 5, value.Number]);
             });
             person.testTuples = tempArr;
+            person.testTuples2 = tempArr2;
+            console.log(tempArr2);
+            person.testTuples3 = tempArr3;
+            console.log(tempArr3);
         };
 
         return CalculateResults;

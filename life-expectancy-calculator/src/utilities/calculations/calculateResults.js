@@ -13,10 +13,10 @@ export class CalculateResults {
 
     //Gets the life table based on the users race and gender
     async getLifeTableData(person) {
-        let data = await this.httpClient.fetch('/api/life-table/' + person.race.toLowerCase() + '-' + person.gender.toLowerCase() + '.json');
-        let data2 = await data.json();
-        this.setUserExpectedAge(data2, person);
-        this.getTestTuples(data2, person);
+        let results = await this.httpClient.fetch('/api/life-table/' + person.race.toLowerCase() + '-' + person.gender.toLowerCase() + '.json');
+        let resultsData = await results.json();
+        this.setUserExpectedAge(resultsData, person);
+        this.getTestTuples(resultsData, person);
     }
 
     //Iterates through the json object to determine the user's expected age
@@ -48,9 +48,23 @@ export class CalculateResults {
     //Gets test tuples for chart data
     getTestTuples(jsonData, person) {
         var tempArr = [];
+        var tempArr2 = [];
+        var tempArr3 = [];
+
+        //TODO: Adjust curve to extend to beginning at 0 and to the bottom x axis at 0
         jsonData.forEach(function(value) {
-            tempArr.push([value.Age, 1 - value.Probability]);
+            tempArr.push([value.Age, value.Number]);
+        });
+        jsonData.forEach(function(value) {
+            tempArr2.push([parseInt(value.Age) + 3, value.Number]);
+        });
+        jsonData.forEach(function(value) {
+            tempArr3.push([parseInt(value.Age) - 5, value.Number]);
         });
         person.testTuples = tempArr;
+        person.testTuples2 = tempArr2;
+        console.log(tempArr2);
+        person.testTuples3 = tempArr3;
+        console.log(tempArr3);
     }
 }
