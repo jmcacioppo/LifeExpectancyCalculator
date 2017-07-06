@@ -467,14 +467,13 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
                 this.calculateMyHealth.calculateBMI(person);
                 person.validBMI = true;
                 this.setIconType(person, false);
-                person.iconType = "./src/health/images" + person.iconType + ".jpg";
+                person.iconType = "./src/health/images/" + person.iconType + ".jpg";
             }
             person.validWeight = true;
             person.formHeightWeight = true;
         };
 
         myhealth.prototype.setIconType = function setIconType(person, spouse) {
-            console.log(person.bmi);
             switch (true) {
                 case person.bmi < 18.5:
                     person.iconType = "underweight";
@@ -492,7 +491,6 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
                     person.iconType = "extremely-obese";
                     break;
             }
-            console.log(person.iconType);
             return person;
         };
 
@@ -573,11 +571,7 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
         return myhealth;
     }()) || _class);
 });
-<<<<<<< HEAD
-define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
-=======
 define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
->>>>>>> bb5327c590170c4244b40f6f6fcbd90a41539dad
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -625,20 +619,7 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         return occupation;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
-<<<<<<< HEAD
-define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/chart', '../utilities/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _chart, _calculateResults) {
-=======
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/chart', '../utilities/calculations/calculateResults'], function (exports, _aureliaFramework, _aureliaRouter, _user, _chart, _calculateResults) {
->>>>>>> bb5327c590170c4244b40f6f6fcbd90a41539dad
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -709,6 +690,15 @@ define('services/user',['exports', 'aurelia-framework', '../services/data/person
                 this.clientResults = new _resultsData.ResultsData();
                 this.spouseResults = new _resultsData.ResultsData();
         }) || _class);
+});
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
 });
 define('utilities/chart',['exports', 'aurelia-framework', 'highcharts', '../services/user'], function (exports, _aureliaFramework, _highcharts, _user) {
     'use strict';

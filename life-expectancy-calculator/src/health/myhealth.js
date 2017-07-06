@@ -37,7 +37,7 @@ export class myhealth {
             this.calculateMyHealth.calculateBMI(person);
             person.validBMI = true;
             this.setIconType(person, false)
-            person.iconType = "./src/health/images" + person.iconType + ".jpg";
+            person.iconType = "./src/health/images/" + person.iconType + ".jpg";
         }
         person.validWeight = true;
         person.formHeightWeight = true;
@@ -45,7 +45,6 @@ export class myhealth {
 
     //Determines the icon types give the client/spouse. If client is passed in then, spouse = false.
     setIconType(person, spouse) {
-        console.log(person.bmi);
         switch(true) {
             case person.bmi < 18.5:
                 person.iconType = "underweight";
@@ -63,7 +62,6 @@ export class myhealth {
                 person.iconType = "extremely-obese";
                 break;
         }
-        console.log(person.iconType);
         return person;
     }
 
