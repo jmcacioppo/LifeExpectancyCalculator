@@ -5,7 +5,7 @@ export class MyHealthData {
         this.weight;
         this.bmi;
         this.formHeightWeight = false;
-        this.exerciseLifeExpectancy;
+        this.exerciseLifeExpectancy = 0;
 
         this.validHeight = false;
         this.validWeight = false;
@@ -20,8 +20,8 @@ export class MyHealthData {
 
         this.checksmoking = false;
         this.checkStillSmoking = true;
-        this.kindOfSmoker = true;
+        this.kindOfSmoker;
         this.ageQuitSmoking;
-        this.smokerLifeExpectancy;
+        this.smokerLifeExpectancy = 0;
     }
 }
