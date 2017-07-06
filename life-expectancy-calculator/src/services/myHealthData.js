@@ -5,7 +5,7 @@ export class MyHealthData {
         this.weight;
         this.bmi;
         this.formHeightWeight = false;
-        this.exerciseLifeExpectancy;
+        this.exerciseLifeExpectancy = 0;
 
         this.validHeight = false;
         this.validWeight = false;
