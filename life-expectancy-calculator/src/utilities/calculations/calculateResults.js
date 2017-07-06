@@ -50,8 +50,7 @@ export class CalculateResults {
         var tempArr = [];
         var tempArr2 = [];
         var tempArr3 = [];
-
-        //TODO: Adjust curve to extend to beginning at 0 and to the bottom x axis at 0
+        
         jsonData.forEach(function(value) {
             tempArr.push([value.Age, value.Number]);
         });
