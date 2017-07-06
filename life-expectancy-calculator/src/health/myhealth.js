@@ -3,7 +3,7 @@ import 'jquery-ui-dist';
 import {inject} from 'aurelia-framework';
 import {Router} from 'aurelia-router';
 import {User} from '../services/user';
-import {CalculateMyHealth} from '../utilities/calculateMyHealth';
+import {CalculateMyHealth} from '../utilities/calculations/calculateMyHealth';
 
 @inject(Router, User, CalculateMyHealth)
 export class myhealth {
@@ -37,7 +37,7 @@ export class myhealth {
             this.calculateMyHealth.calculateBMI(person);
             person.validBMI = true;
             this.setIconType(person, false)
-            person.iconType = "./src/health/" + person.iconType + ".jpg";
+            person.iconType = "./src/health/images" + person.iconType + ".jpg";
         }
         person.validWeight = true;
         person.formHeightWeight = true;

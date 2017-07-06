@@ -1,6 +1,6 @@
 import {inject} from 'aurelia-framework';
 import {HttpClient, json} from 'aurelia-fetch-client';
-import {User} from '../services/user';
+import {User} from '../../services/user';
 
 @inject(HttpClient, User)
 export class CalculateResults {
