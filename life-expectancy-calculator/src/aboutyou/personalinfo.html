@@ -2,6 +2,7 @@
     <require from="ion-rangeslider/css/ion.rangeSlider.css"></require>
     <require from="ion-rangeslider/css/ion.rangeSlider.skinHTML5.css"></require>
     <require from="ion-rangeslider/css/normalize.css"></require>
+    <require from="./capitalize-converter"></require>
     
 
     <form id="personalinfo" submit.delegate="submit()">
@@ -64,7 +65,7 @@
                     <label for="state">State</label>
                     <select class="form-control" change.delegate="checkState(user.clientPersonalInfo)" value.bind="user.clientPersonalInfo.state">
                         <option>Please Select</option>
-                        <option repeat.for="state of stateData.stateSet">${state}</option>
+                        <option repeat.for="state of stateData.stateSet">${state | capitalize}</option>
                     </select>
                 </div>
 
@@ -73,7 +74,7 @@
                     <label for="county">County</label>
                     <select class="form-control" change.delegate="checkLifeExpectancy(user.clientPersonalInfo)" value.bind="user.clientPersonalInfo.county">
                         <option>Please Select</option>
-                        <option repeat.for="county of currentCountyArray">${county}</option>
+                        <option repeat.for="county of currentCountyArray">${county | capitalize}</option>
                     </select>
                 </div>
             </div>
@@ -126,7 +127,7 @@
                     <label for="state">State</label>
                     <select class="form-control" change.delegate="checkState(user.spousePersonalInfo)" value.bind="user.spousePersonalInfo.state">
                         <option>Please Select</option>
-                        <option repeat.for="state of stateData.stateSet">${state}</option>
+                        <option repeat.for="state of stateData.stateSet">${state | capitalize}</option>
                     </select>
                 </div>
 
@@ -135,7 +136,7 @@
                     <label for="county">County</label>
                     <select class="form-control" change.delegate="checkLifeExpectancy(user.spousePersonalInfo)" value.bind="user.spousePersonalInfo.county">
                         <option>Please Select</option>
-                        <option repeat.for="county of currentCountyArray">${county}</option>
+                        <option repeat.for="county of currentCountyArray">${county | capitalize}</option>
                     </select>
                 </div>
             </div>
