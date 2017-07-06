@@ -20,8 +20,8 @@ export class MyHealthData {
 
         this.checksmoking = false;
         this.checkStillSmoking = true;
-        this.kindOfSmoker = true;
+        this.kindOfSmoker;
         this.ageQuitSmoking;
-        this.smokerLifeExpectancy;
+        this.smokerLifeExpectancy = 0;
     }
 }

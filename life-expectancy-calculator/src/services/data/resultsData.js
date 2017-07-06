@@ -4,11 +4,11 @@ import {transient} from 'aurelia-framework';
 export class ResultsData {
     constructor() {
         //PERSONAL INFO EXPECTANCIES
-        this.ethnicity;
+        this.ethnicity = 0;
 
         //MY HEALTH EXPECTANCIES
-        this.exercise;
-        this.smoker;
+        this.exercise = 0;
+        this.smoker = 0;
         
         //FAMILY HEALTH EXPECTANCIES
 
@@ -17,6 +17,6 @@ export class ResultsData {
 
 
         //OVERALL EXPECTANCY
-        this.overallLifeExpectancy;
+        this.overallLifeExpectancy = 0;
     }
 }

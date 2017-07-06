@@ -21,7 +21,7 @@ export class CalculateMyHealth {
 
         if(person.exercisePerWeek) {
             var bmi = person.bmi;
-            
+
             if(person.exercisePerWeek.indexOf("0") !== -1) {
                 exerciseLifeExpectancy = 0;
                 if(bmi >= 18.5 && bmi < 25) exerciseLifeExpectancy -= 4.7;
@@ -51,57 +51,51 @@ export class CalculateMyHealth {
                 else if(bmi >= 35) exerciseLifeExpectancy -= 4.5;
             }
         }
-
         person.exerciseLifeExpectancy = exerciseLifeExpectancy;
     }
 
     calculateSmoker(person) {
-        var checksmoking = person.checksmoking;
         var smokerLifeExpectancy = 0;
+        var stillSmoking = person.checkStillSmoking;
+        var kindOfSmoker = person.kindOfSmoker;
+        
+        //CHECK KIND OF SMOKER
+        if(kindOfSmoker.indexOf("Light") !== -1) {
+            smokerLifeExpectancy = -4.8;
 
-        if(checksmoking) { //Do calculations if they have smoked
-            var stillSmoking = person.checkStillSmoking;
-            var kindOfSmoker = person.kindOfSmoker;
-            
-            //CHECK KIND OF SMOKER
-            if(kindOfSmoker.indexOf("Light") !== -1) {
-                smokerLifeExpectancy = -4.8;
-
-                //Add years if they quit smoking
-                if(!stillSmoking) { 
-                    var age = person.ageQuitSmoking;
-                    if(age.indexOf("25") !== -1) smokerLifeExpectancy += 4.8; //max 10
-                    else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 4.8; //max 9
-                    else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 4.8; //max 6
-                    else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3; //max 3
-                }
-            }
-            else if(kindOfSmoker.indexOf("Average") !== -1) {
-                smokerLifeExpectancy -= 6.8;
-
-                //Add years if they quit smoking
-                if(!stillSmoking) { 
-                    var age = person.ageQuitSmoking;
-                    if(age.indexOf("25") !== -1) smokerLifeExpectancy += 6.8; //max 10
-                    else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 6.8; //max 9
-                    else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 6; //max 6
-                    else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3; //max 3
-                }
-            }
-            else if(kindOfSmoker.indexOf("Heavy") !== -1) {
-                smokerLifeExpectancy -= 8.8;
-
-                //Add years if they quit smoking
-                if(!stillSmoking) { 
-                    var age = person.ageQuitSmoking;
-                    if(age.indexOf("25") !== -1) smokerLifeExpectancy += 8.8; //max 10
-                    else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 8.8; //max 9
-                    else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 6; //max 6
-                    else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3; //max 3
-                }
+            //Add years if they quit smoking
+            if(!stillSmoking) { 
+                var age = person.ageQuitSmoking;
+                if(age.indexOf("25") !== -1) smokerLifeExpectancy += 4.8; //max 10
+                else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 4.8; //max 9
+                else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 4.8; //max 6
+                else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3; //max 3
             }
         }
+        else if(kindOfSmoker.indexOf("Average") !== -1) {
+            smokerLifeExpectancy -= 6.8;
 
+            //Add years if they quit smoking
+            if(!stillSmoking) { 
+                var age = person.ageQuitSmoking;
+                if(age.indexOf("25") !== -1) smokerLifeExpectancy += 6.8; //max 10
+                else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 6.8; //max 9
+                else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 6; //max 6
+                else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3; //max 3
+            }
+        }
+        else if(kindOfSmoker.indexOf("Heavy") !== -1) {
+            smokerLifeExpectancy -= 8.8;
+
+            //Add years if they quit smoking
+            if(!stillSmoking) { 
+                var age = person.ageQuitSmoking;
+                if(age.indexOf("25") !== -1) smokerLifeExpectancy += 8.8; //max 10
+                else if(age.indexOf("35") !== -1) smokerLifeExpectancy += 8.8; //max 9
+                else if(age.indexOf("45") !== -1) smokerLifeExpectancy += 6; //max 6
+                else if(age.indexOf("60") !== -1) smokerLifeExpectancy += 3; //max 3
+            }
+        }
         person.smokerLifeExpectancy = smokerLifeExpectancy;
     }
 }
