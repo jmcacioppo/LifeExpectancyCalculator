@@ -37,6 +37,7 @@ export class personalinfo {
         if(state != "Please Select") {
             var self = this;
             this.currentCountyArray = [];
+            state = state.toLowerCase();
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
@@ -51,6 +52,7 @@ export class personalinfo {
     checkLifeExpectancy(person) {
         if(person.county != "Please Select") {
             var state = person.state;
+            state = state.toLowerCase();
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
@@ -106,5 +108,9 @@ export class personalinfo {
 
     attached() {
         this.slider.createAgeSlider();
+    }
+
+    capitalize(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 }

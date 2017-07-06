@@ -41,13 +41,19 @@ export class ReadFile {
             var existingValues = self.occupationData.categoryToJobMap.get(jobObject.Category);
             existingValues += " " + jobObject.Occupation + ":";
             self.occupationData.categoryToJobMap.set(jobObject.Category, existingValues);
-        })
-        console.log(this.occupationData.occupationCategorySet);
-        console.log(this.occupationData.categoryToJobMap);
+        });
     }
 
+    //Given json data and array of user occupations, this will find the change in life expectancy from occupation.
     getOccupationDeathNumber(jsonData, arrayOccupations) {
         var self = this;
-        
+        var deathTotal = 0;
+        jsonData.forEach((jobObject) => {
+            arrayOccupations.forEach((userOccupation) => {
+                if(userOccupation === jobObject.Occupation)
+                    total += jobObject.deathTotal;
+            })
+        });
+        return deathTotal;
     }
 }
