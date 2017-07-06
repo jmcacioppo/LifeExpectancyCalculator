@@ -37,7 +37,7 @@ export class myhealth {
             this.calculateMyHealth.calculateBMI(person);
             person.validBMI = true;
             this.setIconType(person, false)
-            person.iconType = "./src/health/images" + person.iconType + ".jpg";
+            person.iconType = "./src/health/images/" + person.iconType + ".jpg";
         }
         person.validWeight = true;
         person.formHeightWeight = true;
@@ -45,7 +45,6 @@ export class myhealth {
 
     //Determines the icon types give the client/spouse. If client is passed in then, spouse = false.
     setIconType(person, spouse) {
-        console.log(person.bmi);
         switch(true) {
             case person.bmi < 18.5:
                 person.iconType = "underweight";
@@ -63,7 +62,6 @@ export class myhealth {
                 person.iconType = "extremely-obese";
                 break;
         }
-        console.log(person.iconType);
         return person;
     }
 
@@ -81,32 +79,59 @@ export class myhealth {
     }
 
     submit() {
-        console.log(this.user.clientMyHealth);
-        console.log(this.user.spouseMyHealth);
+        var check = true;
 
-        //BMI AND EXERCISE CALCULATIONS
-        this.calculateMyHealth.calculateBMI(this.user.clientMyHealth);
-        this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
-        this.user.clientResults.exercise = this.user.clientMyHealth.exerciseLifeExpectancy;
+        //EXERCISE
+        function exerciseCalculations(person, calc, results) {
+            if(person.exercisePerWeek && person.exercisePerWeek != "Please Select") {
+                if(person.bmi) {
+                    calc.calculateExercise(person);
+                    results.exercise = person.exerciseLifeExpectancy;
+                }
+                else {
+                    check = false;
+                    alert("We need a BMI to factor in your exercise per week");
+                }
+            }
+        }
+        
+        function smokerCalculations(person, calc, results) {
+            if(person.checksmoking) {
+                if(person.kindOfSmoker && person.kindOfSmoker != "Please Select") {
+                    if(person.checkStillSmoking) {
+                        calc.calculateSmoker(person);
+                        results.smoker = person.smokerLifeExpectancy;
+                    }
+                }
+                else {
+                    check = false;
+                    alert("Enter what kind of smoker you are");
+                }
 
-        //SMOKER CALCULATIONS
-        this.calculateMyHealth.calculateSmoker(this.user.clientMyHealth);
-        this.user.clientResults.smoker = this.user.clientMyHealth.smokerLifeExpectancy;
+                if(!person.checkStillSmoking && person.ageQuitSmoking && person.ageQuitSmoking != "Please Select") {
+                    calc.calculateSmoker(person);
+                    results.smoker = person.smokerLifeExpectancy;
+                }
+                else if(!person.checkStillSmoking && (person.ageQuitSmoking || person.ageQuitSmoking != "Please Select")) {
+                    check = false;
+                    alert("Enter what age you quit smoking");
+                }
+            }
+        }
 
+        //this.calculateMyHealth.calculateExercise(this.user.clientMyHealth);
+
+        exerciseCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
+        smokerCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
         console.log(this.user.clientMyHealth);
 
         if(this.user.clientPersonalInfo.checkspouse) {
-            //BMI AND EXERCISE CALCULATIONS
-            this.calculateMyHealth.calculateBMI(this.user.spouseMyHealth);
-            this.calculateMyHealth.calculateExercise(this.user.spouseMyHealth);
-            this.user.spouseResults.exercise = this.user.spouseMyHealth.exerciseLifeExpectancy;
-            
-            //SMOKER CALCULATIONS
-            this.calculateMyHealth.calculateSmoker(this.user.spouseMyHealth);
-            this.user.spouseResults.smoker = this.user.spouseMyHealth.smokerLifeExpectancy;
+            exerciseCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
+            smokerCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
             console.log(this.user.spouseMyHealth);
         }
-        this.router.navigate('#/personalinfo');  
+        
+        if(check) this.router.navigate('#/personalinfo');  
     }
 
     //This takes care of setting up the content for the tooltips
