@@ -1,11 +1,12 @@
 <template>
+    <require from="./occupation.css"></require> 
     <form id="occupation" submit.delegate="submit()">
         <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
             <h1 style="text-align: center;">Occupation - Client</h1>
 
             <hr>
             <h4><b>Do you have experience working in...</b></h4>
-            
+
             <!--======================CHECK IF EDUCATION============================-->
             <label style="padding-right: 10px;" for="education">Education?</label>
             <div class="btn-group" click.delegate="education(user.clientOccupation)" data-toggle="buttons">
@@ -41,7 +42,7 @@
 
             <hr>
             <h4><b>Do you have experience working in...</b></h4>
-            
+
             <!--======================CHECK IF EDUCATION============================-->
             <label style="padding-right: 10px;" for="education">Education?</label>
             <div class="btn-group" click.delegate="education(user.spouseOccupation)" data-toggle="buttons">
@@ -74,12 +75,19 @@
             <br> <br> <br>
         </div>
 
+        <p id="drag1" draggable="true" dragstart.trigger="drag($event)">Fire Dragon</p>
+
+        <div id="drop-box">
+            <strong>Drop your dragons here</strong>
+            <div style="width: 200px; height:200px; border: solid 1px black" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)"></div>
+        </div>
+
         <hr style="clear:both">
         <div id="back-button-div" class="col-md-10">
             <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
         </div>
         <div id="submit-button-div" class="col-md-2">
             <button id="submit" type="submit" class="btn btn-primary">Submit</button>
-        </div>  
+        </div>
     </form>
 </template>
