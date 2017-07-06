@@ -46,7 +46,8 @@ export class occupation {
         this.router.navigate('#/personalinfo');
     }
 
-    submit() {
+    submit(occupationArray) {
+        this.calculateOccupation.calculateOccupation(occupationArray);
         this.router.navigate('#/personalinfo');
     }
 }

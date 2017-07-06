@@ -1,0 +1,262 @@
+[
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Roofing",
+    "Deaths": 36
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Garbage Collector",
+    "Deaths": 33
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Farmers & Ranchers",
+    "Deaths": 24
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Miscellaneous Agricultural Workers",
+    "Deaths": 21
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Construction Laborers",
+    "Deaths": 19
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "General Maintenance Repairs",
+    "Deaths": 16
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Helpers & Construction Trade",
+    "Deaths": 15
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Ground Maintenance Workers",
+    "Deaths": 15
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Electricians",
+    "Deaths": 10
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Painters",
+    "Deaths": 8
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Bus & Trade Mechanics",
+    "Deaths": 8
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Hand Labors & Freight Stock Mover",
+    "Deaths": 7
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Carpenter",
+    "Deaths": 6
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Automotive Technician & Mechanics",
+    "Deaths": 4
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Operation Engineers",
+    "Deaths": 12
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "HVAC Installers & Mechanics",
+    "Deaths": 6
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Plumbers & Pipe-fitters",
+    "Deaths": 6
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Welding",
+    "Deaths": 9
+  },
+  {
+    "Category": "Manual Labor",
+    "Occupation": "Line Installers & Repairers",
+    "Deaths": 9
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Fishing",
+    "Deaths": 131
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Loggers",
+    "Deaths": 97
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Miscellaneous Extraction Workers",
+    "Deaths": 57
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Power-Line Installers",
+    "Deaths": 23
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Iron and Steel Workers",
+    "Deaths": 42
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Industrial machinery Workers",
+    "Deaths": 12
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Industrial Truck and Tractor Operators",
+    "Deaths": 6
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Truck Drivers",
+    "Deaths": 24
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Architecture and Engineering",
+    "Deaths": 2
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Office and Admin Support",
+    "Deaths": 1
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Business and Financial Operations",
+    "Deaths": 1
+  },
+  {
+    "Category": "Industry",
+    "Occupation": "Life & Physical & Social Sciences",
+    "Deaths": 2
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Police",
+    "Deaths": 16
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Taxi Drivers",
+    "Deaths": 18
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Aircraft Pilots",
+    "Deaths": 69
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Firefighters",
+    "Deaths": 8
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Security Guards",
+    "Deaths": 8
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "PIETECH INTERNS",
+    "Deaths": -100
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Cashiers",
+    "Deaths": 2
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Personal Care & Services",
+    "Deaths": 1
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Community & Social Services",
+    "Deaths": 1
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Retail Salesperson",
+    "Deaths": 1
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Food Preparation and Service Jobs",
+    "Deaths": 1
+  },
+  {
+    "Category": "Public Service",
+    "Occupation": "Athletes & Coaches",
+    "Deaths": 11
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Mangers of Construction",
+    "Deaths": 16
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Mangers of Landscape Workers",
+    "Deaths": 14
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Managers of Mechanics",
+    "Deaths": 7
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Mangers of Property of Real Estate",
+    "Deaths": 4
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Construction Mangers",
+    "Deaths": 4
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Mangers of Production Workers",
+    "Deaths": 4
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Mangers of Retail Sales",
+    "Deaths": 3
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Food Service Managers",
+    "Deaths": 2
+  },
+  {
+    "Category": "Management",
+    "Occupation": "Mangers of Non-Retail Sales",
+    "Deaths": 2
+  }
+]
