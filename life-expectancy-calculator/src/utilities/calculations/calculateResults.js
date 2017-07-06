@@ -28,7 +28,7 @@ export class CalculateResults {
             currentAgeArray[1] = parseInt(value.Age.slice(3, 5));
             if(currentAgeArray[0] === person.age || currentAgeArray[1] === person.age) {
                 person.expectedYearsLeft = parseInt(value.ExpectedAge);
-                person.ethnicityLifeExpectancy = person.expectedYearsLeft + person.age;
+                person.ethnicityLifeExpectancy = person.age;
             }
         });
     }
@@ -55,8 +55,7 @@ export class CalculateResults {
         var tempArr = [];
         var tempArr2 = [];
         var tempArr3 = [];
-
-        //TODO: Adjust curve to extend to beginning at 0 and to the bottom x axis at 0
+        
         jsonData.forEach(function(value) {
             tempArr.push([value.Age, value.Number]);
         });

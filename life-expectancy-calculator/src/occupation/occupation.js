@@ -43,8 +43,10 @@ export class occupation {
         this.router.navigate('#/personalinfo');
     }
 
-    submit() {
+    submit(occupationArray) {
         var check = true;
+        this.calculateOccupation.calculateOccupation(occupationArray);
+        
         if(this.user.clientOccupation.checkincome) {
             if(!isNaN(this.user.clientOccupation.income)) {
                 this.calculateOccupation.calculateIncome(this.user.clientOccupation, this.user.clientPersonalInfo.gender, this.user.clientResults);
