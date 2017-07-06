@@ -7,4 +7,7 @@ export class OccupationData {
         this.occupationType = ['Manual Labor', 'Industry', 'Public Service', 'Management'];
         this.type = 'Manual Labor';
     }
+    occupationCategorySet = new Set();
+    categoryToJobMap = new Map();
+    occupationChangeInLifeExpectancy = 0;
 }

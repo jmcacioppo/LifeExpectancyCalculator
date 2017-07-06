@@ -5,17 +5,19 @@ import {StateData} from '../services/data/stateData';
 import * as ionRangeSlider from "ion-rangeslider";
 import {Slider} from '../utilities/slider';
 import {CalculateResults} from '../utilities/calculations/calculateResults';
+import {CalculateOccupation} from '../utilities/calculations/calculateOccupation';
 
-@inject(Router, User, StateData, Slider, CalculateResults)
+@inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation)
 export class personalinfo {
     currentCountyArray = [];
 
-    constructor(router, user, stateData, slider, calculateResults) {
+    constructor(router, user, stateData, slider, calculateResults, calculateOccupation) {
         this.slider = slider;
         this.router = router;
         this.user = user;
         this.stateData = stateData;
         this.calculateResults = calculateResults;
+        this.calculateOccupation = calculateOccupation;
     }
 
     gender(person) {
@@ -35,6 +37,7 @@ export class personalinfo {
         if(state != "Please Select") {
             var self = this;
             this.currentCountyArray = [];
+            state = state.toLowerCase();
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
@@ -49,6 +52,7 @@ export class personalinfo {
     checkLifeExpectancy(person) {
         if(person.county != "Please Select") {
             var state = person.state;
+            state = state.toLowerCase();
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
@@ -72,6 +76,7 @@ export class personalinfo {
     }
 
     occupation() {
+        this.calculateOccupation.loadOccupation();
         this.router.navigate('#/occupation');  
     }
 
@@ -100,5 +105,9 @@ export class personalinfo {
 
     attached() {
         this.slider.createAgeSlider();
+    }
+
+    capitalize(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 }

@@ -11,6 +11,7 @@ export class MyHealthData {
         this.validWeight = false;
         this.validBMI = false;
         this.iconType = "underweight";
+        this.heightError = "";
 
         this.exercisePerWeek;
         this.sleepPerWeek;
