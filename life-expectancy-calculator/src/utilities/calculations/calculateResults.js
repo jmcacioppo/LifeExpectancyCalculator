@@ -84,6 +84,7 @@ export class CalculateResults {
     getTestTuples(clientResultsData, client, clientResults,
             spouseResultsData, spouse, spouseResults) {
         
+        //SUBTRACT DIABETES YEARS
         function calculateDiabetes(person, age, personResults) {
             if(person.checkdiabetes) {
                 if(age < 70) personResults.overallLifeExpectancy -= 5.4;
@@ -107,6 +108,9 @@ export class CalculateResults {
         //CLIENT
         clientResultsData.forEach(function(value, i) {
             if(parseInt(value.Age) >= client.age) {
+                // var tempValueNumber = parseInt(value.Number);
+                if(parseInt(value.Age) <= 67) 
+                    value.Number = parseInt(value.Number) - self.user.clientOccupation.occupationChangeInLifeExpectancy;
                 if(value.Number < 90000 && check90) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i].Number;
@@ -139,6 +143,7 @@ export class CalculateResults {
                     clientTableAge.push((parseInt(age) + number).toFixed(2));
                     clientTableValue.push("50%");
                     calculateDiabetes(self.user.clientMyHealth, parseInt(age) + number, clientResults);
+                    clientResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
 
                     check50 = false;
                 }
@@ -165,7 +170,8 @@ export class CalculateResults {
                     check10 = false;
                 }
 
-                clientTuples.push([parseInt(value.Age) + client.age + clientResults.overallLifeExpectancy, value.Number]);
+                clientTuples.push([parseInt(value.Age), value.Number]);
+                // value.Number = tempValueNumber;
             }
         });
 
@@ -182,6 +188,8 @@ export class CalculateResults {
         if(client.checkspouse) {
             spouseResultsData.forEach(function(value, i) {
                 if(parseInt(value.Age) >= spouse.age) {
+                    if(parseInt(value.Age) <= 67) 
+                        value.Number = parseInt(value.Number) - self.user.spouseOccupation.occupationChangeInLifeExpectancy;
                     if(value.Number < 90000 && check90) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i].Number;
@@ -214,6 +222,7 @@ export class CalculateResults {
                         spouseTableAge.push((parseInt(age) + number).toFixed(2));
                         spouseTableValue.push("50%");
                         calculateDiabetes(self.user.spouseMyHealth, parseInt(age) + number, spouseResults);
+                        spouseResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
 
                         check50 = false;
                     }
@@ -240,7 +249,7 @@ export class CalculateResults {
                         check10 = false;
                     }
 
-                    spouseTuples.push([parseInt(value.Age) + spouse.age + spouseResults.overallLifeExpectancy, value.Number]);
+                    spouseTuples.push([parseInt(value.Age), value.Number]);
                 }
             });
         }
@@ -313,7 +322,7 @@ export class CalculateResults {
                     check10 = false;
                 }
 
-                averageTuples.push([parseInt(value.Age) + client.age, value.Number]);
+                averageTuples.push([parseInt(value.Age), value.Number]);
             }
         });
 
