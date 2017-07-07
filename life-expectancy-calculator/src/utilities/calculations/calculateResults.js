@@ -70,10 +70,9 @@ export class CalculateResults {
         //MyHealth Factors
         personResults.overallLifeExpectancy += personResults.exercise;
         personResults.overallLifeExpectancy += personResults.smoker;
+        personResults.overallLifeExpectancy += personResults.healthrank;
         personResults.overallLifeExpectancy += personResults.diabetes;
         personResults.overallLifeExpectancy += personResults.mental;
-
-        //FamilyHealth Factors
         personResults.overallLifeExpectancy += personResults.parentAges;
 
         //Occupation Factors

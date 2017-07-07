@@ -130,13 +130,17 @@ export class myhealth {
 
         exerciseCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
         smokerCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
+        this.calculateMyHealth.calculateHealthRank(this.user.clientMyHealth, this.user.clientResults);
         this.calculateMyHealth.calculateMentalHealth(this.user.clientMyHealth, this.user.clientResults);
+        this.calculateMyHealth.calculateAgeOfParents(this.user.clientMyHealth, this.user.clientResults, this.user.clientPersonalInfo.gender);
         console.log(this.user.clientMyHealth);
 
         if(this.user.clientPersonalInfo.checkspouse) {
             exerciseCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
             smokerCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
+            this.calculateMyHealth.calculateHealthRank(this.user.spouseMyHealth, this.user.spouseResults);
             this.calculateMyHealth.calculateMentalHealth(this.user.spouseMyHealth, this.user.spouseResults);
+            this.calculateMyHealth.calculateAgeOfParents(this.user.spouseMyHealth, this.user.spouseResults, this.user.clientPersonalInfo.gender);
             console.log(this.user.spouseMyHealth);
         }
         

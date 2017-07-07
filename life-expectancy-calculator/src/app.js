@@ -35,11 +35,6 @@ export class App {
       },
 
       {
-        route: 'familyhealth', moduleId: 'health/familyhealth',
-        name: 'familyhealth', title: 'Family Health', nav: true
-      },
-
-      {
         route: 'occupation', moduleId: 'occupation/occupation',
         name: 'occupation', title: 'Occupation', nav: true
       },
