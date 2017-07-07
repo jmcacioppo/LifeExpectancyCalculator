@@ -1064,212 +1064,6 @@ define('utilities/slider',['exports', 'aurelia-framework', '../services/user', '
         return Slider;
     }()) || _class);
 });
-<<<<<<< HEAD
-define('services/data/familyHealthData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
-        _classCallCheck(this, FamilyHealthData);
-
-        this.ageOfParents;
-
-        this.checkHeartDisease = false;
-        this.checkCancer = false;
-        this.checkMentalHealth = false;
-        this.checkDiabetes = false;
-    };
-});
-define('services/data/myHealthData',["exports"], function (exports) {
-        "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var MyHealthData = exports.MyHealthData = function MyHealthData() {
-                _classCallCheck(this, MyHealthData);
-
-                this.height;
-                this.heightInInches;
-                this.weight;
-                this.bmi;
-                this.formHeightWeight = false;
-                this.exerciseLifeExpectancy = 0;
-
-                this.validHeight = false;
-                this.validWeight = false;
-                this.validBMI = false;
-                this.iconType = "underweight";
-                this.heightError = "";
-
-                this.exercisePerWeek;
-                this.healthRank;
-                this.checkdiabetes = false;
-                this.checkmental = false;
-                this.alcoholPerWeek;
-
-                this.checksmoking = false;
-                this.checkStillSmoking = true;
-                this.kindOfSmoker;
-                this.ageQuitSmoking;
-                this.smokerLifeExpectancy = 0;
-        };
-});
-define('services/data/occupationData',['exports'], function (exports) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var OccupationData = exports.OccupationData = function OccupationData() {
-                _classCallCheck(this, OccupationData);
-
-                this.checkincome = false;
-                this.income = 0;
-                this.incomeLifeExpectancy = 0;
-
-                this.occupationType = ['Skilled/Unskilled', 'Industry', 'Public Service', 'Management'];
-                this.type = 'Skilled/Unskilled';
-
-                this.occupationCategorySet = new Set();
-                this.categoryToJobMap = new Map();
-                this.occupationChangeInLifeExpectancy = 0;
-
-                this.laborArray = [];
-                this.industryArray = [];
-                this.publicServiceArray = [];
-                this.managementArray = [];
-                this.currentJobArray = [];
-
-                this.clientOccupationArray = [];
-        };
-});
-define('services/data/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.PersonalInfoData = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
-        _classCallCheck(this, PersonalInfoData);
-
-        this.checkspouse = false;
-
-        this.age = 30;
-        this.checkgender = true;
-        this.gender = 'male';
-
-        this.education;
-        this.race = 'white';
-        this.maritalStatus;
-
-        this.state = "Please Select";
-        this.county = 'Please Select';
-        this.countyLifeExpectancy;
-        this.expectedYearsLeft;
-    }) || _class);
-});
-define('services/data/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-        exports.ResultsData = undefined;
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var _dec, _class;
-
-        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
-                _classCallCheck(this, ResultsData);
-
-                this.education = 0;
-                this.marital = 0;
-
-                this.exercise = 0;
-                this.smoker = 0;
-                this.diabetes = 0;
-                this.mental = 0;
-
-                this.parentAges = 0;
-
-                this.income = 0;
-
-                this.overallLifeExpectancy = 0;
-
-                this.clientTuples = [];
-                this.clientTableAge = [];
-                this.clientTableValue = [];
-
-                this.spouseTuples = [];
-                this.spouseTableAge = [];
-                this.spouseTableValue = [];
-
-                this.averageTuples = [];
-                this.averageTableAge = [];
-                this.averageTableValue = [];
-        }) || _class);
-});
-define('services/data/stateData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var StateData = exports.StateData = function StateData() {
-        _classCallCheck(this, StateData);
-
-        this.stateSet = new Set();
-        this.stateToCountyMap = new Map();
-    };
-});
-=======
->>>>>>> f2232e3cf378d0efad2559f21dd28754496fde5a
 define('utilities/calculations/calculateFamilyHealth',['exports', 'aurelia-framework', '../../services/user'], function (exports, _aureliaFramework, _user) {
     'use strict';
 
@@ -1745,68 +1539,63 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             check10 = true;
 
             clientResultsData.forEach(function (value, i) {
-<<<<<<< HEAD
-=======
                 if (parseInt(value.Age) >= client.age) {
-                    clientTuples.push([parseInt(value.Age) + clientResults.overallLifeExpectancy, value.Number]);
+                    if (value.Number < 90000 && check90) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 90000) / difference;
+
+                        clientTableAge.push((parseInt(age) + number).toFixed(2));
+                        clientTableValue.push("90%");
+                        check90 = false;
+                    } else if (value.Number < 75000 && check75) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 75000) / difference;
+
+                        clientTableAge.push((parseInt(age) + number).toFixed(2));
+                        clientTableValue.push("75%");
+                        check75 = false;
+                    } else if (value.Number < 50000 && check50) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 50000) / difference;
+
+                        clientTableAge.push((parseInt(age) + number).toFixed(2));
+                        clientTableValue.push("50%");
+                        calculateDiabetes(self.user.clientMyHealth, parseInt(age) + number, clientResults);
+
+                        check50 = false;
+                    } else if (value.Number < 25000 && check25) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 25000) / difference;
+
+                        clientTableAge.push((parseInt(age) + number).toFixed(2));
+                        clientTableValue.push("25%");
+                        check25 = false;
+                    } else if (value.Number < 10000 && check10) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 10000) / difference;
+
+                        clientTableAge.push((parseInt(age) + number).toFixed(2));
+                        clientTableValue.push("10%");
+                        check10 = false;
+                    }
+
+                    clientTuples.push([parseInt(value.Age) + client.age + clientResults.overallLifeExpectancy, value.Number]);
                 }
-
->>>>>>> f2232e3cf378d0efad2559f21dd28754496fde5a
-                if (value.Number < 90000 && check90) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 90000) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2));
-                    clientTableValue.push("90%");
-                    check90 = false;
-                } else if (value.Number < 75000 && check75) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 75000) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2));
-                    clientTableValue.push("75%");
-                    check75 = false;
-                } else if (value.Number < 50000 && check50) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 50000) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2));
-                    clientTableValue.push("50%");
-                    calculateDiabetes(self.user.clientMyHealth, parseInt(age) + number, clientResults);
-
-                    check50 = false;
-                } else if (value.Number < 25000 && check25) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 25000) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2));
-                    clientTableValue.push("25%");
-                    check25 = false;
-                } else if (value.Number < 10000 && check10) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 10000) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2));
-                    clientTableValue.push("10%");
-                    check10 = false;
-                }
-
-                clientTuples.push([parseInt(value.Age) + client.age + clientResults.overallLifeExpectancy, value.Number]);
             });
 
             var spouseTuples = [];
@@ -1821,68 +1610,63 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
 
             if (client.checkspouse) {
                 spouseResultsData.forEach(function (value, i) {
-<<<<<<< HEAD
-=======
                     if (parseInt(value.Age) >= spouse.age) {
-                        spouseTuples.push([parseInt(value.Age) + spouseResults.overallLifeExpectancy, value.Number]);
+                        if (value.Number < 90000 && check90) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i].Number;
+                            less = spouseResultsData[i - 1].Number;
+                            difference = more - less;
+                            number = (more - 90000) / difference;
+
+                            spouseTableAge.push((parseInt(age) + number).toFixed(2));
+                            spouseTableValue.push("90%");
+                            check90 = false;
+                        } else if (value.Number < 75000 && check75) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i].Number;
+                            less = spouseResultsData[i - 1].Number;
+                            difference = more - less;
+                            number = (more - 75000) / difference;
+
+                            spouseTableAge.push((parseInt(age) + number).toFixed(2));
+                            spouseTableValue.push("75%");
+                            check75 = false;
+                        } else if (value.Number < 50000 && check50) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i].Number;
+                            less = spouseResultsData[i - 1].Number;
+                            difference = more - less;
+                            number = (more - 50000) / difference;
+
+                            spouseTableAge.push((parseInt(age) + number).toFixed(2));
+                            spouseTableValue.push("50%");
+                            calculateDiabetes(self.user.spouseMyHealth, parseInt(age) + number, spouseResults);
+
+                            check50 = false;
+                        } else if (value.Number < 25000 && check25) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i].Number;
+                            less = spouseResultsData[i - 1].Number;
+                            difference = more - less;
+                            number = (more - 25000) / difference;
+
+                            spouseTableAge.push((parseInt(age) + number).toFixed(2));
+                            spouseTableValue.push("25%");
+                            check25 = false;
+                        } else if (value.Number < 10000 && check10) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i].Number;
+                            less = spouseResultsData[i - 1].Number;
+                            difference = more - less;
+                            number = (more - 10000) / difference;
+
+                            spouseTableAge.push((parseInt(age) + number).toFixed(2));
+                            spouseTableValue.push("10%");
+                            check10 = false;
+                        }
+
+                        spouseTuples.push([parseInt(value.Age) + spouse.age + spouseResults.overallLifeExpectancy, value.Number]);
                     }
-
->>>>>>> f2232e3cf378d0efad2559f21dd28754496fde5a
-                    if (value.Number < 90000 && check90) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i - 1].Number;
-                        difference = more - less;
-                        number = (more - 90000) / difference;
-
-                        spouseTableAge.push((parseInt(age) + number).toFixed(2));
-                        spouseTableValue.push("90%");
-                        check90 = false;
-                    } else if (value.Number < 75000 && check75) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i - 1].Number;
-                        difference = more - less;
-                        number = (more - 75000) / difference;
-
-                        spouseTableAge.push((parseInt(age) + number).toFixed(2));
-                        spouseTableValue.push("75%");
-                        check75 = false;
-                    } else if (value.Number < 50000 && check50) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i - 1].Number;
-                        difference = more - less;
-                        number = (more - 50000) / difference;
-
-                        spouseTableAge.push((parseInt(age) + number).toFixed(2));
-                        spouseTableValue.push("50%");
-                        calculateDiabetes(self.user.spouseMyHealth, parseInt(age) + number, spouseResults);
-
-                        check50 = false;
-                    } else if (value.Number < 25000 && check25) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i - 1].Number;
-                        difference = more - less;
-                        number = (more - 25000) / difference;
-
-                        spouseTableAge.push((parseInt(age) + number).toFixed(2));
-                        spouseTableValue.push("25%");
-                        check25 = false;
-                    } else if (value.Number < 10000 && check10) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i - 1].Number;
-                        difference = more - less;
-                        number = (more - 10000) / difference;
-
-                        spouseTableAge.push((parseInt(age) + number).toFixed(2));
-                        spouseTableValue.push("10%");
-                        check10 = false;
-                    }
-
-                    spouseTuples.push([parseInt(value.Age) + spouse.age + spouseResults.overallLifeExpectancy, value.Number]);
                 });
             }
 
@@ -1897,66 +1681,61 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             check10 = true;
 
             clientResultsData.forEach(function (value, i) {
-<<<<<<< HEAD
-=======
                 if (parseInt(value.Age) >= client.age) {
-                    averageTuples.push([parseInt(value.Age), value.Number]);
+                    if (value.Number < 90000 && check90) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 90000) / difference;
+
+                        averageTableAge.push((parseInt(age) + number).toFixed(2));
+                        averageTableValue.push("90%");
+                        check90 = false;
+                    } else if (value.Number < 75000 && check75) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 75000) / difference;
+
+                        averageTableAge.push((parseInt(age) + number).toFixed(2));
+                        averageTableValue.push("75%");
+                        check75 = false;
+                    } else if (value.Number < 50000 && check50) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 50000) / difference;
+
+                        averageTableAge.push((parseInt(age) + number).toFixed(2));
+                        averageTableValue.push("50%");
+                        check50 = false;
+                    } else if (value.Number < 25000 && check25) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 25000) / difference;
+
+                        averageTableAge.push((parseInt(age) + number).toFixed(2));
+                        averageTableValue.push("25%");
+                        check25 = false;
+                    } else if (value.Number < 10000 && check10) {
+                        age = clientResultsData[i - 1].Age;
+                        more = clientResultsData[i].Number;
+                        less = clientResultsData[i - 1].Number;
+                        difference = more - less;
+                        number = (more - 10000) / difference;
+
+                        averageTableAge.push((parseInt(age) + number).toFixed(2));
+                        averageTableValue.push("10%");
+                        check10 = false;
+                    }
+
+                    averageTuples.push([parseInt(value.Age) + client.age, value.Number]);
                 }
-
->>>>>>> f2232e3cf378d0efad2559f21dd28754496fde5a
-                if (value.Number < 90000 && check90) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 90000) / difference;
-
-                    averageTableAge.push((parseInt(age) + number).toFixed(2));
-                    averageTableValue.push("90%");
-                    check90 = false;
-                } else if (value.Number < 75000 && check75) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 75000) / difference;
-
-                    averageTableAge.push((parseInt(age) + number).toFixed(2));
-                    averageTableValue.push("75%");
-                    check75 = false;
-                } else if (value.Number < 50000 && check50) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 50000) / difference;
-
-                    averageTableAge.push((parseInt(age) + number).toFixed(2));
-                    averageTableValue.push("50%");
-                    check50 = false;
-                } else if (value.Number < 25000 && check25) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 25000) / difference;
-
-                    averageTableAge.push((parseInt(age) + number).toFixed(2));
-                    averageTableValue.push("25%");
-                    check25 = false;
-                } else if (value.Number < 10000 && check10) {
-                    age = clientResultsData[i - 1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i - 1].Number;
-                    difference = more - less;
-                    number = (more - 10000) / difference;
-
-                    averageTableAge.push((parseInt(age) + number).toFixed(2));
-                    averageTableValue.push("10%");
-                    check10 = false;
-                }
-
-                averageTuples.push([parseInt(value.Age) + client.age, value.Number]);
             });
 
             clientResults.clientTuples = clientTuples;
@@ -2103,7 +1882,7 @@ define('services/data/personalInfoData',['exports', 'aurelia-framework'], functi
         this.gender = 'male';
 
         this.education;
-        this.race = 'black';
+        this.race = 'white';
         this.maritalStatus;
 
         this.state = "Please Select";
@@ -2132,6 +1911,7 @@ define('services/data/resultsData',['exports', 'aurelia-framework'], function (e
                 _classCallCheck(this, ResultsData);
 
                 this.education = 0;
+                this.marital = 0;
 
                 this.exercise = 0;
                 this.smoker = 0;
@@ -2183,11 +1963,6 @@ define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.
 define('text!css/styles.css', ['module'], function(module) { module.exports = "/*========================GLYPHICON COLOR========================*/\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n\tmargin:5px;\r\n}\r\n\r\n/*========================END GLYPHICON COLOR========================*/\r\n\r\n.hasSpouse {\r\n\twidth: 45%;\r\n\tfloat: left;\r\n}\r\n\r\n.noSpouse {\r\n\twidth: 100%;\r\n\tfloat: none;\r\n}\r\n\r\n.additional-information-container {\r\n\tclear: both;\r\n\tmargin: 0 auto;\r\n\twidth: 600px;\r\n}\r\n\r\n/*========================BACK BUTTON========================*/\r\n#back-button-div-home {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n\tmargin-left: 46%;\r\n}\r\n\r\n#back-button-div {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n#back {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n/*========================SUBMIT BUTTON========================*/\r\n#submit-button-div-home {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n\tmargin-left: 46%;\r\n}\r\n\r\n#submit-button-div {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n#submit {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n#personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    margin: 0 auto;\r\n    width: 1000px;\r\n}\r\n\r\n/*===========================FOOTER STYLING==========================*/\r\nhtml, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tclear: both;\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n/*============================END FOOTER STYLING===========================*/"; });
 define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><form id=\"familyhealth\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">Family Health - Client</h1><div class=\"form-group\"><label for=\"race\">Age of parents at passing:</label><select class=\"form-control\" value.bind=\"user.clientFamilyHealth.ageOfParents\"><option>Please Select</option><option>Both after the age of 75</option><option>Both before the age of 75</option><option>Only one after the age of 75</option><option>Only one is still alive and older than 75</option><option>Only one is still alive and younger than 75</option><option>They are both still alive and older than 75</option><option>They are both still alive and younger than 75</option><option>They are both still alive and one is older than 75</option></select></div><hr><h4><b>Does your family have a history of...</b></h4><label style=\"padding-right:10px\" for=\"heartdisease\">Heart Disease?</label><div class=\"btn-group\" click.delegate=\"heartdisease(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"cancer\">Cancer?</label><div class=\"btn-group\" click.delegate=\"cancer(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"mentalhealth\">Mental Illness?</label><div class=\"btn-group\" click.delegate=\"mentalhealth(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"diabetes\">Diabetes?</label><div class=\"btn-group\" click.delegate=\"diabetes(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">Family Health - Co-Client</h1><div class=\"form-group\"><label for=\"race\">Age of parents at passing:</label><select class=\"form-control\" value.bind=\"user.spouseFamilyHealth.ageOfParents\"><option>Please Select</option><option>Both after the age of 75</option><option>Both before the age of 75</option><option>Only one after the age of 75</option><option>Only one is still alive and older than 75</option><option>Only one is still alive and younger than 75</option><option>They are both still alive and older than 75</option><option>They are both still alive and younger than 75</option><option>They are both still alive and one is older than 75</option></select></div><hr><h4><b>Does your family have a history of...</b></h4><label style=\"padding-right:10px\" for=\"heartdisease\">Heart Disease?</label><div class=\"btn-group\" click.delegate=\"heartdisease(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"cancer\">Cancer?</label><div class=\"btn-group\" click.delegate=\"cancer(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"mentalhealth\">Mental Illness?</label><div class=\"btn-group\" click.delegate=\"mentalhealth(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"diabetes\">Diabetes?</label><div class=\"btn-group\" click.delegate=\"diabetes(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><br></div><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
 define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><form id=\"myhealth\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">My Health - Client</h1><div show.bind=\"validHeight\" class=\"alert alert-danger\" role=\"alert\"><strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.</div><div><div class=\"${user.clientMyHealth.formHeightWeight ? 'col-md-8' : 'none'}\"><div class=\"form-group ${user.clientMyHealth.heightError}\"><label for=\"height\">Height</label><span id=\"height-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.clientMyHealth.height\" class=\"form-control\" placeholder=\"5'7\" change.trigger=\"checkHeight(user.clientMyHealth)\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><span id=\"weight-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.clientMyHealth.weight\" class=\"form-control\" placeholder=\"155\" change.trigger=\"calculateBMI(user.clientMyHealth)\"></div><div id=\"client-bmi-alert\" class=\"alert alert-success\" show.bind=\"user.clientMyHealth.validBMI\"><strong>BMI: ${user.clientMyHealth.bmi}</strong></div></div><div show.bind=\"user.clientMyHealth.validBMI\" class=\"${user.clientMyHealth.formHeightWeight ? 'col-md-2' : 'none'}\"><img src.bind=\"user.clientMyHealth.iconType\" style=\"width:150px;height:220px\"></div></div><div class=\"form-group\" style=\"clear:both\"><label for=\"healthRank\">How many hours do you exercise per week?</label><span id=\"exercise-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.clientMyHealth.exercisePerWeek\"><option data-hidden=\"true\">Please Select</option><option>0</option><option>Less than 2.5 hours</option><option>Approximately 2.5 hours</option><option>More than 2.5 hours</option></select></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><span id=\"health-rank-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.clientMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><label style=\"padding-right:10px\" for=\"diabetes\">Do you have diabetes?</label><div class=\"btn-group\" click.delegate=\"diabetes(user.clientMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label for=\"mentalCondition\">Are you currently diagnosed with a serious mental condition?</label><span id=\"mental-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><div class=\"btn-group\" click.delegate=\"mental(user.clientMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><hr><h2 style=\"text-align:center\">Habits</h2><div class=\"form-group\"><label for=\"healthRank\">How many alcoholic drinks do you consume per week?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.alcoholPerWeek\"><option data-hidden=\"true\">Please Select</option><option>0-1</option><option>2-7</option><option>8+</option></select></div><label style=\"padding-right:10px\" for=\"smoking\">Have you ever smoked?</label><div class=\"btn-group\" click.delegate=\"smoking(user.clientMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.clientMyHealth.checksmoking\"><label style=\"padding-right:10px\" for=\"smoking\">Do you still smoke?</label><div class=\"btn-group\" click.delegate=\"stillSmoking(user.clientMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><br><div show.bind=\"user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker are you?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker were you?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">At what age did you quit smoking?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.ageQuitSmoking\"><option data-hidden=\"true\">Please Select</option><option>Before 25</option><option>25-34</option><option>35-44</option><option>45-59</option><option>60+</option></select></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">My Health - Co-Client</h1><div show.bind=\"validHeightSpouse\" class=\"alert alert-danger\" role=\"alert\"><strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.</div><div><div class=\"${user.spouseMyHealth.formHeightWeight ? 'col-md-8' : 'none'}\"><div class=\"form-group ${user.spouseMyHealth.heightError}\"><label for=\"height\">Height</label><span id=\"height-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.spouseMyHealth.height\" class=\"form-control\" placeholder=\"5'7\" change.trigger=\"checkHeight(user.spouseMyHealth)\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><span id=\"weight-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.spouseMyHealth.weight\" class=\"form-control\" placeholder=\"155\" change.trigger=\"calculateBMI(user.spouseMyHealth)\"></div><div id=\"spouse-bmi-alert\" class=\"alert alert-success\" show.bind=\"user.spouseMyHealth.validBMI\"><strong>BMI: ${user.spouseMyHealth.bmi}</strong></div></div><div show.bind=\"user.spouseMyHealth.validBMI\" class=\"${user.spouseMyHealth.formHeightWeight ? 'col-md-2' : 'none'}\"><img src.bind=\"user.spouseMyHealth.iconType\" style=\"width:150px;height:220px\"></div></div><div class=\"form-group\"><label for=\"healthRank\">How many hours do you exercise per week?</label><span id=\"spouse-exercise-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.spouseMyHealth.exercisePerWeek\"><option data-hidden=\"true\">Please Select</option><option>0</option><option>Less than 2.5 hours</option><option>Approximately 2.5 hours</option><option>More than 2.5 hours</option></select></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><span id=\"spouse-health-rank-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.spouseMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><label style=\"padding-right:10px\" for=\"diabetes\">Do you have diabetes?</label><div class=\"btn-group\" click.delegate=\"diabetes(user.spouseMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label for=\"mentalCondition\">Are you currently diagnosed with a serious mental condition?</label><span id=\"spouse-mental-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><div class=\"btn-group\" click.delegate=\"mental(user.spouseMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><hr><h2 style=\"text-align:center\">Habits</h2><div class=\"form-group\"><label for=\"healthRank\">How many alcoholic drinks do you consume per week?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.alcoholPerWeek\"><option data-hidden=\"true\">Please Select</option><option>0-1</option><option>2-7</option><option>8+</option></select></div><label style=\"padding-right:10px\" for=\"gender\">Have you ever smoked?</label><div class=\"btn-group\" click.delegate=\"smoking(user.spouseMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.spouseMyHealth.checksmoking\"><label style=\"padding-right:10px\" for=\"smoking\">Do you still smoke?</label><div class=\"btn-group\" click.delegate=\"stillSmoking(user.spouseMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><br><div show.bind=\"user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker are you?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker were you?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">At what age did you quit smoking?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.ageQuitSmoking\"><option data-hidden=\"true\">Please Select</option><option>Before 25</option><option>25-34</option><option>35-44</option><option>45-59</option><option>60+</option></select></div><br><br><br></div><br><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
-<<<<<<< HEAD
-define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><require from=\"../css/drag-and-drop.css\"></require><form id=\"occupation\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">Occupation - Client</h1><hr><label style=\"padding-right:10px\" for=\"income\">Do you have an income?</label><div class=\"btn-group\" click.delegate=\"income(user.clientOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.clientOccupation.checkincome\" class=\"form-group\"><label for=\"income\">Annual Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"user.clientOccupation.income\" class=\"form-control\" placeholder=\"50000\"></div></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">Occupation - Co-Client</h1><hr><label style=\"padding-right:10px\" for=\"income\">Do you have an income?</label><div class=\"btn-group\" click.delegate=\"income(user.spouseOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.spouseOccupation.checkincome\" class=\"form-group\"><label for=\"income\">Annual Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"user.spouseOccupation.income\" class=\"form-control\" placeholder=\"50000\"></div></div></div><div id=\"drag-and-drop-container\"><div class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-6' : 'col-md-8'}\" id=\"first-drag-group\" drop.trigger=\"drop($event)\" dragover.trigger=\"allowDrop($event)\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\">Occupations</a></div><ul repeat.for=\"type of user.clientOccupation.occupationType\" class=\"nav navbar-nav\"><li><a click.delegate=\"checkOccupation(user.clientOccupation, {type})\">${type}</a></li></ul></div></nav><h3><b>${user.clientOccupation.type}</b></h3><br><div class=\"row\" draggable=\"true\" dragstart.trigger=\"drag($event)\" class=\"col-md-4\"><div class=\"col\" id=\"button-div\"><button class=\"current-buttons\" click.delegate=\"removeDrop()\" draggable=\"true\" id=\"buttons\" repeat.for=\"job of occupationData.currentJobArray\">${job}</button></div></div></div><div class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}\" id=\"drop-box\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"><h3><b>Current Occupation(s)<b></b></b></h3></div><div show.bind=\"user.clientPersonalInfo.checkspouse\" class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}\" id=\"drop-box\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"><h3><b>Current Client Occupation(s)<b></b></b></h3></div></div><br><br><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\" click.delegate=\"submit(occupationData.clientOccupationArray)\">Submit</button></div></form></template>"; });
-define('text!results/results.html', ['module'], function(module) { module.exports = "<template><require from=\"highcharts/css/highcharts.css\"></require><div id=\"results\"><h1 style=\"text-align:center\">Results</h1><div id=\"chart-container\" style=\"width:100%;height:400px\"></div><div id=\"client\"><hr><h3 style=\"text-align:center\">Client Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Probability to Reach Age</th><th repeat.for=\"num of user.clientResults.clientTableValue.length\">${user.clientResults.clientTableValue[num]}</th></tr></thead><tbody><tr><th>Age</th><td repeat.for=\"age of user.clientResults.clientTableAge.length\">${user.clientResults.clientTableAge[age]}</td></tr></tbody></table></div></div><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><hr><h3 style=\"text-align:center\">Spouse Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Probability to Reach Age</th><th repeat.for=\"num of user.spouseResults.spouseTableValue.length\">${user.spouseResults.spouseTableValue[num]}</th></tr></thead><tbody><tr><th>Age</th><td repeat.for=\"age of user.spouseResults.spouseTableAge.length\">${user.spouseResults.spouseTableAge[age]}</td></tr></tbody></table></div></div><div id=\"average\"><hr><h3 style=\"text-align:center\">Average Results for ${user.clientPersonalInfo.race} ${user.clientPersonalInfo.gender} at age ${user.clientPersonalInfo.age}</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Probability to Reach Age</th><th repeat.for=\"num of user.clientResults.averageTableValue.length\">${user.clientResults.averageTableValue[num]}</th></tr></thead><tbody><tr><th>Age</th><td repeat.for=\"age of user.clientResults.averageTableAge.length\">${user.clientResults.averageTableAge[age]}</td></tr></tbody></table></div></div><hr style=\"clear:both\"><div id=\"back-button-div-home\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></div></template>"; });
-=======
 define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><require from=\"../css/drag-and-drop.css\"></require><form id=\"occupation\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">Occupation - Client</h1><hr><label style=\"padding-right:10px\" for=\"income\">Do you have an income?</label><div class=\"btn-group\" click.delegate=\"income(user.clientOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.clientOccupation.checkincome\" class=\"form-group\"><label for=\"income\">Annual Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"user.clientOccupation.income\" class=\"form-control\" placeholder=\"50000\"></div></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">Occupation - Co-Client</h1><hr><label style=\"padding-right:10px\" for=\"income\">Do you have an income?</label><div class=\"btn-group\" click.delegate=\"income(user.spouseOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.spouseOccupation.checkincome\" class=\"form-group\"><label for=\"income\">Annual Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"user.spouseOccupation.income\" class=\"form-control\" placeholder=\"50000\"></div></div></div><div id=\"drag-and-drop-container\"><div class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-6' : 'col-md-8'}\" id=\"first-drag-group\" drop.trigger=\"drop($event)\" dragover.trigger=\"allowDrop($event)\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\">Occupations</a></div><ul repeat.for=\"type of user.clientOccupation.occupationType\" class=\"nav navbar-nav\"><li><a click.delegate=\"checkOccupation(user.clientOccupation, {type})\">${type}</a></li></ul></div></nav><h3><b>${user.clientOccupation.type}</b></h3><br><div class=\"row\" draggable=\"true\" dragstart.trigger=\"drag($event)\" class=\"col-md-4\"><div class=\"col\" id=\"button-div\"><button class=\"current-buttons\" click.delegate=\"removeDrop()\" draggable=\"true\" id=\"buttons\" repeat.for=\"job of occupationData.currentJobArray\">${job}</button></div></div></div><div change.delegate=\"hello()\" class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}\" id=\"drop-box\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"><h3><b>Client Occupation(s)<b></b></b></h3></div><div show.bind=\"user.clientPersonalInfo.checkspouse\" class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}\" id=\"spouse-drop-box\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"><h3><b>Co-Client Occupation(s)<b></b></b></h3></div></div><br><br><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\" click.delegate=\"submit()\">Submit</button></div></form></template>"; });
-define('text!results/results.html', ['module'], function(module) { module.exports = "<template><require from=\"highcharts/css/highcharts.css\"></require><div id=\"results\"><h1 style=\"text-align:center\">Results</h1><div id=\"chart-container\" style=\"width:100%;height:400px\"></div><div id=\"client\"><hr><h3 style=\"text-align:center\">Client Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Age</th><th repeat.for=\"age of user.clientResults.clientTableAge.length\">${user.clientResults.clientTableAge[age]}</th></tr></thead><tbody><tr><th>Number</th><td repeat.for=\"num of user.clientResults.clientTableValue.length\">${user.clientResults.clientTableValue[num]}</td></tr></tbody></table></div></div><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><hr><h3 style=\"text-align:center\">Spouse Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Age</th><th repeat.for=\"age of user.spouseResults.spouseTableAge.length\">${user.spouseResults.spouseTableAge[age]}</th></tr></thead><tbody><tr><th>Number</th><td repeat.for=\"num of user.spouseResults.spouseTableValue.length\">${user.spouseResults.spouseTableValue[num]}</td></tr></tbody></table></div></div><div id=\"average\"><hr><h3 style=\"text-align:center\">Average Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Age</th><th repeat.for=\"age of user.clientResults.averageTableAge.length\">${user.clientResults.averageTableAge[age]}</th></tr></thead><tbody><tr><th>Number</th><td repeat.for=\"num of user.clientResults.averageTableValue.length\">${user.clientResults.averageTableValue[num]}</td></tr></tbody></table></div></div><hr style=\"clear:both\"><div id=\"back-button-div-home\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></div></template>"; });
->>>>>>> f2232e3cf378d0efad2559f21dd28754496fde5a
+define('text!results/results.html', ['module'], function(module) { module.exports = "<template><require from=\"highcharts/css/highcharts.css\"></require><div id=\"results\"><h1 style=\"text-align:center\">Results</h1><div id=\"chart-container\" style=\"width:100%;height:400px\"></div><div id=\"client\"><hr><h3 style=\"text-align:center\">Client Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Probability to Reach Age</th><th repeat.for=\"num of user.clientResults.clientTableValue.length\">${user.clientResults.clientTableValue[num]}</th></tr></thead><tbody><tr><th>Age</th><td repeat.for=\"age of user.clientResults.clientTableAge.length\">${user.clientResults.clientTableAge[age]}</td></tr></tbody></table></div></div><div id=\"spouse\" show.bind=\"user.clientPersonalInfo.checkspouse\"><hr><h3 style=\"text-align:center\">Spouse Results</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Probability to Reach Age</th><th repeat.for=\"num of user.spouseResults.spouseTableValue.length\">${user.spouseResults.spouseTableValue[num]}</th></tr></thead><tbody><tr><th>Age</th><td repeat.for=\"age of user.spouseResults.spouseTableAge.length\">${user.spouseResults.spouseTableAge[age]}</td></tr></tbody></table></div></div><div id=\"average\"><hr><h3 style=\"text-align:center\">Average Results for ${user.clientPersonalInfo.race} ${user.clientPersonalInfo.gender} at age ${user.clientPersonalInfo.age}</h3><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead><tr><th>Probability to Reach Age</th><th repeat.for=\"num of user.clientResults.averageTableValue.length\">${user.clientResults.averageTableValue[num]}</th></tr></thead><tbody><tr><th>Age</th><td repeat.for=\"age of user.clientResults.averageTableAge.length\">${user.clientResults.averageTableAge[age]}</td></tr></tbody></table></div></div><hr style=\"clear:both\"><div id=\"back-button-div-home\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map
