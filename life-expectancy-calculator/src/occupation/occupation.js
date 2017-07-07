@@ -32,16 +32,24 @@ export class occupation {
 
     drop(ev) {
         ev.preventDefault();
-        if(ev.target.id === "spouse-drop-box")
+        if(ev.target.id === "spouse-drop-box") {
             this.user.spouseOccupation.occupationArray.push(ev.dataTransfer.getData("occu-name"));
-        if(ev.target.id === "drop-box")
+            var index = this.occupationData.currentJobArray.indexOf(ev.dataTransfer.getData("occu-name"));
+            this.occupationData.currentJobArray.splice(index, 1);
+        }
+        if(ev.target.id === "drop-box") {
             this.user.clientOccupation.occupationArray.push(ev.dataTransfer.getData("occu-name"));
+            var index = this.occupationData.currentJobArray.indexOf(ev.dataTransfer.getData("occu-name"));
+            this.occupationData.currentJobArray.splice(index, 1);
+        }
         var current;
         var data = ev.dataTransfer.getData("tonberry");
         var elements = document.getElementsByClassName("current-buttons");
+        var occupationName;
         for(var i = 0; i < elements.length; i++) {
             if((elements[i].textContent).trim() === data.trim()) {
                 current = elements[i];
+                occupationName = elements[i].textContent.trim();
             }
         }
         ev.currentTarget.appendChild(current);

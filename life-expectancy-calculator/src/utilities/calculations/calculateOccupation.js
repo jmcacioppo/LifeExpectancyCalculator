@@ -48,7 +48,6 @@ export class CalculateOccupation {
         let data = await this.httpClient.fetch('/api/occupation-table/occupation.json');
         let loadedData = await data.json();
         person.occupationChangeInLifeExpectancy = this.readFile.getOccupationDeathNumber(loadedData, person.occupationArray);
-        console.log(person.occupationChangeInLifeExpectancy);
     }
 
     //Creates job array
