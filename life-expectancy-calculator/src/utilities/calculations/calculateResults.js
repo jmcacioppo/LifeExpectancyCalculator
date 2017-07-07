@@ -108,13 +108,13 @@ export class CalculateResults {
         //CLIENT
         clientResultsData.forEach(function(value, i) {
             if(parseInt(value.Age) >= client.age) {
-                // var tempValueNumber = parseInt(value.Number);
+                var tempValueNumber = parseInt(value.Number);
                 if(parseInt(value.Age) <= 67) 
                     value.Number = parseInt(value.Number) - self.user.clientOccupation.occupationChangeInLifeExpectancy;
                 if(value.Number < 90000 && check90) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 90000) / difference;
 
@@ -124,8 +124,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 75000 && check75) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 75000) / difference;
 
@@ -135,8 +135,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 50000 && check50) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 50000) / difference;
 
@@ -149,8 +149,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 25000 && check25) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 25000) / difference;
 
@@ -160,8 +160,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 10000 && check10) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 10000) / difference;
 
@@ -171,7 +171,7 @@ export class CalculateResults {
                 }
 
                 clientTuples.push([parseInt(value.Age), value.Number]);
-                // value.Number = tempValueNumber;
+                value.Number = tempValueNumber;
             }
         });
 
@@ -192,8 +192,8 @@ export class CalculateResults {
                         value.Number = parseInt(value.Number) - self.user.spouseOccupation.occupationChangeInLifeExpectancy;
                     if(value.Number < 90000 && check90) {
                         age = spouseResultsData[i-1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i-1].Number;
+                        more = spouseResultsData[i-1].Number;
+                        less = spouseResultsData[i].Number;
                         difference = more - less;
                         number = (more - 90000) / difference;
 
@@ -203,8 +203,8 @@ export class CalculateResults {
                     }
                     else if(value.Number < 75000 && check75) {
                         age = spouseResultsData[i-1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i-1].Number;
+                        more = spouseResultsData[i-1].Number;
+                        less = spouseResultsData[i].Number;
                         difference = more - less;
                         number = (more - 75000) / difference;
 
@@ -214,8 +214,8 @@ export class CalculateResults {
                     }
                     else if(value.Number < 50000 && check50) {
                         age = spouseResultsData[i-1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i-1].Number;
+                        more = spouseResultsData[i-1].Number;
+                        less = spouseResultsData[i].Number;
                         difference = more - less;
                         number = (more - 50000) / difference;
 
@@ -228,8 +228,8 @@ export class CalculateResults {
                     }
                     else if(value.Number < 25000 && check25) {
                         age = spouseResultsData[i-1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i-1].Number;
+                        more = spouseResultsData[i-1].Number;
+                        less = spouseResultsData[i].Number;
                         difference = more - less;
                         number = (more - 25000) / difference;
 
@@ -239,8 +239,8 @@ export class CalculateResults {
                     }
                     else if(value.Number < 10000 && check10) {
                         age = spouseResultsData[i-1].Age;
-                        more = spouseResultsData[i].Number;
-                        less = spouseResultsData[i-1].Number;
+                        more = spouseResultsData[i-1].Number;
+                        less = spouseResultsData[i].Number;
                         difference = more - less;
                         number = (more - 10000) / difference;
 
@@ -268,8 +268,8 @@ export class CalculateResults {
             if(parseInt(value.Age) >= client.age) {
                 if(value.Number < 90000 && check90) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 90000) / difference;
 
@@ -279,8 +279,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 75000 && check75) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 75000) / difference;
 
@@ -290,8 +290,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 50000 && check50) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 50000) / difference;
 
@@ -301,8 +301,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 25000 && check25) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 25000) / difference;
 
@@ -312,8 +312,8 @@ export class CalculateResults {
                 }
                 else if(value.Number < 10000 && check10) {
                     age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i].Number;
-                    less = clientResultsData[i-1].Number;
+                    more = clientResultsData[i-1].Number;
+                    less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - 10000) / difference;
 
