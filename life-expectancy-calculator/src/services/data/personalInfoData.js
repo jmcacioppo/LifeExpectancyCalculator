@@ -10,7 +10,7 @@ export class PersonalInfoData {
         this.gender = 'male';
 
         this.education;
-        this.race = 'black';
+        this.race = 'white';
         this.maritalStatus;
 
         this.state = "Please Select";

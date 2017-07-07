@@ -12,14 +12,14 @@
                 <table class="table table-hover table-bordered search-table">
                     <thead>
                         <tr>
-                            <th>Age</th>
-                            <th repeat.for="age of user.clientResults.clientTableAge.length">${user.clientResults.clientTableAge[age]}</th>
+                            <th>Probability to Reach Age</th>
+                            <th repeat.for="num of user.clientResults.clientTableValue.length">${user.clientResults.clientTableValue[num]}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Number</th>
-                            <td repeat.for="num of user.clientResults.clientTableValue.length">${user.clientResults.clientTableValue[num]}</th>
+                            <th>Age</th>
+                            <td repeat.for="age of user.clientResults.clientTableAge.length">${user.clientResults.clientTableAge[age]}</th>
                         </tr>
                     </tbody>
                 </table>
@@ -34,14 +34,14 @@
                 <table class="table table-hover table-bordered search-table">
                     <thead>
                         <tr>
-                            <th>Age</th>
-                            <th repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
+                            <th>Probability to Reach Age</th>
+                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Number</th>
-                            <td repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
+                            <th>Age</th>
+                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
                         </tr>
                     </tbody>
                 </table>
@@ -51,19 +51,21 @@
         <!--============================AVERAGE===========================-->
         <div id="average">
             <hr>
-            <h3 style="text-align:center;">Average Results</h3>
+            <h3 style="text-align:center;">Average Results for
+                ${user.clientPersonalInfo.race} ${user.clientPersonalInfo.gender} at age ${user.clientPersonalInfo.age}
+            </h3>
             <div class="table-outter">
                 <table class="table table-hover table-bordered search-table">
                     <thead>
                         <tr>
-                            <th>Age</th>
-                            <th repeat.for="age of user.clientResults.averageTableAge.length">${user.clientResults.averageTableAge[age]}</th>
+                            <th>Probability to Reach Age</th>
+                            <th repeat.for="num of user.clientResults.averageTableValue.length">${user.clientResults.averageTableValue[num]}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <th>Number</th>
-                            <td repeat.for="num of user.clientResults.averageTableValue.length">${user.clientResults.averageTableValue[num]}</th>
+                            <th>Age</th>
+                            <td repeat.for="age of user.clientResults.averageTableAge.length">${user.clientResults.averageTableAge[age]}</th>
                         </tr>
                     </tbody>
                 </table>
