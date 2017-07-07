@@ -7,10 +7,19 @@
         <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
             <h1 style="text-align: center;">Family Health - Client</h1>
 
-            <!--=====================AVERAGE LIFE EXPECTANCY============================-->
-            <div class="form-group" >
-                <label for="ageOfFam">Average Family Life Expectancy:</label>
-                <input style="width: 400px;" id="familyLifeExpectancy"></input>
+            <!--===========================AGES OF CLIENT PARENTS=========================-->
+            <div class="form-group">
+                <label for="race">Age of parents at passing:</label>
+                <select class="form-control" value.bind="user.clientFamilyHealth.ageOfParents">
+                    <option>Please Select</option>
+                    <option>Both after the age of 75</option>
+                    <option>Both before the age of 75</option>
+                    <option>Only one after the age of 75</option>
+                    <option>Only one is still alive and older than 75</option>
+                    <option>Only one is still alive and younger than 75</option>
+                    <option>They are still alive and older than 75</option>
+                    <option>They are still alive and younger than 75</option>
+                </select>
             </div>
 
             <hr>
@@ -59,10 +68,19 @@
         <div id="spouse" style="width: 45%; float:right;" show.bind="user.clientPersonalInfo.checkspouse">
             <h1 style="text-align: center;">Family Health - Co-Client</h1>
 
-            <!--=====================AVERAGE LIFE EXPECTANCY============================-->
-            <div class="form-group" >
-                <label for="ageOfFam">Average Family Life Expectancy:</label>
-                <input style="width: 400px;" id="spousefamilyLifeExpectancy"></input>
+            <!--===========================AGES OF CO-CLIENT PARENTS=========================-->
+            <div class="form-group">
+                <label for="race">Age of parents at passing:</label>
+                <select class="form-control" value.bind="user.spouseFamilyHealth.ageOfParents">
+                    <option>Please Select</option>
+                    <option>Both after the age of 75</option>
+                    <option>Both before the age of 75</option>
+                    <option>Only one after the age of 75</option>
+                    <option>Only one is still alive and older than 75</option>
+                    <option>Only one is still alive and younger than 75</option>
+                    <option>They are still alive and older than 75</option>
+                    <option>They are still alive and younger than 75</option>
+                </select>
             </div>
 
             <hr>

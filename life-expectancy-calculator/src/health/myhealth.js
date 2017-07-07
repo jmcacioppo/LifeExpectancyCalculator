@@ -68,6 +68,10 @@ export class myhealth {
         person.checkdiabetes = !person.checkdiabetes;
     }
 
+    mental(person) {
+        person.checkmental = !person.checkmental;
+    }
+
     //CHECK SMOKING
     smoking(person) {
         person.checksmoking = !person.checksmoking;
@@ -126,11 +130,13 @@ export class myhealth {
 
         exerciseCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
         smokerCalculations(this.user.clientMyHealth, this.calculateMyHealth, this.user.clientResults);
+        this.calculateMyHealth.calculateMentalHealth(this.user.clientMyHealth, this.user.clientResults);
         console.log(this.user.clientMyHealth);
 
         if(this.user.clientPersonalInfo.checkspouse) {
             exerciseCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
             smokerCalculations(this.user.spouseMyHealth, this.calculateMyHealth, this.user.spouseResults);
+            this.calculateMyHealth.calculateMentalHealth(this.user.spouseMyHealth, this.user.spouseResults);
             console.log(this.user.spouseMyHealth);
         }
         
@@ -156,6 +162,14 @@ export class myhealth {
             content: "How you view your health impacts your life expectancy."
         })
 
+        $('#mental-tooltip').tooltip({
+            content: "The serious mental conditions we account for include:<br>" + 
+                "<b>Bipolar Disorder</b>, <br>" + 
+                "<b>Schizophrenia</b>, <br>" +
+                "<b>Drug & Alcohol Abuse</b>, <br>" +
+                "<b>Recurrent Depression</b>."
+        })
+
         //=====================SPOUSE TOOLTIPS============================
         $('#spouse-height-tooltip').tooltip( {
             content: "Your height is used to calculate your <b>Body Mass Index (BMI)</b>."
@@ -172,5 +186,14 @@ export class myhealth {
         $('#spouse-health-rank-tooltip').tooltip({
             content: "How you view your health impacts your life expectancy."
         })
+
+        $('#spouse-mental-tooltip').tooltip({
+            content: "The serious mental conditions we account for include:<br>" + 
+                "<b>Bipolar Disorder</b>, <br>" + 
+                "<b>Schizophrenia</b>, <br>" +
+                "<b>Drug & Alcohol Abuse</b>, <br>" +
+                "<b>Recurrent Depression</b>."
+        })
+
     }
 }

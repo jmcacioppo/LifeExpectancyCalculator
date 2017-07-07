@@ -16,6 +16,7 @@ export class MyHealthData {
         this.exercisePerWeek;
         this.healthRank;
         this.checkdiabetes = false;
+        this.checkmental = false;
         this.alcoholPerWeek;
 
         this.checksmoking = false;

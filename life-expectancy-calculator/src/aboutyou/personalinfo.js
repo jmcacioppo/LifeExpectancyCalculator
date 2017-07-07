@@ -109,8 +109,6 @@ export class personalinfo {
         await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo, this.user.clientResults,
             this.user.spousePersonalInfo, this.user.spouseResults);
         
-            console.log(this.user.clientResults.clientTable);
-
         this.router.navigate('#/results');  
     }
 

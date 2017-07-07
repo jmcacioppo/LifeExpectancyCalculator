@@ -39,10 +39,12 @@ export class familyhealth {
     }
 
     submit() {
-        this.router.navigate('#/personalinfo');  
-    }
+        this.calculateFamilyHealth.calculateAgeOfParents(this.user.clientFamilyHealth, this.user.clientResults, this.user.clientPersonalInfo.gender);
 
-    attached() {
-        this.slider.createLifeExpectancySlider();
+        if(this.user.clientPersonalInfo.checkspouse) {
+            this.calculateFamilyHealth.calculateAgeOfParents(this.user.spouseFamilyHealth, this.user.spouseResults, this.user.clientPersonalInfo.gender);            
+        }
+        
+        this.router.navigate('#/personalinfo');  
     }
 }

@@ -54,6 +54,7 @@ export class CalculateMyHealth {
         person.exerciseLifeExpectancy = exerciseLifeExpectancy;
     }
 
+    //this calculates added/decreased life expectancy based on smoking
     calculateSmoker(person) {
         var smokerLifeExpectancy = 0;
         var stillSmoking = person.checkStillSmoking;
@@ -97,5 +98,15 @@ export class CalculateMyHealth {
             }
         }
         person.smokerLifeExpectancy = smokerLifeExpectancy;
+    }
+
+    //this calculates added/decreased life expectancy based on mental illness
+    calculateMentalHealth(person, personResults) {
+        if(person.checkmental) {
+            personResults.mental = -9;
+        }
+        else {
+            personResults.mental = 0;
+        }
     }
 }
