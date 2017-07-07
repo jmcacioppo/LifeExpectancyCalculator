@@ -1093,219 +1093,6 @@ define('utilities/slider',['exports', 'aurelia-framework', '../services/user', '
         return Slider;
     }()) || _class);
 });
-define('services/data/familyHealthData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
-        _classCallCheck(this, FamilyHealthData);
-
-        this.ageOfParents;
-
-        this.checkHeartDisease = false;
-        this.checkCancer = false;
-        this.checkMentalHealth = false;
-        this.checkDiabetes = false;
-    };
-});
-define('services/data/myHealthData',["exports"], function (exports) {
-        "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var MyHealthData = exports.MyHealthData = function MyHealthData() {
-                _classCallCheck(this, MyHealthData);
-
-                this.height;
-                this.heightInInches;
-                this.weight;
-                this.bmi;
-                this.formHeightWeight = false;
-                this.exerciseLifeExpectancy = 0;
-
-                this.validHeight = false;
-                this.validWeight = false;
-                this.validBMI = false;
-                this.iconType = "underweight";
-                this.heightError = "";
-
-                this.exercisePerWeek;
-                this.healthRank;
-                this.checkdiabetes = false;
-                this.checkmental = false;
-                this.alcoholPerWeek;
-
-                this.checksmoking = false;
-                this.checkStillSmoking = true;
-                this.kindOfSmoker;
-                this.ageQuitSmoking;
-                this.smokerLifeExpectancy = 0;
-        };
-});
-define('services/data/occupationData',['exports'], function (exports) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var OccupationData = exports.OccupationData = function OccupationData() {
-                _classCallCheck(this, OccupationData);
-
-                this.checkincome = false;
-                this.income = 0;
-                this.incomeLifeExpectancy = 0;
-
-                this.occupationType = ['Skilled/Unskilled', 'Industry', 'Public Service', 'Management'];
-                this.type = 'Skilled/Unskilled';
-
-                this.occupationCategorySet = new Set();
-                this.categoryToJobMap = new Map();
-                this.occupationChangeInLifeExpectancy = 0;
-
-                this.laborArray = [];
-                this.industryArray = [];
-                this.publicServiceArray = [];
-                this.managementArray = [];
-                this.currentJobArray = [];
-
-                this.occupationArray = [];
-        };
-});
-define('services/data/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-        exports.PersonalInfoData = undefined;
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var _dec, _class;
-
-        var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
-                _classCallCheck(this, PersonalInfoData);
-
-                this.checkspouse = false;
-
-                this.age = 30;
-                this.checkgender = true;
-                this.gender = 'male';
-
-                this.education;
-                this.race = 'white';
-
-                this.maritalStatus;
-                this.isSingle = false;
-                this.isMarried = false;
-                this.yearsOfMarriage = 0;
-                this.isWidowed = false;
-                this.yearsSinceSpousePassing = 0;
-                this.isDivorced = false;
-                this.yearsOfDivorce = 0;
-
-                this.state = "Please Select";
-                this.county = 'Please Select';
-                this.countyLifeExpectancy;
-                this.expectedYearsLeft;
-        }) || _class);
-});
-define('services/data/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-        exports.ResultsData = undefined;
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var _dec, _class;
-
-        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
-                _classCallCheck(this, ResultsData);
-
-                this.education = 0;
-                this.marital = 0;
-
-                this.exercise = 0;
-                this.smoker = 0;
-                this.diabetes = 0;
-                this.mental = 0;
-
-                this.parentAges = 0;
-
-                this.income = 0;
-
-                this.overallLifeExpectancy = 0;
-
-                this.clientTuples = [];
-                this.clientTableAge = [];
-                this.clientTableValue = [];
-
-                this.spouseTuples = [];
-                this.spouseTableAge = [];
-                this.spouseTableValue = [];
-
-                this.averageTuples = [];
-                this.averageTableAge = [];
-                this.averageTableValue = [];
-
-                this.finalLifeExpectancy = 0;
-        }) || _class);
-});
-define('services/data/stateData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var StateData = exports.StateData = function StateData() {
-        _classCallCheck(this, StateData);
-
-        this.stateSet = new Set();
-        this.stateToCountyMap = new Map();
-    };
-});
 define('utilities/calculations/calculateFamilyHealth',['exports', 'aurelia-framework', '../../services/user'], function (exports, _aureliaFramework, _user) {
     'use strict';
 
@@ -1856,6 +1643,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             if (client.checkspouse) {
                 spouseResultsData.forEach(function (value, i) {
                     if (parseInt(value.Age) >= spouse.age) {
+                        var tempValueNumber = parseInt(value.Number);
                         if (parseInt(value.Age) <= 67) value.Number = parseInt(value.Number) - self.user.spouseOccupation.occupationChangeInLifeExpectancy;
                         if (value.Number < 90000 && check90) {
                             age = spouseResultsData[i - 1].Age;
@@ -1913,6 +1701,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
                         }
 
                         spouseTuples.push([parseInt(value.Age), value.Number]);
+                        value.Number = tempValueNumber;
                     }
                 });
             }
@@ -2000,6 +1789,219 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
 
         return CalculateResults;
     }()) || _class);
+});
+define('services/data/familyHealthData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
+        _classCallCheck(this, FamilyHealthData);
+
+        this.ageOfParents;
+
+        this.checkHeartDisease = false;
+        this.checkCancer = false;
+        this.checkMentalHealth = false;
+        this.checkDiabetes = false;
+    };
+});
+define('services/data/myHealthData',["exports"], function (exports) {
+        "use strict";
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var MyHealthData = exports.MyHealthData = function MyHealthData() {
+                _classCallCheck(this, MyHealthData);
+
+                this.height;
+                this.heightInInches;
+                this.weight;
+                this.bmi;
+                this.formHeightWeight = false;
+                this.exerciseLifeExpectancy = 0;
+
+                this.validHeight = false;
+                this.validWeight = false;
+                this.validBMI = false;
+                this.iconType = "underweight";
+                this.heightError = "";
+
+                this.exercisePerWeek;
+                this.healthRank;
+                this.checkdiabetes = false;
+                this.checkmental = false;
+                this.alcoholPerWeek;
+
+                this.checksmoking = false;
+                this.checkStillSmoking = true;
+                this.kindOfSmoker;
+                this.ageQuitSmoking;
+                this.smokerLifeExpectancy = 0;
+        };
+});
+define('services/data/occupationData',['exports'], function (exports) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var OccupationData = exports.OccupationData = function OccupationData() {
+                _classCallCheck(this, OccupationData);
+
+                this.checkincome = false;
+                this.income = 0;
+                this.incomeLifeExpectancy = 0;
+
+                this.occupationType = ['Skilled/Unskilled', 'Industry', 'Public Service', 'Management'];
+                this.type = 'Skilled/Unskilled';
+
+                this.occupationCategorySet = new Set();
+                this.categoryToJobMap = new Map();
+                this.occupationChangeInLifeExpectancy = 0;
+
+                this.laborArray = [];
+                this.industryArray = [];
+                this.publicServiceArray = [];
+                this.managementArray = [];
+                this.currentJobArray = [];
+
+                this.occupationArray = [];
+        };
+});
+define('services/data/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+        exports.PersonalInfoData = undefined;
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var _dec, _class;
+
+        var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
+                _classCallCheck(this, PersonalInfoData);
+
+                this.checkspouse = false;
+
+                this.age = 30;
+                this.checkgender = true;
+                this.gender = 'male';
+
+                this.education;
+                this.race = 'white';
+
+                this.maritalStatus;
+                this.isSingle = false;
+                this.isMarried = false;
+                this.yearsOfMarriage = 0;
+                this.isWidowed = false;
+                this.yearsSinceSpousePassing = 0;
+                this.isDivorced = false;
+                this.yearsOfDivorce = 0;
+
+                this.state = "Please Select";
+                this.county = 'Please Select';
+                this.countyLifeExpectancy;
+                this.expectedYearsLeft;
+        }) || _class);
+});
+define('services/data/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+        exports.ResultsData = undefined;
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var _dec, _class;
+
+        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
+                _classCallCheck(this, ResultsData);
+
+                this.education = 0;
+                this.marital = 0;
+
+                this.exercise = 0;
+                this.smoker = 0;
+                this.diabetes = 0;
+                this.mental = 0;
+
+                this.parentAges = 0;
+
+                this.income = 0;
+
+                this.overallLifeExpectancy = 0;
+
+                this.clientTuples = [];
+                this.clientTableAge = [];
+                this.clientTableValue = [];
+
+                this.spouseTuples = [];
+                this.spouseTableAge = [];
+                this.spouseTableValue = [];
+
+                this.averageTuples = [];
+                this.averageTableAge = [];
+                this.averageTableValue = [];
+
+                this.finalLifeExpectancy = 0;
+        }) || _class);
+});
+define('services/data/stateData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var StateData = exports.StateData = function StateData() {
+        _classCallCheck(this, StateData);
+
+        this.stateSet = new Set();
+        this.stateToCountyMap = new Map();
+    };
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><div id=\"app\"><div id=\"content\"><div id=\"home\"><h1 style=\"font-size:36px;text-align:center\"><b>Life Expectancy Calculator<b></b></b></h1></div><hr><router-view></router-view></div><br><br><br><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
 define('text!css/drag-and-drop.css', ['module'], function(module) { module.exports = "#drag-and-drop-container {\r\n    margin: 0 auto;\r\n    width: 1600px;\r\n    margin-left: -30%;\r\n}\r\n\r\n#first-drag-group, #drop-box {\r\n    border: solid .5px black;\r\n    text-align: center;\r\n    height: 600px;\r\n    overflow: scroll;\r\n}\r\n\r\n#spouse-drop-box {\r\n    border: solid .5px black;\r\n    text-align: center;\r\n    height: 600px;\r\n    overflow: scroll;\r\n}\r\n\r\n\r\n#buttons {\r\n    background-color: #4CAF50; /* Green */\r\n    border: none;\r\n    color: white;\r\n    padding: 5px 10px;\r\n    margin: 0 auto;\r\n    margin-right: 8px;\r\n    margin-left: 8px;\r\n    text-align: center;\r\n    width: 180px;\r\n    height: 70px;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    font-size: 16px;\r\n    border-radius: 4px;\r\n    margin-bottom:10px;\r\n}"; });

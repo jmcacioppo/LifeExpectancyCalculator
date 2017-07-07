@@ -188,6 +188,7 @@ export class CalculateResults {
         if(client.checkspouse) {
             spouseResultsData.forEach(function(value, i) {
                 if(parseInt(value.Age) >= spouse.age) {
+                    var tempValueNumber = parseInt(value.Number);
                     if(parseInt(value.Age) <= 67) 
                         value.Number = parseInt(value.Number) - self.user.spouseOccupation.occupationChangeInLifeExpectancy;
                     if(value.Number < 90000 && check90) {
@@ -250,6 +251,7 @@ export class CalculateResults {
                     }
 
                     spouseTuples.push([parseInt(value.Age), value.Number]);
+                    value.Number = tempValueNumber;
                 }
             });
         }
