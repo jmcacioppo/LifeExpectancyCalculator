@@ -6,18 +6,22 @@ import * as ionRangeSlider from "ion-rangeslider";
 import {Slider} from '../utilities/slider';
 import {CalculateResults} from '../utilities/calculations/calculateResults';
 import {CalculateOccupation} from '../utilities/calculations/calculateOccupation';
+import {OccupationData} from '../services/data/occupationData'
 
-@inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation)
+@inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation, OccupationData)
 export class personalinfo {
     currentCountyArray = [];
 
-    constructor(router, user, stateData, slider, calculateResults, calculateOccupation) {
+    constructor(router, user, stateData, slider, calculateResults, calculateOccupation, occupationData) {
         this.slider = slider;
         this.router = router;
         this.user = user;
         this.stateData = stateData;
         this.calculateResults = calculateResults;
         this.calculateOccupation = calculateOccupation;
+        this.occupationData = occupationData;
+        if(this.occupationData.laborArray.length == 0) 
+            calculateOccupation.loadOccupation();
     }
 
     gender(person) {
@@ -76,7 +80,6 @@ export class personalinfo {
     }
 
     occupation() {
-        this.calculateOccupation.loadOccupation();
         this.router.navigate('#/occupation');  
     }
 
@@ -113,9 +116,5 @@ export class personalinfo {
 
     attached() {
         this.slider.createAgeSlider();
-    }
-
-    capitalize(str) {
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 }

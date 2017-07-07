@@ -25,52 +25,7 @@
                 </div>
             </div>
 
-            <!--==========================DRAG AND DROP=======================-->
-            <div id="drag-and-drop-container">
-                <div class="col-md-8" id="first-drag-group" drop.trigger="drop($event)" dragover.trigger="allowDrop($event)">
-                
-                    <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
-                                <a class="navbar-brand">Occupations</a>
-                            </div>
-                            <ul repeat.for="type of user.clientOccupation.occupationType" class="nav navbar-nav">
-                                <li><a click.delegate="checkOccupation(user.clientOccupation, {type})">${type}</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                    
-                    <strong>${user.clientOccupation.type}</strong>
-                    <!--<div repeat.for="job of jobs">
-                        <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Fire Dragon</button>
-                    </div>-->
-
-                    <div draggable="true" dragstart.trigger="drag($event)">
-                        <button id="buttons">Fire Dragon</button>
-                    </div>
-
-                    <div  draggable="true" dragstart.trigger="drag($event)">
-                        <button id="buttons">Ice Dragon</button>
-                    </div>
-
-                    <div  draggable="true" dragstart.trigger="drag($event)">
-                        <button id="buttons">Thunder Dragon</button>
-                    </div>
-
-                    <!--<br> 
-                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Ice Dragon</button>
-                    <br>
-                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Thunder Dragon</button>
-                    -->
-                    
-                </div>
-
-                <div class="col-md-4" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
-                    <strong>Current Occupation(s)</strong>
-                </div>
-            </div>
-            <!--======================END DRAG AND DROP=======================-->
-
+           
         </div>
 
         <div id="spouse" style="width: 45%; float:right;" show.bind="user.clientPersonalInfo.checkspouse">
@@ -95,10 +50,51 @@
                     <input type="text" value.bind="user.spouseOccupation.income" class="form-control" placeholder="50000">
                 </div>
             </div>
-
-
-            <br> <br> <br>
         </div>
+
+         <!--==========================DRAG AND DROP=======================-->
+            <div id="drag-and-drop-container">
+                <div class="${user.clientPersonalInfo.checkspouse ? 'col-md-6' : 'col-md-8'}" id="first-drag-group" drop.trigger="drop($event)" dragover.trigger="allowDrop($event)">
+                    <nav class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <a class="navbar-brand">Occupations</a>
+                            </div>
+                            <ul repeat.for="type of user.clientOccupation.occupationType" class="nav navbar-nav">
+                                <li><a click.delegate="checkOccupation(user.clientOccupation, {type})">${type}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    
+                    <h3><b>${user.clientOccupation.type}</b></h3>
+                    <br>
+                    <!--<div repeat.for="job of jobs">
+                        <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Fire Dragon</button>
+                    </div>-->
+
+                    <div  class="row" draggable="true" dragstart.trigger="drag($event)" class="col-md-4" >
+                        <div class="col" id="button-div">
+                            <button class="current-buttons" click.delegate="removeDrop()" draggable="true" id="buttons" repeat.for="job of occupationData.currentJobArray">${job}</button>
+                        </div>
+                    </div>
+
+                    <!--<br> 
+                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Ice Dragon</button>
+                    <br>
+                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Thunder Dragon</button>
+                    -->
+                    
+                </div>
+
+                <div class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
+                    <h3><b>Current Occupation(s)<b></h3>
+                </div>
+                <div show.bind="user.clientPersonalInfo.checkspouse" class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
+                    <h3><b>Current Client Occupation(s)<b></h3>
+                </div>
+            </div>
+            <!--======================END DRAG AND DROP=======================-->
+
 
         <br> <br>
 
@@ -108,7 +104,7 @@
             <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
         </div>
         <div id="submit-button-div" class="col-md-2">
-            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+            <button id="submit" type="submit" class="btn btn-primary" click.delegate="submit(occupationData.clientOccupationArray)">Submit</button>
         </div>
     </form>
 </template>
