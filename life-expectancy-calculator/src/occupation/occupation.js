@@ -22,7 +22,7 @@ export class occupation {
 
     drag(ev) {
         ev.dataTransfer.setData("tonberry", ev.target.innerText);
-        this.occupationData.clientOccupationArray.push(ev.srcElement.textContent);
+        ev.dataTransfer.setData("occu-name", ev.srcElement.textContent);
         return true;
     }
 
@@ -32,6 +32,10 @@ export class occupation {
 
     drop(ev) {
         ev.preventDefault();
+        if(ev.target.id === "spouse-drop-box")
+            this.user.spouseOccupation.occupationArray.push(ev.dataTransfer.getData("occu-name"));
+        if(ev.target.id === "drop-box")
+            this.user.clientOccupation.occupationArray.push(ev.dataTransfer.getData("occu-name"));
         var current;
         var data = ev.dataTransfer.getData("tonberry");
         var elements = document.getElementsByClassName("current-buttons");
@@ -51,9 +55,6 @@ export class occupation {
     //CHECK OCCUPATION TYPE
     checkOccupation(person, occupationName) {
         person.type = occupationName.type;
-        console.log(person.type);
-        console.log(occupationName.type);
-        console.log(occupationName.type === "Industry");
         switch(true) {
             case occupationName.type.trim() === "Skilled/Unskilled":
                 this.occupationData.currentJobArray = this.occupationData.laborArray;
@@ -76,11 +77,12 @@ export class occupation {
         this.router.navigate('#/personalinfo');
     }
 
-    submit(occupationArray) {
+    submit() {
         var check = true;
-        this.calculateOccupation. calculationOccupation(occupationArray);
-        console.log(occupationArray);
-        
+        if(this.user.clientOccupation.occupationArray.length != 0)
+            this.calculateOccupation.calculationOccupation(this.user.clientOccupation);
+        if(this.user.spouseOccupation.occupationArray.length != 0)
+            this.calculateOccupation.calculationOccupation(this.user.spouseOccupation);
         if(this.user.clientOccupation.checkincome) {
             if(!isNaN(this.user.clientOccupation.income)) {
                 this.calculateOccupation.calculateIncome(this.user.clientOccupation, this.user.clientPersonalInfo.gender, this.user.clientResults);
