@@ -1,92 +1,110 @@
 <template>
+    <require from="../css/drag-and-drop.css"></require>
+    
     <form id="occupation" submit.delegate="submit()">
         <div id="client" class="${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}">
             <h1 style="text-align: center;">Occupation - Client</h1>
-
             <hr>
-            <h4><b>Do you have experience working in...</b></h4>
 
-            <!--======================CHECK IF EDUCATION============================-->
-            <label style="padding-right: 10px;" for="education">Education?</label>
-            <div class="btn-group" click.delegate="education(user.clientOccupation)" data-toggle="buttons">
-                <label class="btn ${user.clientOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
+            <!--======================INCOME============================-->
+            <label style="padding-right: 10px;" for="income">Do you have an income?</label>
+            <div class="btn-group" click.delegate="income(user.clientOccupation)" data-toggle="buttons">
+                <label class="btn ${user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
-                <label class="btn ${!user.clientOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
+                <label class="btn ${!user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">No</label>
             </div>
 
             <br> <br>
-            <!--======================CHECK IF CONSTRUCTION============================-->
-            <label style="padding-right: 10px;" for="construction">Construction?</label>
-            <div class="btn-group" click.delegate="construction(user.clientOccupation)" data-toggle="buttons">
-                <label class="btn ${user.clientOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">Yes</label>
-                <label class="btn ${!user.clientOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">No</label>
+
+            <div show.bind="user.clientOccupation.checkincome" class="form-group">
+                <label for="income">Annual Income</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="user.clientOccupation.income" class="form-control" placeholder="50000">
+                </div>
             </div>
 
-            <br> <br>
-            <!--======================CHECK IF EMERGENCY RESPONDER============================-->
-            <label style="padding-right: 10px;" for="emergencyResponding">Emergency Responding?</label>
-            <div class="btn-group" click.delegate="emergencyResponding(user.clientOccupation)" data-toggle="buttons">
-                <label class="btn ${user.clientOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">Yes</label>
-                <label class="btn ${!user.clientOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">No</label>
-            </div>
+           
         </div>
 
         <div id="spouse" style="width: 45%; float:right;" show.bind="user.clientPersonalInfo.checkspouse">
             <h1 style="text-align: center;">Occupation - Co-Client</h1>
-
             <hr>
-            <h4><b>Do you have experience working in...</b></h4>
 
-            <!--======================CHECK IF EDUCATION============================-->
-            <label style="padding-right: 10px;" for="education">Education?</label>
-            <div class="btn-group" click.delegate="education(user.spouseOccupation)" data-toggle="buttons">
-                <label class="btn ${user.spouseOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
+            <!--======================INCOME============================-->
+            <label style="padding-right: 10px;" for="income">Do you have an income?</label>
+            <div class="btn-group" click.delegate="income(user.spouseOccupation)" data-toggle="buttons">
+                <label class="btn ${user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
-                <label class="btn ${!user.spouseOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}">
+                <label class="btn ${!user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">No</label>
             </div>
 
             <br> <br>
-            <!--======================CHECK IF CONSTRUCTION============================-->
-            <label style="padding-right: 10px;" for="construction">Construction?</label>
-            <div class="btn-group" click.delegate="construction(user.spouseOccupation)" data-toggle="buttons">
-                <label class="btn ${user.spouseOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">Yes</label>
-                <label class="btn ${!user.spouseOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">No</label>
-            </div>
 
-            <br> <br>
-            <!--======================CHECK IF EMERGENCY RESPONDER============================-->
-            <label style="padding-right: 10px;" for="emergencyResponding">Emergency Responding?</label>
-            <div class="btn-group" click.delegate="emergencyResponding(user.spouseOccupation)" data-toggle="buttons">
-                <label class="btn ${user.spouseOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">Yes</label>
-                <label class="btn ${!user.spouseOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}">
-                    <input type="radio">No</label>
+            <div show.bind="user.spouseOccupation.checkincome" class="form-group">
+                <label for="income">Annual Income</label>
+                <div class="input-group mb-2 mr-sm-2 mb-sm-0">
+                    <div class="input-group-addon">$</div>
+                    <input type="text" value.bind="user.spouseOccupation.income" class="form-control" placeholder="50000">
+                </div>
             </div>
-
-            <br> <br> <br>
         </div>
 
-        <p id="drag1" draggable="true" dragstart.trigger="drag($event)">Fire Dragon</p>
+         <!--==========================DRAG AND DROP=======================-->
+            <div id="drag-and-drop-container">
+                <div class="${user.clientPersonalInfo.checkspouse ? 'col-md-6' : 'col-md-8'}" id="first-drag-group" drop.trigger="drop($event)" dragover.trigger="allowDrop($event)">
+                    <nav class="navbar navbar-default">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <a class="navbar-brand">Occupations</a>
+                            </div>
+                            <ul repeat.for="type of user.clientOccupation.occupationType" class="nav navbar-nav">
+                                <li><a click.delegate="checkOccupation(user.clientOccupation, {type})">${type}</a></li>
+                            </ul>
+                        </div>
+                    </nav>
+                    
+                    <h3><b>${user.clientOccupation.type}</b></h3>
+                    <br>
+                    <!--<div repeat.for="job of jobs">
+                        <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Fire Dragon</button>
+                    </div>-->
 
-        <div id="drop-box">
-            <strong>Drop your dragons here</strong>
-            <div style="width: 200px; height:200px; border: solid 1px black" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)"></div>
-        </div>
+                    <div  class="row" draggable="true" dragstart.trigger="drag($event)" class="col-md-4" >
+                        <div class="col" id="button-div">
+                            <button class="current-buttons" click.delegate="removeDrop()" draggable="true" id="buttons" repeat.for="job of occupationData.currentJobArray">${job}</button>
+                        </div>
+                    </div>
+
+                    <!--<br> 
+                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Ice Dragon</button>
+                    <br>
+                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Thunder Dragon</button>
+                    -->
+                    
+                </div>
+
+                <div class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
+                    <h3><b>Current Occupation(s)<b></h3>
+                </div>
+                <div show.bind="user.clientPersonalInfo.checkspouse" class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
+                    <h3><b>Current Client Occupation(s)<b></h3>
+                </div>
+            </div>
+            <!--======================END DRAG AND DROP=======================-->
+
+
+        <br> <br>
+
 
         <hr style="clear:both">
         <div id="back-button-div" class="col-md-10">
             <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
         </div>
         <div id="submit-button-div" class="col-md-2">
-            <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+            <button id="submit" type="submit" class="btn btn-primary" click.delegate="submit(occupationData.clientOccupationArray)">Submit</button>
         </div>
     </form>
 </template>
