@@ -19,5 +19,18 @@ export class ResultsData {
 
         //OVERALL EXPECTANCY
         this.overallLifeExpectancy = 0;
+
+        //TUPLES
+        this.clientTuples = [];
+        this.clientTableAge = [];
+        this.clientTableValue = [];
+
+        this.spouseTuples = [];
+        this.spouseTableAge = [];
+        this.spouseTableValue = [];
+
+        this.averageTuples = [];
+        this.averageTableAge = [];
+        this.averageTableValue = [];
     }
 }

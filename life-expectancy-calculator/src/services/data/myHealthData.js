@@ -14,9 +14,8 @@ export class MyHealthData {
         this.heightError = "";
 
         this.exercisePerWeek;
-        this.sleepPerWeek;
         this.healthRank;
-
+        this.checkdiabetes = false;
         this.alcoholPerWeek;
 
         this.checksmoking = false;

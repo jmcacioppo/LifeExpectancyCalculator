@@ -8,7 +8,7 @@ export class Chart {
         this.user = user;
     }
 
-    createChart(containerID) {
+    createChart(containerID, age, chartTuples) {
         //console.log(this.user.clientPersonalInfo.testTuples);
         Highcharts.chart(containerID, {
                 title: {
@@ -21,7 +21,7 @@ export class Chart {
                 },
                 plotOptions: {
                     series: {
-                        pointStart: this.user.clientPersonalInfo.age
+                        pointStart: age
                     }
                 },
                 yAxis: {
@@ -29,16 +29,7 @@ export class Chart {
                         text: 'Chance of Living'
                     }
                 },
-                series: [{
-                    name: 'Client',
-                    data:  this.user.clientPersonalInfo.testTuples
-                }, {
-                    name: 'Co-client',
-                    data:  this.user.clientPersonalInfo.testTuples2
-                }, {
-                    name: 'Average',
-                    data:  this.user.clientPersonalInfo.testTuples3
-                }]
+                series: chartTuples
             }); 
     }
 }

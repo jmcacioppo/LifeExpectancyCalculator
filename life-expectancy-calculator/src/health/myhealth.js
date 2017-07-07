@@ -64,6 +64,10 @@ export class myhealth {
         return person;
     }
 
+    diabetes(person) {
+        person.checkdiabetes = !person.checkdiabetes;
+    }
+
     //CHECK SMOKING
     smoking(person) {
         person.checksmoking = !person.checksmoking;

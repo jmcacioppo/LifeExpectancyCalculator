@@ -14,7 +14,30 @@ export class results {
     }
 
     attached() {
-        this.chart.createChart('chart-container');
+        var chartTuples = [];
+        if(this.user.clientPersonalInfo.checkspouse) {
+            chartTuples = [{
+                    name: 'Client',
+                    data:  this.user.clientResults.clientTuples
+                }, {
+                    name: 'Co-client',
+                    data:  this.user.spouseResults.spouseTuples
+                }, {
+                    name: 'Average',
+                    data:  this.user.clientResults.averageTuples
+                }];
+        }
+        else {
+            chartTuples = [{
+                    name: 'Client',
+                    data:  this.user.clientResults.clientTuples
+                }, {
+                    name: 'Average',
+                    data:  this.user.clientResults.averageTuples
+                }]
+        }
+
+        this.chart.createChart('chart-container', this.user.clientPersonalInfo.age, chartTuples);
     }
 
     back() {

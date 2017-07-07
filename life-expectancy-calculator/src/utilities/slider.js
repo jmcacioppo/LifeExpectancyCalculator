@@ -13,7 +13,7 @@ export class Slider {
             grid: true,
             min: 0,
             max: 100,
-            from: 30,
+            from: this.user.clientPersonalInfo.age,
             step: 1,
             onFinish: (data) => {
                 this.user.clientPersonalInfo.age = data.from;
@@ -24,7 +24,7 @@ export class Slider {
             grid: true,
             min: 0,
             max: 100,
-            from: 30,
+            from: this.user.spousePersonalInfo.age,
             step: 1,
             onFinish: (data) => {
                 this.user.spousePersonalInfo.age = data.from;
