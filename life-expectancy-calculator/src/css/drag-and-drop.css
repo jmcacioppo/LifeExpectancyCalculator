@@ -11,6 +11,13 @@
     overflow: scroll;
 }
 
+#spouse-drop-box {
+    border: solid .5px black;
+    text-align: center;
+    height: 600px;
+    overflow: scroll;
+}
+
 
 #buttons {
     background-color: #4CAF50; /* Green */
