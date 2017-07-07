@@ -192,7 +192,7 @@ define('aboutyou/capitalize-converter',["exports"], function (exports) {
         return CapitalizeValueConverter;
     }();
 });
-define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../services/data/stateData', 'ion-rangeslider', '../utilities/slider', '../utilities/calculations/calculateResults', '../utilities/calculations/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _stateData, _ionRangeslider, _slider, _calculateResults, _calculateOccupation) {
+define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../services/data/stateData', 'ion-rangeslider', '../utilities/slider', '../utilities/calculations/calculateResults', '../utilities/calculations/calculateOccupation', '../services/data/occupationData'], function (exports, _aureliaFramework, _aureliaRouter, _user, _stateData, _ionRangeslider, _slider, _calculateResults, _calculateOccupation, _occupationData) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -256,8 +256,8 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
 
     var _dec, _class;
 
-    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _stateData.StateData, _slider.Slider, _calculateResults.CalculateResults, _calculateOccupation.CalculateOccupation), _dec(_class = function () {
-        function personalinfo(router, user, stateData, slider, calculateResults, calculateOccupation) {
+    var personalinfo = exports.personalinfo = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _stateData.StateData, _slider.Slider, _calculateResults.CalculateResults, _calculateOccupation.CalculateOccupation, _occupationData.OccupationData), _dec(_class = function () {
+        function personalinfo(router, user, stateData, slider, calculateResults, calculateOccupation, occupationData) {
             _classCallCheck(this, personalinfo);
 
             this.currentCountyArray = [];
@@ -268,6 +268,8 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
             this.stateData = stateData;
             this.calculateResults = calculateResults;
             this.calculateOccupation = calculateOccupation;
+            this.occupationData = occupationData;
+            if (this.occupationData.laborArray.length == 0) calculateOccupation.loadOccupation();
         }
 
         personalinfo.prototype.gender = function gender(person) {
@@ -321,7 +323,6 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
         };
 
         personalinfo.prototype.occupation = function occupation() {
-            this.calculateOccupation.loadOccupation();
             this.router.navigate('#/occupation');
         };
 
@@ -335,9 +336,8 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
                                 return this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
 
                             case 2:
-                                this.user.clientResults.ethnicity = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
-
-                                this.calculateResults.addMyHealthExpectancy(this.user.clientResults);
+                                this.calculateResults.calculateEducation(this.user.clientPersonalInfo, this.user.clientResults);
+                                this.calculateResults.addExpectancies(this.user.clientResults);
 
                                 console.log("=======CLIENT=======");
                                 console.log(this.user.clientPersonalInfo);
@@ -352,9 +352,8 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
                                 return this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
 
                             case 10:
-                                this.user.spouseResults.ethnicity = this.user.spousePersonalInfo.ethnicityLifeExpectancy;
-
-                                this.calculateResults.addMyHealthExpectancy(this.user.spouseResults);
+                                this.calculateResults.calculateEducation(this.user.spousePersonalInfo, this.user.spouseResults);
+                                this.calculateResults.addExpectancies(this.user.spouseResults);
 
                                 console.log("=======SPOUSE=======");
                                 console.log(this.user.spousePersonalInfo);
@@ -381,12 +380,6 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
 
         personalinfo.prototype.attached = function attached() {
             this.slider.createAgeSlider();
-        };
-
-        personalinfo.prototype.capitalize = function capitalize(str) {
-            return str.replace(/\w\S*/g, function (txt) {
-                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-            });
         };
 
         return personalinfo;
@@ -629,7 +622,7 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
         return myhealth;
     }()) || _class);
 });
-define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateOccupation'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation) {
+define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateOccupation', '../services/data/occupationData'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation, _occupationData) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -645,13 +638,15 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
 
     var _dec, _class;
 
-    var occupation = exports.occupation = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateOccupation.CalculateOccupation), _dec(_class = function () {
-        function occupation(router, user, calculateOccupation) {
+    var occupation = exports.occupation = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _user.User, _calculateOccupation.CalculateOccupation, _occupationData.OccupationData), _dec(_class = function () {
+        function occupation(router, user, calculateOccupation, occupationData) {
             _classCallCheck(this, occupation);
 
             this.router = router;
             this.user = user;
             this.calculateOccupation = calculateOccupation;
+            this.occupationData = occupationData;
+            this.occupationData.currentJobArray = this.occupationData.laborArray;
         }
 
         occupation.prototype.allowDrop = function allowDrop(ev) {
@@ -659,26 +654,51 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         };
 
         occupation.prototype.drag = function drag(ev) {
-            ev.dataTransfer.setData("tonberry", ev.target.id);
+            ev.dataTransfer.setData("tonberry", ev.target.innerText);
+            this.occupationData.clientOccupationArray.push(ev.srcElement.textContent);
             return true;
+        };
+
+        occupation.prototype.removeDrop = function removeDrop(ev) {
+            ev.dataTransfer.set;
         };
 
         occupation.prototype.drop = function drop(ev) {
             ev.preventDefault();
+            var current;
             var data = ev.dataTransfer.getData("tonberry");
-            ev.currentTarget.appendChild(document.getElementById(data));
+            var elements = document.getElementsByClassName("current-buttons");
+            for (var i = 0; i < elements.length; i++) {
+                if (elements[i].textContent.trim() === data.trim()) {
+                    current = elements[i];
+                }
+            }
+            ev.currentTarget.appendChild(current);
         };
 
-        occupation.prototype.education = function education(person) {
-            person.checkEducation = !person.checkEducation;
+        occupation.prototype.income = function income(person) {
+            person.checkincome = !person.checkincome;
         };
 
-        occupation.prototype.construction = function construction(person) {
-            person.checkConstruction = !person.checkConstruction;
-        };
-
-        occupation.prototype.emergencyResponding = function emergencyResponding(person) {
-            person.checkEmergencyResponding = !person.checkEmergencyResponding;
+        occupation.prototype.checkOccupation = function checkOccupation(person, occupationName) {
+            person.type = occupationName.type;
+            console.log(person.type);
+            console.log(occupationName.type);
+            console.log(occupationName.type === "Industry");
+            switch (true) {
+                case occupationName.type.trim() === "Skilled/Unskilled":
+                    this.occupationData.currentJobArray = this.occupationData.laborArray;
+                    break;
+                case occupationName.type.trim() === "Industry":
+                    this.occupationData.currentJobArray = this.occupationData.industryArray;
+                    break;
+                case occupationName.type.trim() === "Public Service":
+                    this.occupationData.currentJobArray = this.occupationData.publicServiceArray;
+                    break;
+                case occupationName.type.trim() === "Management":
+                    this.occupationData.currentJobArray = this.occupationData.managementArray;
+                    break;
+            }
         };
 
         occupation.prototype.back = function back() {
@@ -686,8 +706,31 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         };
 
         occupation.prototype.submit = function submit(occupationArray) {
-            this.calculateOccupation.calculateOccupation(occupationArray);
-            this.router.navigate('#/personalinfo');
+            var check = true;
+            this.calculateOccupation.calculationOccupation(occupationArray);
+            console.log(occupationArray);
+
+            if (this.user.clientOccupation.checkincome) {
+                if (!isNaN(this.user.clientOccupation.income)) {
+                    this.calculateOccupation.calculateIncome(this.user.clientOccupation, this.user.clientPersonalInfo.gender, this.user.clientResults);
+                } else {
+                    check = false;
+                    alert('Enter a valid income');
+                }
+            }
+
+            if (this.user.clientPersonalInfo.checkspouse) {
+                if (this.user.spouseOccupation.checkincome) {
+                    if (!isNaN(this.user.spouseOccupation.income)) {
+                        this.calculateOccupation.calculateIncome(this.user.spouseOccupation, this.user.spousePersonalInfo.gender, this.user.spouseResults);
+                    } else {
+                        check = false;
+                        alert('Enter a valid income');
+                    }
+                }
+            }
+
+            if (check) this.router.navigate('#/personalinfo');
         };
 
         return occupation;
@@ -901,6 +944,7 @@ define('utilities/readFile',['exports', 'aurelia-framework', '../services/data/s
             jsonData.forEach(function (jobObject) {
                 self.occupationData.occupationCategorySet.add(jobObject.Category);
                 var existingValues = self.occupationData.categoryToJobMap.get(jobObject.Category);
+                if (existingValues === undefined) existingValues = "";
                 existingValues += " " + jobObject.Occupation + ":";
                 self.occupationData.categoryToJobMap.set(jobObject.Category, existingValues);
             });
@@ -1017,177 +1061,6 @@ define('utilities/slider',['exports', 'aurelia-framework', '../services/user', '
         return Slider;
     }()) || _class);
 });
-define('services/data/familyHealthData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
-        _classCallCheck(this, FamilyHealthData);
-
-        this.familyLifeExpectancy = 70;
-        this.checkHeartDisease = false;
-        this.checkCancer = false;
-        this.checkMentalHealth = false;
-        this.checkDiabetes = false;
-    };
-});
-define('services/data/myHealthData',["exports"], function (exports) {
-        "use strict";
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var MyHealthData = exports.MyHealthData = function MyHealthData() {
-                _classCallCheck(this, MyHealthData);
-
-                this.height;
-                this.heightInInches;
-                this.weight;
-                this.bmi;
-                this.formHeightWeight = false;
-                this.exerciseLifeExpectancy = 0;
-
-                this.validHeight = false;
-                this.validWeight = false;
-                this.validBMI = false;
-                this.iconType = "underweight";
-                this.heightError = "";
-
-                this.exercisePerWeek;
-                this.sleepPerWeek;
-                this.healthRank;
-
-                this.alcoholPerWeek;
-
-                this.checksmoking = false;
-                this.checkStillSmoking = true;
-                this.kindOfSmoker;
-                this.ageQuitSmoking;
-                this.smokerLifeExpectancy = 0;
-        };
-});
-define('services/data/occupationData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var OccupationData = exports.OccupationData = function OccupationData() {
-        _classCallCheck(this, OccupationData);
-
-        this.occupationCategorySet = new Set();
-        this.categoryToJobMap = new Map();
-        this.occupationChangeInLifeExpectancy = 0;
-    };
-});
-define('services/data/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.PersonalInfoData = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
-        _classCallCheck(this, PersonalInfoData);
-
-        this.checkspouse = false;
-
-        this.age = 30;
-        this.checkgender = true;
-        this.gender = 'male';
-        this.race = 'black';
-        this.maritalStatus;
-
-        this.state = "Please Select";
-        this.county = 'Please Select';
-        this.countyLifeExpectancy;
-        this.expectedYearsLeft;
-        this.testTuples = [];
-        this.testTuples2 = [];
-        this.testTuples3 = [];
-
-        this.ethnicityLifeExpectancy;
-    }) || _class);
-});
-define('services/data/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
-        'use strict';
-
-        Object.defineProperty(exports, "__esModule", {
-                value: true
-        });
-        exports.ResultsData = undefined;
-
-        function _classCallCheck(instance, Constructor) {
-                if (!(instance instanceof Constructor)) {
-                        throw new TypeError("Cannot call a class as a function");
-                }
-        }
-
-        var _dec, _class;
-
-        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
-                _classCallCheck(this, ResultsData);
-
-                this.ethnicity = 0;
-
-                this.exercise = 0;
-                this.smoker = 0;
-
-                this.overallLifeExpectancy = 0;
-        }) || _class);
-});
-define('services/data/stateData',["exports"], function (exports) {
-    "use strict";
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var StateData = exports.StateData = function StateData() {
-        _classCallCheck(this, StateData);
-
-        this.stateSet = new Set();
-        this.stateToCountyMap = new Map();
-    };
-});
 define('utilities/calculations/calculateFamilyHealth',['exports', 'aurelia-framework', '../../services/user'], function (exports, _aureliaFramework, _user) {
     'use strict';
 
@@ -1296,7 +1169,7 @@ define('utilities/calculations/calculateMyHealth',['exports', 'aurelia-framework
         return CalculateMyHealth;
     }()) || _class);
 });
-define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framework', '../../services/user', 'aurelia-fetch-client', 'utilities/readFile'], function (exports, _aureliaFramework, _user, _aureliaFetchClient, _readFile) {
+define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framework', '../../services/user', 'aurelia-fetch-client', 'utilities/readFile', '../../services/data/occupationData'], function (exports, _aureliaFramework, _user, _aureliaFetchClient, _readFile, _occupationData) {
     'use strict';
 
     Object.defineProperty(exports, "__esModule", {
@@ -1341,14 +1214,30 @@ define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framewo
 
     var _dec, _class;
 
-    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User, _aureliaFetchClient.HttpClient, _readFile.ReadFile), _dec(_class = function () {
-        function CalculateOccupation(user, httpClient, readFile) {
+    var CalculateOccupation = exports.CalculateOccupation = (_dec = (0, _aureliaFramework.inject)(_user.User, _aureliaFetchClient.HttpClient, _readFile.ReadFile, _occupationData.OccupationData), _dec(_class = function () {
+        function CalculateOccupation(user, httpClient, readFile, occupationData) {
             _classCallCheck(this, CalculateOccupation);
 
             this.user = user;
             this.httpClient = httpClient;
             this.readFile = readFile;
+            this.occupationData = occupationData;
         }
+
+        CalculateOccupation.prototype.calculateIncome = function calculateIncome(person, gender, results) {
+            var incomeLifeExpectancy = 0;
+
+            if (person.checkincome) {
+                if (parseFloat(person.income) >= 188996) {
+                    if (gender == "male" || gender == "Male") incomeLifeExpectancy += 2.34;else if (gender == "Female") incomeLifeExpectancy += 2.91;
+                } else {
+                    if (gender == "male" || gender == "Male") incomeLifeExpectancy += 0.32;else if (gender == "Female") incomeLifeExpectancy += 0.04;
+                }
+            }
+
+            person.incomeLifeExpectancy = incomeLifeExpectancy;
+            results.income = incomeLifeExpectancy;
+        };
 
         CalculateOccupation.prototype.loadOccupation = function () {
             var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
@@ -1369,8 +1258,12 @@ define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framewo
                                 loadedData = _context.sent;
 
                                 this.readFile.getCategoryList(loadedData);
+                                this.createJobArrays("Manual Labor");
+                                this.createJobArrays("Industry");
+                                this.createJobArrays("Public Service");
+                                this.createJobArrays("Management");
 
-                            case 7:
+                            case 11:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1403,7 +1296,7 @@ define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framewo
                             case 5:
                                 loadedData = _context2.sent;
 
-                                this.user.occupationData.occupationChangeInLifeExpectancy = this.readFile.getOccupationDeathNumber(arrayOccupations);
+                                this.occupationData.occupationChangeInLifeExpectancy = this.readFile.getOccupationDeathNumber(loadedData, arrayOccupations);
 
                             case 7:
                             case 'end':
@@ -1419,6 +1312,31 @@ define('utilities/calculations/calculateOccupation',['exports', 'aurelia-framewo
 
             return calculationOccupation;
         }();
+
+        CalculateOccupation.prototype.createJobArrays = function createJobArrays(type) {
+            var currentArray = [];
+            var listToArray = this.occupationData.categoryToJobMap.get(type).split(":");
+            listToArray.forEach(function (job) {
+                currentArray.push(job);
+            });
+
+            currentArray.pop();
+            switch (true) {
+                case type === 'Manual Labor':
+                    this.occupationData.laborArray = currentArray;
+                    break;
+                case type === 'Industry':
+                    this.occupationData.industryArray = currentArray;
+                    break;
+                case type === 'Public Service':
+                    this.occupationData.publicServiceArray = currentArray;
+                    break;
+                case type === 'Management':
+                    this.occupationData.managementArray = currentArray;
+                    break;
+            }
+            console.log(this.occupationData.laborArray);
+        };
 
         return CalculateOccupation;
     }()) || _class);
@@ -1524,10 +1442,15 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             });
         };
 
-        CalculateResults.prototype.addMyHealthExpectancy = function addMyHealthExpectancy(personResults) {
-            personResults.overallLifeExpectancy = personResults.ethnicity;
+        CalculateResults.prototype.calculateEducation = function calculateEducation(person, results) {
+            console.log(person.education);
+        };
+
+        CalculateResults.prototype.addExpectancies = function addExpectancies(personResults) {
             personResults.overallLifeExpectancy += personResults.exercise;
             personResults.overallLifeExpectancy += personResults.smoker;
+
+            personResults.overallLifeExpectancy += personResults.income;
         };
 
         CalculateResults.prototype.getTestTuples = function getTestTuples(jsonData, person) {
@@ -1554,11 +1477,203 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
         return CalculateResults;
     }()) || _class);
 });
+define('services/data/familyHealthData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var FamilyHealthData = exports.FamilyHealthData = function FamilyHealthData() {
+        _classCallCheck(this, FamilyHealthData);
+
+        this.familyLifeExpectancy = 70;
+        this.checkHeartDisease = false;
+        this.checkCancer = false;
+        this.checkMentalHealth = false;
+        this.checkDiabetes = false;
+    };
+});
+define('services/data/myHealthData',["exports"], function (exports) {
+        "use strict";
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var MyHealthData = exports.MyHealthData = function MyHealthData() {
+                _classCallCheck(this, MyHealthData);
+
+                this.height;
+                this.heightInInches;
+                this.weight;
+                this.bmi;
+                this.formHeightWeight = false;
+                this.exerciseLifeExpectancy = 0;
+
+                this.validHeight = false;
+                this.validWeight = false;
+                this.validBMI = false;
+                this.iconType = "underweight";
+                this.heightError = "";
+
+                this.exercisePerWeek;
+                this.sleepPerWeek;
+                this.healthRank;
+
+                this.alcoholPerWeek;
+
+                this.checksmoking = false;
+                this.checkStillSmoking = true;
+                this.kindOfSmoker;
+                this.ageQuitSmoking;
+                this.smokerLifeExpectancy = 0;
+        };
+});
+define('services/data/occupationData',['exports'], function (exports) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var OccupationData = exports.OccupationData = function OccupationData() {
+                _classCallCheck(this, OccupationData);
+
+                this.checkincome = false;
+                this.income = 0;
+                this.incomeLifeExpectancy = 0;
+
+                this.occupationType = ['Skilled/Unskilled', 'Industry', 'Public Service', 'Management'];
+                this.type = 'Skilled/Unskilled';
+
+                this.occupationCategorySet = new Set();
+                this.categoryToJobMap = new Map();
+                this.occupationChangeInLifeExpectancy = 0;
+
+                this.laborArray = [];
+                this.industryArray = [];
+                this.publicServiceArray = [];
+                this.managementArray = [];
+                this.currentJobArray = [];
+
+                this.clientOccupationArray = [];
+        };
+});
+define('services/data/personalInfoData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+        exports.PersonalInfoData = undefined;
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var _dec, _class;
+
+        var PersonalInfoData = exports.PersonalInfoData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function PersonalInfoData() {
+                _classCallCheck(this, PersonalInfoData);
+
+                this.checkspouse = false;
+
+                this.age = 30;
+                this.checkgender = true;
+                this.gender = 'male';
+
+                this.education;
+                this.race = 'black';
+                this.maritalStatus;
+
+                this.state = "Please Select";
+                this.county = 'Please Select';
+                this.countyLifeExpectancy;
+                this.expectedYearsLeft;
+                this.testTuples = [];
+                this.testTuples2 = [];
+                this.testTuples3 = [];
+
+                this.ethnicityLifeExpectancy;
+        }) || _class);
+});
+define('services/data/resultsData',['exports', 'aurelia-framework'], function (exports, _aureliaFramework) {
+        'use strict';
+
+        Object.defineProperty(exports, "__esModule", {
+                value: true
+        });
+        exports.ResultsData = undefined;
+
+        function _classCallCheck(instance, Constructor) {
+                if (!(instance instanceof Constructor)) {
+                        throw new TypeError("Cannot call a class as a function");
+                }
+        }
+
+        var _dec, _class;
+
+        var ResultsData = exports.ResultsData = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function ResultsData() {
+                _classCallCheck(this, ResultsData);
+
+                this.education = 0;
+
+                this.exercise = 0;
+                this.smoker = 0;
+                this.diabetes = 0;
+
+                this.income = 0;
+
+                this.overallLifeExpectancy = 0;
+        }) || _class);
+});
+define('services/data/stateData',["exports"], function (exports) {
+    "use strict";
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var StateData = exports.StateData = function StateData() {
+        _classCallCheck(this, StateData);
+
+        this.stateSet = new Set();
+        this.stateToCountyMap = new Map();
+    };
+});
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"css/styles.css\"></require><div id=\"app\"><div id=\"content\"><div id=\"home\"><h1 style=\"font-size:36px;text-align:center\"><b>Life Expectancy Calculator<b></b></b></h1></div><hr><router-view></router-view></div><br><br><br><footer id=\"footer\"><div class=\"footer-copyright\"><div class=\"container-fluid\"><br>©2017, PIEtech, Inc. All rights reserved.</div></div></footer></div></template>"; });
+define('text!css/drag-and-drop.css', ['module'], function(module) { module.exports = "#drag-and-drop-container {\r\n    margin: 0 auto;\r\n    width: 1600px;\r\n    margin-left: -30%;\r\n}\r\n\r\n#first-drag-group, #drop-box {\r\n    border: solid .5px black;\r\n    text-align: center;\r\n    height: 600px;\r\n    overflow: scroll;\r\n}\r\n\r\n\r\n#buttons {\r\n    background-color: #4CAF50; /* Green */\r\n    border: none;\r\n    color: white;\r\n    padding: 5px 10px;\r\n    margin: 0 auto;\r\n    margin-right: 8px;\r\n    margin-left: 8px;\r\n    text-align: center;\r\n    width: 180px;\r\n    height: 70px;\r\n    text-decoration: none;\r\n    display: inline-block;\r\n    font-size: 16px;\r\n    border-radius: 4px;\r\n    margin-bottom:10px;\r\n}"; });
+define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><require from=\"./capitalize-converter\"></require><form id=\"personalinfo\" submit.delegate=\"submit()\"><div style=\"margin-left:38.5%\"><label style=\"padding-right:10px\" for=\"checkspouse\">Do you have a spouse?</label><div class=\"btn-group\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div id=\"client-spouse-container\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h2 id=\"clientorspouse\" style=\"text-align:center\">Client</h2><div class=\"form-group\"><label for=\"age\">Age:</label><input style=\"width:400px\" id=\"age\"></div><label style=\"padding-right:10px\" for=\"gender\">Gender:</label><div class=\"btn-group\" click.delegate=\"gender(user.clientPersonalInfo)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><div class=\"form-group\"><label for=\"race\">Race</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.race\"><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><div class=\"form-group\"><label for=\"race\">Level of Education</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.education\"><option>Please Select</option><option>Didn't complete high school</option><option>Graduated high school/trade school</option><option>Graduated college or higher</option></select></div><div class=\"form-group\"><label for=\"race\">Marital Status</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.maritalStatus\"><option>Please Select</option><option>Never Married</option><option>Cohabitated</option><option>Married</option><option>Divorced</option></select></div><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState(user.clientPersonalInfo)\" value.bind=\"user.clientPersonalInfo.state\"><option>Please Select</option><option repeat.for=\"state of stateData.stateSet\">${state | capitalize}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy(user.clientPersonalInfo)\" value.bind=\"user.clientPersonalInfo.county\"><option>Please Select</option><option repeat.for=\"county of currentCountyArray\">${county | capitalize}</option></select></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 style=\"text-align:center\">Co-Client</h2><div class=\"form-group\"><label for=\"age\">Age:</label><input style=\"width:400px\" id=\"spouseage\"></div><label style=\"padding-right:10px\" for=\"gender\">Gender:</label><div class=\"btn-group\" click.delegate=\"gender(user.spousePersonalInfo)\" data-toggle=\"buttons\"><label class=\"btn ${user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><div class=\"form-group\"><label for=\"race\">Race</label><select class=\"form-control\" value.bind=\"user.spousePersonalInfo.race\"><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><div class=\"form-group\"><label for=\"race\">Level of Education</label><select class=\"form-control\" value.bind=\"user.spousePersonalInfo.education\"><option>Please Select</option><option>Didn't complete high school</option><option>Graduated high school/trade school</option><option>Graduated college or higher</option></select></div><div class=\"form-group\"><label for=\"race\">Marital Status</label><select class=\"form-control\" value.bind=\"user.spousePersonalInfo.maritalStatus\"><option>Please Select</option><option>Never Married</option><option>Cohabitated</option><option>Married</option><option>Divorced</option></select></div><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState(user.spousePersonalInfo)\" value.bind=\"user.spousePersonalInfo.state\"><option>Please Select</option><option repeat.for=\"state of stateData.stateSet\">${state | capitalize}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy(user.spousePersonalInfo)\" value.bind=\"user.spousePersonalInfo.county\"><option>Please Select</option><option repeat.for=\"county of currentCountyArray\">${county | capitalize}</option></select></div></div></div><hr style=\"clear:both\"><div class=\"additional-information-container\"><h1 style=\"text-align:center\">Input More Information:</h1><div style=\"margin:0 auto\"><button style=\"float:left\" class=\"btn btn-primary col-md-3\" click.delegate=\"myhealth()\">My Health</button> <button style=\"margin-left:12.5%\" class=\"btn btn-primary col-md-3\" click.delegate=\"familyhealth()\">My Family Health</button> <button style=\"float:right\" class=\"btn btn-primary col-md-3\" click.delegate=\"occupation()\">My Occupation</button></div></div><br><br><hr style=\"clear:both\"><div id=\"submit-button-div-home\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
 define('text!css/styles.css', ['module'], function(module) { module.exports = "/*========================GLYPHICON COLOR========================*/\r\n\r\n.glyphicon-question-sign {\r\n    color: #006dcc;\r\n\tmargin:5px;\r\n}\r\n\r\n/*========================END GLYPHICON COLOR========================*/\r\n\r\n.hasSpouse {\r\n\twidth: 45%;\r\n\tfloat: left;\r\n}\r\n\r\n.noSpouse {\r\n\twidth: 100%;\r\n\tfloat: none;\r\n}\r\n\r\n.additional-information-container {\r\n\tclear: both;\r\n\tmargin: 0 auto;\r\n\twidth: 600px;\r\n}\r\n\r\n/*========================BACK BUTTON========================*/\r\n#back-button-div-home {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n\tmargin-left: 46%;\r\n}\r\n\r\n#back-button-div {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n#back {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n/*========================SUBMIT BUTTON========================*/\r\n#submit-button-div-home {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n\tmargin-left: 46%;\r\n}\r\n\r\n#submit-button-div {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n#submit {\r\n\tmargin: 0 auto;\r\n    bottom: 0;\r\n}\r\n\r\n#personalinfo, #myhealth, #familyhealth, #occupation, #results {    \r\n    margin: 0 auto;\r\n    width: 1000px;\r\n}\r\n\r\n/*===========================FOOTER STYLING==========================*/\r\nhtml, body {\r\n\tmargin:0;\r\n\tpadding:0;\r\n\theight:100%;\r\n}\r\n\r\n#app {\r\n\tmin-height:100%;\r\n\tposition:relative;\r\n}\r\n\r\n#content {\r\n\tpadding-bottom:100px; /* Height of the footer element */\r\n}\r\n\r\n#footer {\r\n\tclear: both;\r\n\tbackground:#ededed;\r\n\twidth:100%;\r\n\theight:60px;\r\n\tposition:absolute;\r\n\tbottom:0;\r\n\tleft:0;\r\n    text-align: center;\r\n}\r\n/*============================END FOOTER STYLING===========================*/"; });
-define('text!aboutyou/personalinfo.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><require from=\"./capitalize-converter\"></require><form id=\"personalinfo\" submit.delegate=\"submit()\"><div style=\"margin-left:38.5%\"><label style=\"padding-right:10px\" for=\"checkspouse\">Do you have a spouse?</label><div class=\"btn-group\" click.delegate=\"checkspouse()\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientPersonalInfo.checkspouse ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div id=\"client-spouse-container\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h2 id=\"clientorspouse\" style=\"text-align:center\">Client</h2><div class=\"form-group\"><label for=\"age\">Age:</label><input style=\"width:400px\" id=\"age\"></div><label style=\"padding-right:10px\" for=\"gender\">Gender:</label><div class=\"btn-group\" click.delegate=\"gender(user.clientPersonalInfo)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.clientPersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><div class=\"form-group\"><label for=\"race\">Race</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.race\"><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><div class=\"form-group\"><label for=\"race\">Marital Status</label><select class=\"form-control\" value.bind=\"user.clientPersonalInfo.maritalStatus\"><option>Please Select</option><option>Never Married</option><option>Cohabitated</option><option>Married</option><option>Divorced</option></select></div><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState(user.clientPersonalInfo)\" value.bind=\"user.clientPersonalInfo.state\"><option>Please Select</option><option repeat.for=\"state of stateData.stateSet\">${state | capitalize}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy(user.clientPersonalInfo)\" value.bind=\"user.clientPersonalInfo.county\"><option>Please Select</option><option repeat.for=\"county of currentCountyArray\">${county | capitalize}</option></select></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h2 style=\"text-align:center\">Co-Client</h2><div class=\"form-group\"><label for=\"age\">Age:</label><input style=\"width:400px\" id=\"spouseage\"></div><label style=\"padding-right:10px\" for=\"gender\">Gender:</label><div class=\"btn-group\" click.delegate=\"gender(user.spousePersonalInfo)\" data-toggle=\"buttons\"><label class=\"btn ${user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Male</label><label class=\"btn ${!user.spousePersonalInfo.checkgender ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Female</label></div><br><br><br><div class=\"form-group\"><label for=\"race\">Race</label><select class=\"form-control\" value.bind=\"user.spousePersonalInfo.race\"><option>White</option><option>Black</option><option>Hispanic</option><option>Asian</option></select></div><div class=\"form-group\"><label for=\"race\">Marital Status</label><select class=\"form-control\" value.bind=\"user.spousePersonalInfo.maritalStatus\"><option>Please Select</option><option>Never Married</option><option>Cohabitated</option><option>Married</option><option>Divorced</option></select></div><div class=\"form-group\"><label for=\"state\">State</label><select class=\"form-control\" change.delegate=\"checkState(user.spousePersonalInfo)\" value.bind=\"user.spousePersonalInfo.state\"><option>Please Select</option><option repeat.for=\"state of stateData.stateSet\">${state | capitalize}</option></select></div><div class=\"form-group\"><label for=\"county\">County</label><select class=\"form-control\" change.delegate=\"checkLifeExpectancy(user.spousePersonalInfo)\" value.bind=\"user.spousePersonalInfo.county\"><option>Please Select</option><option repeat.for=\"county of currentCountyArray\">${county | capitalize}</option></select></div></div></div><hr style=\"clear:both\"><div class=\"additional-information-container\"><h1 style=\"text-align:center\">Input More Information:</h1><div style=\"margin:0 auto\"><button style=\"float:left\" class=\"btn btn-primary col-md-3\" click.delegate=\"myhealth()\">My Health</button> <button style=\"margin-left:12.5%\" class=\"btn btn-primary col-md-3\" click.delegate=\"familyhealth()\">My Family Health</button> <button style=\"float:right\" class=\"btn btn-primary col-md-3\" click.delegate=\"occupation()\">My Occupation</button></div></div><br><br><hr style=\"clear:both\"><div id=\"submit-button-div-home\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
 define('text!health/familyhealth.html', ['module'], function(module) { module.exports = "<template><require from=\"ion-rangeslider/css/ion.rangeSlider.css\"></require><require from=\"ion-rangeslider/css/ion.rangeSlider.skinHTML5.css\"></require><require from=\"ion-rangeslider/css/normalize.css\"></require><form id=\"familyhealth\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">Family Health - Client</h1><div class=\"form-group\"><label for=\"ageOfFam\">Average Family Life Expectancy:</label><input style=\"width:400px\" id=\"familyLifeExpectancy\"></div><hr><h4><b>Does your family have a history of...</b></h4><label style=\"padding-right:10px\" for=\"heartdisease\">Heart Disease?</label><div class=\"btn-group\" click.delegate=\"heartdisease(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"cancer\">Cancer?</label><div class=\"btn-group\" click.delegate=\"cancer(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"mentalhealth\">Mental Illness?</label><div class=\"btn-group\" click.delegate=\"mentalhealth(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"diabetes\">Diabetes?</label><div class=\"btn-group\" click.delegate=\"diabetes(user.clientFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">Family Health - Co-Client</h1><div class=\"form-group\"><label for=\"ageOfFam\">Average Family Life Expectancy:</label><input style=\"width:400px\" id=\"spousefamilyLifeExpectancy\"></div><hr><h4><b>Does your family have a history of...</b></h4><label style=\"padding-right:10px\" for=\"heartdisease\">Heart Disease?</label><div class=\"btn-group\" click.delegate=\"heartdisease(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkHeartDisease ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"cancer\">Cancer?</label><div class=\"btn-group\" click.delegate=\"cancer(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkCancer ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"mentalhealth\">Mental Illness?</label><div class=\"btn-group\" click.delegate=\"mentalhealth(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkMentalHealth ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"diabetes\">Diabetes?</label><div class=\"btn-group\" click.delegate=\"diabetes(user.spouseFamilyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseFamilyHealth.checkDiabetes ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><br></div><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
 define('text!health/myhealth.html', ['module'], function(module) { module.exports = "<template><require from=\"jquery-ui-dist/jquery-ui.css\"></require><form id=\"myhealth\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">My Health - Client</h1><div show.bind=\"validHeight\" class=\"alert alert-danger\" role=\"alert\"><strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.</div><div><div class=\"${user.clientMyHealth.formHeightWeight ? 'col-md-8' : 'none'}\"><div class=\"form-group ${user.clientMyHealth.heightError}\"><label for=\"height\">Height</label><span id=\"height-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.clientMyHealth.height\" class=\"form-control\" placeholder=\"5'7\" change.trigger=\"checkHeight(user.clientMyHealth)\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><span id=\"weight-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.clientMyHealth.weight\" class=\"form-control\" placeholder=\"155\" change.trigger=\"calculateBMI(user.clientMyHealth)\"></div><div id=\"client-bmi-alert\" class=\"alert alert-success\" show.bind=\"user.clientMyHealth.validBMI\"><strong>BMI: ${user.clientMyHealth.bmi}</strong></div></div><div show.bind=\"user.clientMyHealth.validBMI\" class=\"${user.clientMyHealth.formHeightWeight ? 'col-md-2' : 'none'}\"><img src.bind=\"user.clientMyHealth.iconType\" style=\"width:150px;height:220px\"></div></div><div class=\"form-group\" style=\"clear:both\"><label for=\"healthRank\">How many hours do you exercise per week?</label><span id=\"exercise-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.clientMyHealth.exercisePerWeek\"><option data-hidden=\"true\">Please Select</option><option>0</option><option>Less than 2.5 hours</option><option>Approximately 2.5 hours</option><option>More than 2.5 hours</option></select></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><span id=\"health-rank-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.clientMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><hr><h2 style=\"text-align:center\">Habits</h2><div class=\"form-group\"><label for=\"healthRank\">How many alcoholic drinks do you consume per week?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.alcoholPerWeek\"><option data-hidden=\"true\">Please Select</option><option>0-1</option><option>2-7</option><option>8+</option></select></div><label style=\"padding-right:10px\" for=\"smoking\">Have you ever smoked?</label><div class=\"btn-group\" click.delegate=\"smoking(user.clientMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.clientMyHealth.checksmoking\"><label style=\"padding-right:10px\" for=\"smoking\">Do you still smoke?</label><div class=\"btn-group\" click.delegate=\"stillSmoking(user.clientMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><br><div show.bind=\"user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker are you?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker were you?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.clientMyHealth.checkStillSmoking && user.clientMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">At what age did you quit smoking?</label><select class=\"form-control\" value.bind=\"user.clientMyHealth.ageQuitSmoking\"><option data-hidden=\"true\">Please Select</option><option>Before 25</option><option>25-34</option><option>35-44</option><option>45-59</option><option>60+</option></select></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">My Health - Co-Client</h1><div show.bind=\"validHeightSpouse\" class=\"alert alert-danger\" role=\"alert\"><strong>Uh oh!</strong> Please be sure to enter a valid height in the format: feet ' inches.</div><div><div class=\"${user.spouseMyHealth.formHeightWeight ? 'col-md-8' : 'none'}\"><div class=\"form-group ${user.spouseMyHealth.heightError}\"><label for=\"height\">Height</label><span id=\"height-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.spouseMyHealth.height\" class=\"form-control\" placeholder=\"5'7\" change.trigger=\"checkHeight(user.spouseMyHealth)\"></div><div class=\"form-group\"><label for=\"weight\">Weight</label><span id=\"weight-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span> <input type=\"text\" value.bind=\"user.spouseMyHealth.weight\" class=\"form-control\" placeholder=\"155\" change.trigger=\"calculateBMI(user.spouseMyHealth)\"></div><div id=\"spouse-bmi-alert\" class=\"alert alert-success\" show.bind=\"user.spouseMyHealth.validBMI\"><strong>BMI: ${user.spouseMyHealth.bmi}</strong></div></div><div show.bind=\"user.spouseMyHealth.validBMI\" class=\"${user.spouseMyHealth.formHeightWeight ? 'col-md-2' : 'none'}\"><img src.bind=\"user.spouseMyHealth.iconType\" style=\"width:150px;height:220px\"></div></div><div class=\"form-group\"><label for=\"healthRank\">How many hours do you exercise per week?</label><span id=\"spouse-exercise-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.spouseMyHealth.exercisePerWeek\"><option data-hidden=\"true\">Please Select</option><option>0</option><option>Less than 2.5 hours</option><option>Approximately 2.5 hours</option><option>More than 2.5 hours</option></select></div><div class=\"form-group\"><label for=\"healthRank\">How would you rank your health?</label><span id=\"spouse-health-rank-tooltip\" title=\"\" class=\"glyphicon glyphicon-question-sign\"></span><select class=\"form-control\" value.bind=\"user.spouseMyHealth.healthRank\"><option data-hidden=\"true\">Please Select</option><option>Excellent</option><option>Good</option><option>Average</option><option>Bad</option><option>Terrible</option></select></div><hr><h2 style=\"text-align:center\">Habits</h2><div class=\"form-group\"><label for=\"healthRank\">How many alcoholic drinks do you consume per week?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.alcoholPerWeek\"><option data-hidden=\"true\">Please Select</option><option>0-1</option><option>2-7</option><option>8+</option></select></div><label style=\"padding-right:10px\" for=\"gender\">Have you ever smoked?</label><div class=\"btn-group\" click.delegate=\"smoking(user.spouseMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseMyHealth.checksmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.spouseMyHealth.checksmoking\"><label style=\"padding-right:10px\" for=\"smoking\">Do you still smoke?</label><div class=\"btn-group\" click.delegate=\"stillSmoking(user.spouseMyHealth)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseMyHealth.checkStillSmoking ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><br><div show.bind=\"user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker are you?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">What kind of smoker were you?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.kindOfSmoker\"><option data-hidden=\"true\">Please Select</option><option>Light: less than 10 cigarretes per day</option><option>Average: between 10 and 20 cigarretes per day</option><option>Heavy: more than 20 cigarretes per day</option></select></div><div show.bind=\"!user.spouseMyHealth.checkStillSmoking && user.spouseMyHealth.checksmoking\" class=\"form-group\"><label for=\"healthRank\">At what age did you quit smoking?</label><select class=\"form-control\" value.bind=\"user.spouseMyHealth.ageQuitSmoking\"><option data-hidden=\"true\">Please Select</option><option>Before 25</option><option>25-34</option><option>35-44</option><option>45-59</option><option>60+</option></select></div><br><br><br></div><br><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
-define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><form id=\"occupation\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">Occupation - Client</h1><hr><h4><b>Do you have experience working in...</b></h4><label style=\"padding-right:10px\" for=\"education\">Education?</label><div class=\"btn-group\" click.delegate=\"education(user.clientOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"construction\">Construction?</label><div class=\"btn-group\" click.delegate=\"construction(user.clientOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"emergencyResponding\">Emergency Responding?</label><div class=\"btn-group\" click.delegate=\"emergencyResponding(user.clientOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">Occupation - Co-Client</h1><hr><h4><b>Do you have experience working in...</b></h4><label style=\"padding-right:10px\" for=\"education\">Education?</label><div class=\"btn-group\" click.delegate=\"education(user.spouseOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseOccupation.checkEducation ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"construction\">Construction?</label><div class=\"btn-group\" click.delegate=\"construction(user.spouseOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseOccupation.checkConstruction ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><label style=\"padding-right:10px\" for=\"emergencyResponding\">Emergency Responding?</label><div class=\"btn-group\" click.delegate=\"emergencyResponding(user.spouseOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseOccupation.checkEmergencyResponding ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><br></div><p id=\"drag1\" draggable=\"true\" dragstart.trigger=\"drag($event)\">Fire Dragon</p><div id=\"drop-box\"><strong>Drop your dragons here</strong><div style=\"width:200px;height:200px;border:solid 1px #000\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"></div></div><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\">Submit</button></div></form></template>"; });
+define('text!occupation/occupation.html', ['module'], function(module) { module.exports = "<template><require from=\"../css/drag-and-drop.css\"></require><form id=\"occupation\" submit.delegate=\"submit()\"><div id=\"client\" class=\"${user.clientPersonalInfo.checkspouse ? 'hasSpouse' : 'noSpouse'}\"><h1 style=\"text-align:center\">Occupation - Client</h1><hr><label style=\"padding-right:10px\" for=\"income\">Do you have an income?</label><div class=\"btn-group\" click.delegate=\"income(user.clientOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.clientOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.clientOccupation.checkincome\" class=\"form-group\"><label for=\"income\">Annual Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"user.clientOccupation.income\" class=\"form-control\" placeholder=\"50000\"></div></div></div><div id=\"spouse\" style=\"width:45%;float:right\" show.bind=\"user.clientPersonalInfo.checkspouse\"><h1 style=\"text-align:center\">Occupation - Co-Client</h1><hr><label style=\"padding-right:10px\" for=\"income\">Do you have an income?</label><div class=\"btn-group\" click.delegate=\"income(user.spouseOccupation)\" data-toggle=\"buttons\"><label class=\"btn ${user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">Yes</label><label class=\"btn ${!user.spouseOccupation.checkincome ? 'active btn-primary' : 'btn-secondary'}\"><input type=\"radio\">No</label></div><br><br><div show.bind=\"user.spouseOccupation.checkincome\" class=\"form-group\"><label for=\"income\">Annual Income</label><div class=\"input-group mb-2 mr-sm-2 mb-sm-0\"><div class=\"input-group-addon\">$</div><input type=\"text\" value.bind=\"user.spouseOccupation.income\" class=\"form-control\" placeholder=\"50000\"></div></div></div><div id=\"drag-and-drop-container\"><div class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-6' : 'col-md-8'}\" id=\"first-drag-group\" drop.trigger=\"drop($event)\" dragover.trigger=\"allowDrop($event)\"><nav class=\"navbar navbar-default\"><div class=\"container-fluid\"><div class=\"navbar-header\"><a class=\"navbar-brand\">Occupations</a></div><ul repeat.for=\"type of user.clientOccupation.occupationType\" class=\"nav navbar-nav\"><li><a click.delegate=\"checkOccupation(user.clientOccupation, {type})\">${type}</a></li></ul></div></nav><h3><b>${user.clientOccupation.type}</b></h3><br><div class=\"row\" draggable=\"true\" dragstart.trigger=\"drag($event)\" class=\"col-md-4\"><div class=\"col\" id=\"button-div\"><button class=\"current-buttons\" click.delegate=\"removeDrop()\" draggable=\"true\" id=\"buttons\" repeat.for=\"job of occupationData.currentJobArray\">${job}</button></div></div></div><div class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}\" id=\"drop-box\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"><h3><b>Current Occupation(s)<b></b></b></h3></div><div show.bind=\"user.clientPersonalInfo.checkspouse\" class=\"${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}\" id=\"drop-box\" drop.trigger=\"drop($event)\" dragstart.trigger=\"drag($event)\" dragover.trigger=\"allowDrop($event)\"><h3><b>Current Client Occupation(s)<b></b></b></h3></div></div><br><br><hr style=\"clear:both\"><div id=\"back-button-div\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div><div id=\"submit-button-div\" class=\"col-md-2\"><button id=\"submit\" type=\"submit\" class=\"btn btn-primary\" click.delegate=\"submit(occupationData.clientOccupationArray)\">Submit</button></div></form></template>"; });
 define('text!results/results.html', ['module'], function(module) { module.exports = "<template><require from=\"highcharts/css/highcharts.css\"></require><div id=\"results\"><h1 style=\"text-align:center\">Results</h1><div id=\"chart-container\" style=\"width:100%;height:400px\"></div><div class=\"table-outter\"><table class=\"table table-hover table-bordered search-table\"><thead></thead><tbody></tbody></table></div><hr style=\"clear:both\"><div id=\"back-button-div-home\" class=\"col-md-10\"><button id=\"back\" class=\"btn btn-secondary\" click.delegate=\"back()\">Back</button></div></div></template>"; });
 //# sourceMappingURL=app-bundle.js.map

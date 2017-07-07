@@ -6,18 +6,22 @@ import * as ionRangeSlider from "ion-rangeslider";
 import {Slider} from '../utilities/slider';
 import {CalculateResults} from '../utilities/calculations/calculateResults';
 import {CalculateOccupation} from '../utilities/calculations/calculateOccupation';
+import {OccupationData} from '../services/data/occupationData'
 
-@inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation)
+@inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation, OccupationData)
 export class personalinfo {
     currentCountyArray = [];
 
-    constructor(router, user, stateData, slider, calculateResults, calculateOccupation) {
+    constructor(router, user, stateData, slider, calculateResults, calculateOccupation, occupationData) {
         this.slider = slider;
         this.router = router;
         this.user = user;
         this.stateData = stateData;
         this.calculateResults = calculateResults;
         this.calculateOccupation = calculateOccupation;
+        this.occupationData = occupationData;
+        if(this.occupationData.laborArray.length == 0) 
+            calculateOccupation.loadOccupation();
     }
 
     gender(person) {
@@ -76,16 +80,14 @@ export class personalinfo {
     }
 
     occupation() {
-        this.calculateOccupation.loadOccupation();
         this.router.navigate('#/occupation');  
     }
 
     async submit() {
         //Get life expectancy based on age, gender, and ethnicity
         await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
-        this.user.clientResults.ethnicity = this.user.clientPersonalInfo.ethnicityLifeExpectancy;
-
-        this.calculateResults.addMyHealthExpectancy(this.user.clientResults);
+        this.calculateResults.calculateEducation(this.user.clientPersonalInfo, this.user.clientResults)
+        this.calculateResults.addExpectancies(this.user.clientResults);
 
         console.log("=======CLIENT=======");
         console.log(this.user.clientPersonalInfo);
@@ -93,24 +95,18 @@ export class personalinfo {
 
         if(this.user.clientPersonalInfo.checkspouse){
             await this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
-            this.user.spouseResults.ethnicity = this.user.spousePersonalInfo.ethnicityLifeExpectancy;
-
-            this.calculateResults.addMyHealthExpectancy(this.user.spouseResults);
+            this.calculateResults.calculateEducation(this.user.spousePersonalInfo, this.user.spouseResults)
+            this.calculateResults.addExpectancies(this.user.spouseResults);
         
             console.log("=======SPOUSE=======");
             console.log(this.user.spousePersonalInfo);
             console.log(this.user.spouseResults);
         } 
-
         
         this.router.navigate('#/results');  
     }
 
     attached() {
         this.slider.createAgeSlider();
-    }
-
-    capitalize(str) {
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
 }

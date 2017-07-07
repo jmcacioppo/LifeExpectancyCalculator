@@ -8,6 +8,8 @@ export class PersonalInfoData {
         this.age = 30;
         this.checkgender = true;
         this.gender = 'male';
+
+        this.education;
         this.race = 'black';
         this.maritalStatus;
 

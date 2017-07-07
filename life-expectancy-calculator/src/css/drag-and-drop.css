@@ -1,0 +1,31 @@
+#drag-and-drop-container {
+    margin: 0 auto;
+    width: 1600px;
+    margin-left: -30%;
+}
+
+#first-drag-group, #drop-box {
+    border: solid .5px black;
+    text-align: center;
+    height: 600px;
+    overflow: scroll;
+}
+
+
+#buttons {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin: 0 auto;
+    margin-right: 8px;
+    margin-left: 8px;
+    text-align: center;
+    width: 180px;
+    height: 70px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    margin-bottom:10px;
+}
