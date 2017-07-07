@@ -68,25 +68,16 @@
                     
                     <h3><b>${user.clientOccupation.type}</b></h3>
                     <br>
-                    <!--<div repeat.for="job of jobs">
-                        <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Fire Dragon</button>
-                    </div>-->
 
                     <div  class="row" draggable="true" dragstart.trigger="drag($event)" class="col-md-4" >
                         <div class="col" id="button-div">
                             <button class="current-buttons" click.delegate="removeDrop()" draggable="true" id="buttons" repeat.for="job of occupationData.currentJobArray">${job}</button>
                         </div>
                     </div>
-
-                    <!--<br> 
-                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Ice Dragon</button>
-                    <br>
-                    <button id="buttons" draggable="true" dragstart.trigger="drag($event)">Thunder Dragon</button>
-                    -->
                     
                 </div>
 
-                <div change.delegate="hello()" class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
+                <div class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
                     <h3><b>Client Occupation(s)<b></h3>
                 </div>
                 <div show.bind="user.clientPersonalInfo.checkspouse" class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}" id="spouse-drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
