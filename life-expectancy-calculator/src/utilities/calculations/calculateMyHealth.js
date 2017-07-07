@@ -54,6 +54,12 @@ export class CalculateMyHealth {
         person.exerciseLifeExpectancy = exerciseLifeExpectancy;
     }
 
+    calculateHealthRank(person, personResults) {
+        if(person.healthRank == "I'm in great health") personResults.healthrank = 3.8;
+        else if(person.healthRank == "I'm in poor health") personResults.healthrank = -3.8;
+        else personResults.healthRank = 0;
+    }
+
     //this calculates added/decreased life expectancy based on smoking
     calculateSmoker(person) {
         var smokerLifeExpectancy = 0;
@@ -108,5 +114,19 @@ export class CalculateMyHealth {
         else {
             personResults.mental = 0;
         }
+    }
+
+    calculateAgeOfParents(person, personResults, gender) {
+        var parentAges = 0;
+        if(person.ageOfParents == "Both after the age of 75" || person.ageOfParents == "They are both still alive and older than 75") {
+            if(gender == "Male" || gender == 'male') parentAges += 4.2;
+            else if(gender == "Female") parentAges += 3.5;
+        }
+        else if(person.ageOfParents == "Both before the age of 75") {
+            if(gender == "Male" || gender == 'male') parentAges -= 4.2;
+            else if(gender == "Female") parentAges -= 3.5;
+        }
+
+        personResults.parentAges = parentAges;
     }
 }

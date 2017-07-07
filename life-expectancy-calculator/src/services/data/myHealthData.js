@@ -24,5 +24,7 @@ export class MyHealthData {
         this.kindOfSmoker;
         this.ageQuitSmoking;
         this.smokerLifeExpectancy = 0;
+
+        this.ageOfParents;
     }
 }
