@@ -12,11 +12,20 @@ export class CalculateResults {
     }
 
     //Gets the life table based on the users race and gender
-    async getLifeTableData(person) {
-        let results = await this.httpClient.fetch('/api/life-table/' + person.race.toLowerCase() + '-' + person.gender.toLowerCase() + '.json');
-        let resultsData = await results.json();
-        this.setUserExpectedAge(resultsData, person);
-        this.getTestTuples(resultsData, person);
+    async getLifeTableData(client, clientResults, spouse, spouseResults) {
+        let clientEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + client.race.toLowerCase() + '-' + client.gender.toLowerCase() + '.json');
+        let clientResultsData = await clientEthnicityExpectancy.json();
+        this.setUserExpectedAge(clientResultsData, client);
+
+        var spouseResultsData;
+        if(client.checkspouse) {
+            let spouseEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + spouse.race.toLowerCase() + '-' + spouse.gender.toLowerCase() + '.json');
+            spouseResultsData = await spouseEthnicityExpectancy.json();
+            this.setUserExpectedAge(spouseResultsData, spouse);
+        }
+
+        this.getTestTuples(clientResultsData, client, clientResults,
+            spouseResultsData, spouse, spouseResults);
     }
 
     //Iterates through the json object to determine the user's expected age
@@ -27,18 +36,36 @@ export class CalculateResults {
             currentAgeArray[0] = parseInt(value.Age.slice(0, 2));
             currentAgeArray[1] = parseInt(value.Age.slice(3, 5));
             if(currentAgeArray[0] === person.age || currentAgeArray[1] === person.age) {
-                person.expectedYearsLeft = parseInt(value.ExpectedAge);
-                person.ethnicityLifeExpectancy = person.age;
+                person.expectedYearsLeft = parseInt(value.Number);
             }
         });
     }
 
     //Education calculation
     calculateEducation(person, results) {
-        console.log(person.education);
+        var educationLifeExpectancy = 0;
+        var education = person.education;
+        if(education.indexOf("Didn't") !== -1) { //If didn't complete high school
+            if(person.gender == 'Male' || person.gender == 'male') educationLifeExpectancy -= 2;
+            else if(person.gender == 'Female') educationLifeExpectancy -= 0.4;
+        } 
+        if(education.indexOf("trade school") !== -1) { //If graduated high school
+            if(person.gender == 'Male' || person.gender == 'male') educationLifeExpectancy -= 0.4;
+            else if(person.gender == 'Female') educationLifeExpectancy += 0.25;
+        } 
+        if(education.indexOf("college") !== -1) { //If graduated college or more
+            if(person.gender == 'Male' || person.gender == 'male') educationLifeExpectancy += 3;
+            else if(person.gender == 'Female') educationLifeExpectancy += 1.9;
+        } 
+
+        results.education = educationLifeExpectancy;
     }
 
+    //Add years from expectancies
     addExpectancies(personResults) {
+        //Personal Info Factors
+        personResults.overallLifeExpectancy += personResults.education;
+        
         //MyHealth Factors
         personResults.overallLifeExpectancy += personResults.exercise;
         personResults.overallLifeExpectancy += personResults.smoker;
@@ -51,24 +78,144 @@ export class CalculateResults {
     }
     
     //Gets test tuples for chart data
-    getTestTuples(jsonData, person) {
-        var tempArr = [];
-        var tempArr2 = [];
-        var tempArr3 = [];
+    getTestTuples(clientResultsData, client, clientResults,
+            spouseResultsData, spouse, spouseResults) {
         
-        jsonData.forEach(function(value) {
-            tempArr.push([value.Age, value.Number]);
+        var clientTuples = [];
+        var clientTableAge = [];
+        var clientTableValue = [];
+
+        var check90 = true; 
+        var check75 = true; 
+        var check50 = true; 
+        var check25 = true; 
+        var check10 = true;
+        //CLIENT
+        clientResultsData.forEach(function(value, i) {
+            clientTuples.push([parseInt(value.Age) + client.age + clientResults.overallLifeExpectancy, value.Number]);
+            
+            if(value.Number < 90000 && check90) {
+                clientTableAge.push(clientResultsData[i-1].Age);
+                clientTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check90 = false;
+            }
+            else if(value.Number < 75000 && check75) {
+                clientTableAge.push(clientResultsData[i-1].Age);
+                clientTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check75 = false;
+            }
+            else if(value.Number < 50000 && check50) {
+                clientTableAge.push(clientResultsData[i-1].Age);
+                clientTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check50 = false;
+            }
+            else if(value.Number < 25000 && check25) {
+                clientTableAge.push(clientResultsData[i-1].Age);
+                clientTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check25 = false;
+            }
+            else if(value.Number < 10000 && check10) {
+                clientTableAge.push(clientResultsData[i-1].Age);
+                clientTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check10 = false;
+            }
         });
-        jsonData.forEach(function(value) {
-            tempArr2.push([parseInt(value.Age) + 3, value.Number]);
+
+        var spouseTuples = [];
+        var spouseTableAge = [];
+        var spouseTableValue = [];
+
+        check90 = true; 
+        check75 = true; 
+        check50 = true; 
+        check25 = true; 
+        check10 = true;
+        //CO-CLIENT
+        if(client.checkspouse) {
+            spouseResultsData.forEach(function(value, i) {
+                spouseTuples.push([parseInt(value.Age) + spouse.age + spouseResults.overallLifeExpectancy, value.Number]);
+            
+                 if(value.Number < 90000 && check90) {
+                    spouseTableAge.push(spouseResultsData[i-1].Age);
+                    spouseTableValue.push(spouseResultsData[i-1].Number / 1000 + "%");
+                    check90 = false;
+                }
+                else if(value.Number < 75000 && check75) {
+                    spouseTableAge.push(spouseResultsData[i-1].Age);
+                    spouseTableValue.push(spouseResultsData[i-1].Number / 1000 + "%");
+                    check75 = false;
+                }
+                else if(value.Number < 50000 && check50) {
+                    spouseTableAge.push(spouseResultsData[i-1].Age);
+                    spouseTableValue.push(spouseResultsData[i-1].Number / 1000 + "%");
+                    check50 = false;
+                }
+                else if(value.Number < 25000 && check25) {
+                    spouseTableAge.push(spouseResultsData[i-1].Age);
+                    spouseTableValue.push(spouseResultsData[i-1].Number / 1000 + "%");
+                    check25 = false;
+                }
+                else if(value.Number < 10000 && check10) {
+                    spouseTableAge.push(spouseResultsData[i-1].Age);
+                    spouseTableValue.push(spouseResultsData[i-1].Number / 1000 + "%");
+                    check10 = false;
+                }
+            });
+        }
+
+        var averageTuples = [];
+        var averageTableAge = [];
+        var averageTableValue = [];
+
+        check90 = true; 
+        check75 = true; 
+        check50 = true; 
+        check25 = true; 
+        check10 = true;
+        //AVERAGE
+        clientResultsData.forEach(function(value, i) {
+            averageTuples.push([parseInt(value.Age) + client.age, value.Number]);
+
+            if(value.Number < 90000 && check90) {
+                averageTableAge.push(clientResultsData[i-1].Age);
+                averageTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check90 = false;
+            }
+            else if(value.Number < 75000 && check75) {
+                averageTableAge.push(clientResultsData[i-1].Age);
+                averageTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check75 = false;
+            }
+            else if(value.Number < 50000 && check50) {
+                averageTableAge.push(clientResultsData[i-1].Age);
+                averageTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check50 = false;
+            }
+            else if(value.Number < 25000 && check25) {
+                averageTableAge.push(clientResultsData[i-1].Age);
+                averageTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check25 = false;
+            }
+            else if(value.Number < 10000 && check10) {
+                averageTableAge.push(clientResultsData[i-1].Age);
+                averageTableValue.push(clientResultsData[i-1].Number / 1000 + "%");
+                check10 = false;
+            }
         });
-        jsonData.forEach(function(value) {
-            tempArr3.push([parseInt(value.Age) - 5, value.Number]);
-        });
-        person.testTuples = tempArr;
-        person.testTuples2 = tempArr2;
-        console.log(tempArr2);
-        person.testTuples3 = tempArr3;
-        console.log(tempArr3);
+
+        //GET TUPLES FOR GRAPH
+        clientResults.clientTuples = clientTuples;
+        spouseResults.spouseTuples = spouseTuples;
+        clientResults.averageTuples = averageTuples;
+
+        //GET AGES FOR TABLE
+        clientResults.clientTableAge = clientTableAge;
+        spouseResults.spouseTableAge = spouseTableAge;
+        clientResults.averageTableAge = averageTableAge;
+
+        //GET VALUES FOR TABLE
+        clientResults.clientTableValue = clientTableValue;
+        spouseResults.spouseTableValue = spouseTableValue;
+        clientResults.averageTableValue = averageTableValue;
     }
 }

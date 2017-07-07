@@ -72,6 +72,15 @@
                 </select>
             </div>
 
+            <!--==========================DIABETES===========================-->
+            <label style="padding-right: 10px;" for="diabetes">Do you have diabetes?</label>
+            <div class="btn-group" click.delegate="diabetes(user.clientMyHealth)" data-toggle="buttons">
+                <label class="btn ${user.clientMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
             <hr>
             <h2 style="text-align: center">Habits</h2>
 
@@ -214,6 +223,15 @@
                     <option>Bad</option>
                     <option>Terrible</option>
                 </select>
+            </div>
+
+            <!--==========================DIABETES===========================-->
+            <label style="padding-right: 10px;" for="diabetes">Do you have diabetes?</label>
+            <div class="btn-group" click.delegate="diabetes(user.spouseMyHealth)" data-toggle="buttons">
+                <label class="btn ${user.spouseMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
             </div>
 
             <hr>

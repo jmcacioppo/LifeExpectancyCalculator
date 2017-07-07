@@ -17,10 +17,5 @@ export class PersonalInfoData {
         this.county = 'Please Select';
         this.countyLifeExpectancy;
         this.expectedYearsLeft;
-        this.testTuples = [];
-        this.testTuples2 = [];
-        this.testTuples3 = [];
-
-        this.ethnicityLifeExpectancy;
     }
 }

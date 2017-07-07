@@ -81,25 +81,33 @@ export class personalinfo {
     }
 
     async submit() {
-        //Get life expectancy based on age, gender, and ethnicity
-        await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo);
-        this.calculateResults.calculateEducation(this.user.clientPersonalInfo, this.user.clientResults)
+        //Client calculations - results
+        if(this.user.clientPersonalInfo.education && this.user.clientPersonalInfo.education !== "Please Select") {
+            this.calculateResults.calculateEducation(this.user.clientPersonalInfo, this.user.clientResults);
+        }
         this.calculateResults.addExpectancies(this.user.clientResults);
-
+        
         console.log("=======CLIENT=======");
         console.log(this.user.clientPersonalInfo);
         console.log(this.user.clientResults);
 
+        //Spouse calculations - results
         if(this.user.clientPersonalInfo.checkspouse){
-            await this.calculateResults.getLifeTableData(this.user.spousePersonalInfo);
-            this.calculateResults.calculateEducation(this.user.spousePersonalInfo, this.user.spouseResults)
+            if(this.user.clientPersonalInfo.education && this.user.clientPersonalInfo.education !== "Please Select") {
+                this.calculateResults.calculateEducation(this.user.spousePersonalInfo, this.user.spouseResults);
+            }
             this.calculateResults.addExpectancies(this.user.spouseResults);
-        
+
             console.log("=======SPOUSE=======");
             console.log(this.user.spousePersonalInfo);
             console.log(this.user.spouseResults);
         } 
+
+        await this.calculateResults.getLifeTableData(this.user.clientPersonalInfo, this.user.clientResults,
+            this.user.spousePersonalInfo, this.user.spouseResults);
         
+            console.log(this.user.clientResults.clientTable);
+
         this.router.navigate('#/results');  
     }
 

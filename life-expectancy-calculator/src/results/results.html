@@ -4,24 +4,71 @@
         <h1 style="text-align: center">Results</h1>
         <div id="chart-container" style="width:100%; height:400px;"></div>
         
+        <!--============================CLIENT===========================-->      
+        <div id="client">
+            <hr> 
+            <h3 style="text-align:center;">Client Results</h3>
             <div class="table-outter">
                 <table class="table table-hover table-bordered search-table">
                     <thead>
-                        <!--<tr>
-                            <th>Year</th>
-                            <th repeat.for="">$</th>
-                            <th>Probability</th>
-                        </tr>-->
+                        <tr>
+                            <th>Age</th>
+                            <th repeat.for="age of user.clientResults.clientTableAge.length">${user.clientResults.clientTableAge[age]}</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <!--<tr>
-                            <th>Age</th>
-                            <td repeat.for=""></th>
-                            <td>End of Plan</td>
-                        </tr>-->
+                        <tr>
+                            <th>Number</th>
+                            <td repeat.for="num of user.clientResults.clientTableValue.length">${user.clientResults.clientTableValue[num]}</th>
+                        </tr>
                     </tbody>
                 </table>
             </div>  
+        </div>
+
+        <!--============================SPOUSE===========================-->
+        <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
+            <hr>
+            <h3 style="text-align:center;">Spouse Results</h3>
+            <div class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Age</th>
+                            <th repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Number</th>
+                            <td repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+        </div>
+
+        <!--============================AVERAGE===========================-->
+        <div id="average">
+            <hr>
+            <h3 style="text-align:center;">Average Results</h3>
+            <div class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Age</th>
+                            <th repeat.for="age of user.clientResults.averageTableAge.length">${user.clientResults.averageTableAge[age]}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Number</th>
+                            <td repeat.for="num of user.clientResults.averageTableValue.length">${user.clientResults.averageTableValue[num]}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+        </div>
 
         <hr style="clear:both">
         <div id="back-button-div-home" class="col-md-10">
