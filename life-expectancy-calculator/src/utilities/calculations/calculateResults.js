@@ -35,7 +35,7 @@ export class CalculateResults {
             var currentAgeArray = [];
             currentAgeArray[0] = parseInt(value.Age.slice(0, 2));
             currentAgeArray[1] = parseInt(value.Age.slice(3, 5));
-            if(currentAgeArray[0] === person.age || currentAgeArray[1] === person.age) {
+            if((currentAgeArray[0] === person.age || currentAgeArray[1] === person.age) && person.age <= currentAgeArray[0]) {
                 person.expectedYearsLeft = parseInt(value.Number);
             }
         });
@@ -94,7 +94,9 @@ export class CalculateResults {
         var check10 = true;
         //CLIENT
         clientResultsData.forEach(function(value, i) {
-            clientTuples.push([parseInt(value.Age) + client.age + clientResults.overallLifeExpectancy, value.Number]);
+            if(parseInt(value.Age) >= client.age) {
+                clientTuples.push([parseInt(value.Age) + clientResults.overallLifeExpectancy, value.Number]);
+            }
             
             if(value.Number < 90000 && check90) {
                 clientTableAge.push(clientResultsData[i-1].Age);
@@ -135,7 +137,9 @@ export class CalculateResults {
         //CO-CLIENT
         if(client.checkspouse) {
             spouseResultsData.forEach(function(value, i) {
-                spouseTuples.push([parseInt(value.Age) + spouse.age + spouseResults.overallLifeExpectancy, value.Number]);
+                if(parseInt(value.Age) >= spouse.age) {
+                    spouseTuples.push([parseInt(value.Age) + spouseResults.overallLifeExpectancy, value.Number]);
+                }
             
                  if(value.Number < 90000 && check90) {
                     spouseTableAge.push(spouseResultsData[i-1].Age);
@@ -176,7 +180,9 @@ export class CalculateResults {
         check10 = true;
         //AVERAGE
         clientResultsData.forEach(function(value, i) {
-            averageTuples.push([parseInt(value.Age) + client.age, value.Number]);
+            if(parseInt(value.Age) >= client.age) {
+                averageTuples.push([parseInt(value.Age), value.Number]);
+            }
 
             if(value.Number < 90000 && check90) {
                 averageTableAge.push(clientResultsData[i-1].Age);

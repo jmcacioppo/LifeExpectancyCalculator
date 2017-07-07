@@ -51,8 +51,9 @@ export class ReadFile {
         var deathTotal = 0;
         jsonData.forEach((jobObject) => {
             arrayOccupations.forEach((userOccupation) => {
-                if(userOccupation === jobObject.Occupation)
-                    total += jobObject.deathTotal;
+                if(userOccupation.trim() === jobObject.Occupation.trim()) {
+                    deathTotal += parseInt(jobObject.Deaths);
+                }
             })
         });
         return deathTotal;
