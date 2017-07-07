@@ -16,7 +16,7 @@ export class OccupationData {
         this.publicServiceArray = [];
         this.managementArray = [];
         this.currentJobArray = [];
-
-        this.clientOccupationArray = [];
+        //Keeps track of current occupation in drag and drop
+        this.occupationArray = [];
     }
 }

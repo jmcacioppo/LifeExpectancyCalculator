@@ -44,10 +44,11 @@ export class CalculateOccupation {
     }
 
     //Calculate life expectancy values based on occupation
-    async calculationOccupation(arrayOccupations) {
+    async calculationOccupation(person) {
         let data = await this.httpClient.fetch('/api/occupation-table/occupation.json');
         let loadedData = await data.json();
-        this.occupationData.occupationChangeInLifeExpectancy = this.readFile.getOccupationDeathNumber(loadedData, arrayOccupations);
+        person.occupationChangeInLifeExpectancy = this.readFile.getOccupationDeathNumber(loadedData, person.occupationArray);
+        console.log(person.occupationChangeInLifeExpectancy);
     }
 
     //Creates job array
