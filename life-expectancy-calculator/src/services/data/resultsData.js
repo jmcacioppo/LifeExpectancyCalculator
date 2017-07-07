@@ -5,6 +5,7 @@ export class ResultsData {
     constructor() {
         //PERSONAL INFO EXPECTANCIES
         this.education = 0;
+        this.marital = 0;
 
         //MY HEALTH EXPECTANCIES
         this.exercise = 0;

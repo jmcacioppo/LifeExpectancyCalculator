@@ -9,7 +9,7 @@ export class CalculateFamilyHealth {
 
     calculateAgeOfParents(person, personResults, gender) {
         var parentAges = 0;
-        if(person.ageOfParents.indexOf("Both after") !== -1) {
+        if(person.ageOfParents.indexOf("Both after") !== -1 || person.ageOfParents.indexOf("both still alive and older than 75") !== -1) {
             if(gender == "Male" || gender == 'male') parentAges += 4.2;
             else if(gender == "Female") parentAges += 3.5;
         }

@@ -96,7 +96,7 @@ export class personalinfo {
 
         //Spouse calculations - results
         if(this.user.clientPersonalInfo.checkspouse){
-            if(this.user.clientPersonalInfo.education && this.user.clientPersonalInfo.education !== "Please Select") {
+            if(this.user.spousePersonalInfo.education && this.user.spousePersonalInfo.education !== "Please Select") {
                 this.calculateResults.calculateEducation(this.user.spousePersonalInfo, this.user.spouseResults);
             }
             this.calculateResults.addExpectancies(this.user.spouseResults);
