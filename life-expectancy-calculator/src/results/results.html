@@ -72,6 +72,14 @@
             </div>  
         </div>
 
+        <label for="mentalCondition">Check scenarios if my spouse dies?</label>
+        <div class="btn-group" click.delegate="checkSpouseDeath(user.clientResults)" data-toggle="buttons">
+            <label class="btn ${user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
+                <input type="radio">Yes</label>
+            <label class="btn ${!user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
+                <input type="radio">No</label>
+        </div>
+
         <hr style="clear:both">
         <div id="back-button-div-home" class="col-md-10">
             <button id="back" class="btn btn-secondary" click.delegate="back()">Back</button>
