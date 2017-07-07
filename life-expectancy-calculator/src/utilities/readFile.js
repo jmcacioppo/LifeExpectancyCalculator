@@ -39,6 +39,7 @@ export class ReadFile {
         jsonData.forEach((jobObject) => {
             self.occupationData.occupationCategorySet.add(jobObject.Category);
             var existingValues = self.occupationData.categoryToJobMap.get(jobObject.Category);
+            if(existingValues === undefined) existingValues = "";
             existingValues += " " + jobObject.Occupation + ":";
             self.occupationData.categoryToJobMap.set(jobObject.Category, existingValues);
         });
