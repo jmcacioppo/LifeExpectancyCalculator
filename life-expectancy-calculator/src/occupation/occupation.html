@@ -79,9 +79,11 @@
 
                 <div class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'col-md-4'}" id="drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
                     <h3><b>Client Occupation(s)<b></h3>
+                    <button class="current-buttons" click.delegate="removeDrop()" draggable="true" id="buttons" repeat.for="job of user.clientOccupation.occupationArray">${job}</button>
                 </div>
                 <div show.bind="user.clientPersonalInfo.checkspouse" class="${user.clientPersonalInfo.checkspouse ? 'col-md-3' : 'none'}" id="spouse-drop-box" drop.trigger="drop($event)" dragstart.trigger="drag($event)" dragover.trigger="allowDrop($event)">
                     <h3><b>Co-Client Occupation(s)<b></h3>
+                    <button class="current-buttons" click.delegate="removeDrop()" draggable="true" id="buttons" repeat.for="job of user.spouseOccupation.occupationArray">${job}</button>
                 </div>
             </div>
             <!--======================END DRAG AND DROP=======================-->
