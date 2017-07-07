@@ -73,6 +73,5 @@ export class CalculateOccupation {
                 this.occupationData.managementArray = currentArray;
                 break;
         }
-        console.log(this.occupationData.laborArray);
     }
 }

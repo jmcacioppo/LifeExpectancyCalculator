@@ -81,6 +81,17 @@
                     <input type="radio">No</label>
             </div>
 
+            <br> <br>
+            <!--========================MENTAL CONDITION===========================-->
+            <label for="mentalCondition">Are you currently diagnosed with a serious mental condition?</label>
+            <span id="mental-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
+            <div class="btn-group" click.delegate="mental(user.clientMyHealth)" data-toggle="buttons">
+                <label class="btn ${user.clientMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
             <hr>
             <h2 style="text-align: center">Habits</h2>
 
@@ -231,6 +242,17 @@
                 <label class="btn ${user.spouseMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">Yes</label>
                 <label class="btn ${!user.spouseMyHealth.checkdiabetes ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+
+            <br> <br>
+            <!--========================MENTAL CONDITION===========================-->
+            <label for="mentalCondition">Are you currently diagnosed with a serious mental condition?</label>
+            <span id="spouse-mental-tooltip" title="" class="glyphicon glyphicon-question-sign"></span>
+            <div class="btn-group" click.delegate="mental(user.spouseMyHealth)" data-toggle="buttons">
+                <label class="btn ${user.spouseMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.spouseMyHealth.checkmental ? 'active btn-primary' : 'btn-secondary'}">
                     <input type="radio">No</label>
             </div>
 
