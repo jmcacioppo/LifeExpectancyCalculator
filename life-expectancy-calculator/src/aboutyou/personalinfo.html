@@ -62,15 +62,46 @@
                 <!--===========================MARITAL STATUS=========================-->
                 <div class="form-group">
                     <label for="race">Marital Status</label>
-                    <select class="form-control" value.bind="user.clientPersonalInfo.maritalStatus">
+                    <select class="form-control" value.bind="user.clientPersonalInfo.maritalStatus" change.delegate="checkMaritalStatus(user.clientPersonalInfo)">
                         <option>Please Select</option>
-                        <option>Never Married</option>
-                        <option>Cohabitated</option>
-                        <option>Married</option>
+                        <option>Single/Never Married</option>
+                        <option>Married/Cohabitated</option>
+                        <option>Widowed</option>
                         <option>Divorced</option>
                     </select>
                 </div>
 
+                <!--======================LENGTH OF CURRENT MARRIAGE====================-->
+                <div show.bind="user.clientPersonalInfo.isMarried" class="form-group">
+                    <label for="income">Years since current marriage/cohabitation began:</label>
+                    <input type="text" value.bind="user.clientPersonalInfo.yearsOfMarriage" class="form-control" placeholder="10">
+                </div>
+
+                <!--==========================LENGTH OF WIDOW=========================-->
+                <div show.bind="user.clientPersonalInfo.isWidowed" class="form-group">
+                    <label for="income">Years since ex-spouse passed:</label>
+                    <input type="text" value.bind="user.clientPersonalInfo.yearsSinceSpousePassing" class="form-control" placeholder="10">
+                </div>
+
+                <!--======================LENGTH OF WIDOWED MARRIAGE====================-->
+                <div show.bind="user.clientPersonalInfo.isWidowed" class="form-group">
+                    <label for="income">Length of marriage in years:</label>
+                    <input type="text" value.bind="user.clientPersonalInfo.yearsOfMarriage" class="form-control" placeholder="10">
+                </div>
+
+                <!--==========================LENGTH OF DIVORCE=========================-->
+                <div show.bind="user.clientPersonalInfo.isDivorced" class="form-group">
+                    <label for="income">Years since divorce:</label>
+                    <input type="text" value.bind="user.clientPersonalInfo.yearsOfDivorce" class="form-control" placeholder="10">
+                </div>
+
+                <!--======================LENGTH OF DIVORCED MARRIAGE====================-->
+                <div show.bind="user.clientPersonalInfo.isDivorced" class="form-group">
+                    <label for="income">Length of marriage in years:</label>
+                    <input type="text" value.bind="user.clientPersonalInfo.yearsOfMarriage" class="form-control" placeholder="10">
+                </div>
+
+                <hr>
                 <!--============================STATE OF CLIENT=========================-->
                 <div class="form-group">
                     <label for="state">State</label>
@@ -135,15 +166,46 @@
                 <!--===========================MARITAL STATUS=========================-->
                 <div class="form-group">
                     <label for="race">Marital Status</label>
-                    <select class="form-control" value.bind="user.spousePersonalInfo.maritalStatus">
+                    <select class="form-control" value.bind="user.spousePersonalInfo.maritalStatus" change.delegate="checkMaritalStatus(user.spousePersonalInfo)">
                         <option>Please Select</option>
-                        <option>Never Married</option>
-                        <option>Cohabitated</option>
-                        <option>Married</option>
+                        <option>Single/Never Married</option>
+                        <option>Married/Cohabitated</option>
+                        <option>Widowed</option>
                         <option>Divorced</option>
                     </select>
                 </div>
 
+                <!--======================LENGTH OF CURRENT MARRIAGE====================-->
+                <div show.bind="user.spousePersonalInfo.isMarried" class="form-group">
+                    <label for="income">Years since current marriage/cohabitation began:</label>
+                    <input type="text" value.bind="user.spousePersonalInfo.yearsOfMarriage" class="form-control" placeholder="10">
+                </div>
+
+                <!--==========================LENGTH OF WIDOW=========================-->
+                <div show.bind="user.spousePersonalInfo.isWidowed" class="form-group">
+                    <label for="income">Years since ex-spouse passed:</label>
+                    <input type="text" value.bind="user.spousePersonalInfo.yearsSinceSpousePassing" class="form-control" placeholder="10">
+                </div>
+
+                <!--======================LENGTH OF WIDOWED MARRIAGE====================-->
+                <div show.bind="user.spousePersonalInfo.isWidowed" class="form-group">
+                    <label for="income">Length of marriage in years:</label>
+                    <input type="text" value.bind="user.spousePersonalInfo.yearsOfMarriage" class="form-control" placeholder="10">
+                </div>
+
+                <!--==========================LENGTH OF DIVORCE=========================-->
+                <div show.bind="user.spousePersonalInfo.isDivorced" class="form-group">
+                    <label for="income">Years since divorce:</label>
+                    <input type="text" value.bind="user.spousePersonalInfo.yearsOfDivorce" class="form-control" placeholder="10">
+                </div>
+
+                <!--======================LENGTH OF DIVORCED MARRIAGE====================-->
+                <div show.bind="user.spousePersonalInfo.isDivorced" class="form-group">
+                    <label for="income">Length of marriage in years:</label>
+                    <input type="text" value.bind="user.spousePersonalInfo.yearsOfMarriage" class="form-control" placeholder="10">
+                </div>
+
+                <hr>
                 <!--============================STATE OF SPOUSE=========================-->
                 <div class="form-group">
                     <label for="state">State</label>
