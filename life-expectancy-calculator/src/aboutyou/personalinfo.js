@@ -71,6 +71,39 @@ export class personalinfo {
     }
     //===================END LIFE EXPECTANCY FROM STATES/COUNTIES==================
 
+    checkMaritalStatus(person) {
+        if(person.maritalStatus == "Single/Never Married") {
+            person.isSingle = true;
+            person.isMarried = false;
+            person.isWidowed = false;
+            person.isDivorced = false;
+        }
+        else if(person.maritalStatus == "Married/Cohabitated") {
+            person.isMarried = true;
+            person.isSingle = false;
+            person.isWidowed = false;
+            person.isDivorced = false;
+        }
+        else if(person.maritalStatus == "Widowed") {
+            person.isWidowed = true;
+            person.isSingle = false;
+            person.isMarried = false;
+            person.isDivorced = false;
+        }
+        else if(person.maritalStatus == "Divorced") {
+            person.isDivorced = true;
+            person.isSingle = false;
+            person.isMarried = false;
+            person.isWidowed = false;
+        }
+        else {
+            person.isSingle = false;
+            person.isMarried = false;
+            person.isWidowed = false;
+            person.isDivorced = false;
+        }
+    }
+
     myhealth() {
         this.router.navigate('#/myhealth');  
     }

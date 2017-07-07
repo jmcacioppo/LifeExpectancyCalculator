@@ -11,7 +11,15 @@ export class PersonalInfoData {
 
         this.education;
         this.race = 'white';
+
         this.maritalStatus;
+        this.isSingle = false;
+        this.isMarried = false;
+        this.yearsOfMarriage = 0;
+        this.isWidowed = false;
+        this.yearsSinceSpousePassing = 0;
+        this.isDivorced = false;
+        this.yearsOfDivorce = 0;
 
         this.state = "Please Select";
         this.county = 'Please Select';

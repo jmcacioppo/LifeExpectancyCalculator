@@ -34,5 +34,7 @@ export class ResultsData {
         this.averageTuples = [];
         this.averageTableAge = [];
         this.averageTableValue = [];
+
+        this.finalLifeExpectancy = 0;
     }
 }
