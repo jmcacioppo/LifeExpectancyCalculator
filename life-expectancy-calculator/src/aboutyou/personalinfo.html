@@ -116,7 +116,7 @@
                     <label for="county">County</label>
                     <select class="form-control" change.delegate="checkLifeExpectancy(user.clientPersonalInfo)" value.bind="user.clientPersonalInfo.county">
                         <option>Please Select</option>
-                        <option repeat.for="county of currentCountyArray">${county | capitalize}</option>
+                        <option repeat.for="county of user.clientPersonalInfo.currentCountyArray">${county | capitalize}</option>
                     </select>
                 </div>
             </div>
@@ -220,7 +220,7 @@
                     <label for="county">County</label>
                     <select class="form-control" change.delegate="checkLifeExpectancy(user.spousePersonalInfo)" value.bind="user.spousePersonalInfo.county">
                         <option>Please Select</option>
-                        <option repeat.for="county of currentCountyArray">${county | capitalize}</option>
+                        <option repeat.for="county of user.spousePersonalInfo.currentCountyArray">${county | capitalize}</option>
                     </select>
                 </div>
             </div>

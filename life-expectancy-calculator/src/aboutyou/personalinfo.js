@@ -10,7 +10,6 @@ import {OccupationData} from '../services/data/occupationData'
 
 @inject(Router, User, StateData, Slider, CalculateResults, CalculateOccupation, OccupationData)
 export class personalinfo {
-    currentCountyArray = [];
 
     constructor(router, user, stateData, slider, calculateResults, calculateOccupation, occupationData) {
         this.slider = slider;
@@ -40,20 +39,21 @@ export class personalinfo {
         var state = person.state;
         if(state != "Please Select") {
             var self = this;
-            this.currentCountyArray = [];
+            person.currentCountyArray = [];
             state = state.toLowerCase();
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
-                self.currentCountyArray.push(currentCountyInfo[0]);
+                person.currentCountyArray.push(currentCountyInfo[0]);
             });
-            this.currentCountyArray.pop();
+            person.currentCountyArray.pop();
         }
         else person.county = "Please Select";
     }
 
     //This method checks the current client's life expectancy
     checkLifeExpectancy(person) {
+        console.log(person);
         if(person.county != "Please Select") {
             var state = person.state;
             state = state.toLowerCase();
