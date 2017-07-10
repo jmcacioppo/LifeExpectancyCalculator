@@ -74,6 +74,7 @@ export class CalculateResults {
         personResults.overallLifeExpectancy += personResults.diabetes;
         personResults.overallLifeExpectancy += personResults.mental;
         personResults.overallLifeExpectancy += personResults.parentAges;
+        personResults.overallLifeExpectancy += personResults.alcohol;
 
         //Occupation Factors
         personResults.overallLifeExpectancy += personResults.income;

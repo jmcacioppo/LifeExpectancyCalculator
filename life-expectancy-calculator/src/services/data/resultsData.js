@@ -16,6 +16,7 @@ export class ResultsData {
         this.diabetes = 0;
         this.mental = 0;
         this.parentAges = 0;
+        this.alcohol = 0;
 
         //OCCUPATION EXPECTANCIES
         this.income = 0;
