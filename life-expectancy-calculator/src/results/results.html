@@ -30,31 +30,8 @@
             </div>  
         </div>
 
-        <!--============================SPOUSE===========================-->
-        <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
-            <hr>
-            <h3 style="text-align:center;">Spouse Results - Life Expectancy is: <b>${user.spouseResults.finalLifeExpectancy}</b></h3>
-            <div class="table-outter">
-                <table class="table table-hover table-bordered search-table">
-                    <thead>
-                        <tr>
-                            <th>Probability to Reach Age</th>
-                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>Age</th>
-                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>  
-        </div>
-
         <!--============================AVERAGE===========================-->
         <div id="average">
-            <hr>
             <h3 style="text-align:center;">Average Results for
                 ${user.clientPersonalInfo.race} ${user.clientPersonalInfo.gender} at age ${user.clientPersonalInfo.age}
             </h3>
@@ -75,10 +52,31 @@
                 </table>
             </div>  
         </div>
+        
+        <!--============================SPOUSE===========================-->
+        <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
+            <hr> <br> <br>
+            <h3 style="text-align:center;">Spouse Results - Life Expectancy is: <b>${user.spouseResults.finalLifeExpectancy}</b></h3>
+            <div class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Probability to Reach Age</th>
+                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Age</th>
+                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+        </div>
 
         <!--============================ SPOUSE AVERAGE===========================-->
         <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
-            <hr>
             <h3 style="text-align:center;">Average Results for ${user.spousePersonalInfo.race} ${user.spousePersonalInfo.gender} at age ${user.spousePersonalInfo.age}</h3>
             <div class="table-outter">
                 <table class="table table-hover table-bordered search-table">
@@ -100,6 +98,7 @@
 
         <!--=====================CHECK IF SPOUSE DIES=======================-->
         <div show.bind="user.clientPersonalInfo.checkspouse">
+            <hr>
             <label style="padding-right: 10px;" for="ifSpouseDies">Check scenarios if my spouse dies?</label>
             <div class="btn-group" click.delegate="checkSpouseDeath(user.clientResults)" data-toggle="buttons">
                 <label class="btn ${user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
