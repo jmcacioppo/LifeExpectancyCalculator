@@ -17,6 +17,7 @@ export class CalculateResults {
         let clientResultsData = await clientEthnicityExpectancy.json();
         this.setUserExpectedAge(clientResultsData, client);
         if(this.user.clientMyHealth.checkdiabetes) await this.calculateDiabetes(clientResultsData, client, clientResults);
+        await this.calculateCounty(clientResultsData, client, clientResults);
 
         var spouseResultsData;
         if(client.checkspouse) {
@@ -24,6 +25,7 @@ export class CalculateResults {
             spouseResultsData = await spouseEthnicityExpectancy.json();
             this.setUserExpectedAge(spouseResultsData, spouse);
             if(this.user.spouseMyHealth.checkdiabetes) await this.calculateDiabetes(spouseResultsData, spouse, spouseResults);
+            await this.calculateCounty(spouseResultsData, spouse, spouseResults);
         }
 
 
@@ -77,6 +79,34 @@ export class CalculateResults {
         personResults.overallLifeExpectancy -= personResults.diabetes;
     }
 
+    //SUBTRACT DIABETES YEARS
+    calculateCounty(personResultsData, person, personResults) {
+        var self = this;
+        var age;
+        var check50 = true;
+
+        personResultsData.forEach(function(value, i) {
+            if(i > 0 ) {
+                var initialValue = parseInt(personResultsData[person.age].Number);
+                var less = parseFloat(personResultsData[i].Number);
+                var more = parseFloat(personResultsData[i-1].Number);
+
+                if(check50) {
+                    if(self.getPercent(initialValue, less, more, .50) != false) {
+                        var number = self.getPercent(initialValue, less, more, .50);
+                        age = parseInt(personResultsData[i-1].Age) + number;
+                        check50 = false;
+                    }
+                }
+            }
+        });
+
+        var county = parseFloat(person.countyLifeExpectancy);
+        personResults.county = county - ((county + age) / 2);
+
+        personResults.overallLifeExpectancy += personResults.county;
+    }
+
     //Education calculation
     calculateEducation(person, results) {
         var educationLifeExpectancy = 0;
@@ -112,7 +142,7 @@ export class CalculateResults {
         personResults.overallLifeExpectancy += personResults.mental;
         personResults.overallLifeExpectancy += personResults.parentAges;
         personResults.overallLifeExpectancy += personResults.alcohol;
-        //personResults.overallLifeExpectancy += personResults.county;
+        personResults.overallLifeExpectancy += personResults.county;
 
         //Occupation Factors
         personResults.overallLifeExpectancy += personResults.income;

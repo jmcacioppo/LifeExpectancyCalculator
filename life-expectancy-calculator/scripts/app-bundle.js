@@ -301,10 +301,8 @@ define('aboutyou/personalinfo',['exports', 'aurelia-framework', 'aurelia-router'
                 countyWithLifeArrays.forEach(function (data) {
                     var currentCountyInfo = data.split(":");
 
-                    var lifeExpectancy = person.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
-
-                    if (currentCountyInfo[0].indexOf(person.county) != -1) {
-                        person.countyLifeExpectancy = person.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                    if (currentCountyInfo[0].indexOf(person.county.trim().toLowerCase()) != -1) {
+                        person.countyLifeExpectancy = person.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
                     }
                 });
             }
@@ -1731,37 +1729,45 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
                                 return this.calculateDiabetes(clientResultsData, client, clientResults);
 
                             case 10:
+                                _context.next = 12;
+                                return this.calculateCounty(clientResultsData, client, clientResults);
+
+                            case 12:
                                 if (!client.checkspouse) {
-                                    _context.next = 21;
+                                    _context.next = 25;
                                     break;
                                 }
 
-                                _context.next = 13;
+                                _context.next = 15;
                                 return this.httpClient.fetch('/api/life-table/' + spouse.race.toLowerCase() + '-' + spouse.gender.toLowerCase() + '.json');
 
-                            case 13:
+                            case 15:
                                 spouseEthnicityExpectancy = _context.sent;
-                                _context.next = 16;
+                                _context.next = 18;
                                 return spouseEthnicityExpectancy.json();
 
-                            case 16:
+                            case 18:
                                 spouseResultsData = _context.sent;
 
                                 this.setUserExpectedAge(spouseResultsData, spouse);
 
                                 if (!this.user.spouseMyHealth.checkdiabetes) {
-                                    _context.next = 21;
+                                    _context.next = 23;
                                     break;
                                 }
 
-                                _context.next = 21;
+                                _context.next = 23;
                                 return this.calculateDiabetes(spouseResultsData, spouse, spouseResults);
 
-                            case 21:
+                            case 23:
+                                _context.next = 25;
+                                return this.calculateCounty(spouseResultsData, spouse, spouseResults);
+
+                            case 25:
 
                                 this.getTestTuples(clientResultsData, client, clientResults, spouseResultsData, spouse, spouseResults);
 
-                            case 22:
+                            case 26:
                             case 'end':
                                 return _context.stop();
                         }
@@ -1815,6 +1821,33 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             personResults.overallLifeExpectancy -= personResults.diabetes;
         };
 
+        CalculateResults.prototype.calculateCounty = function calculateCounty(personResultsData, person, personResults) {
+            var self = this;
+            var age;
+            var check50 = true;
+
+            personResultsData.forEach(function (value, i) {
+                if (i > 0) {
+                    var initialValue = parseInt(personResultsData[person.age].Number);
+                    var less = parseFloat(personResultsData[i].Number);
+                    var more = parseFloat(personResultsData[i - 1].Number);
+
+                    if (check50) {
+                        if (self.getPercent(initialValue, less, more, .50) != false) {
+                            var number = self.getPercent(initialValue, less, more, .50);
+                            age = parseInt(personResultsData[i - 1].Age) + number;
+                            check50 = false;
+                        }
+                    }
+                }
+            });
+
+            var county = parseFloat(person.countyLifeExpectancy);
+            personResults.county = county - (county + age) / 2;
+
+            personResults.overallLifeExpectancy += personResults.county;
+        };
+
         CalculateResults.prototype.calculateEducation = function calculateEducation(person, results) {
             var educationLifeExpectancy = 0;
             var education = person.education;
@@ -1844,6 +1877,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             personResults.overallLifeExpectancy += personResults.mental;
             personResults.overallLifeExpectancy += personResults.parentAges;
             personResults.overallLifeExpectancy += personResults.alcohol;
+            personResults.overallLifeExpectancy += personResults.county;
 
             personResults.overallLifeExpectancy += personResults.income;
         };
