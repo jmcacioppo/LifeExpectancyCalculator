@@ -2177,64 +2177,66 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
             check25 = true;
             check10 = true;
 
-            spouseResultsData.forEach(function (value, i) {
-                var initialValue = parseInt(spouseResultsData[spouse.age].Number);
-                if (parseInt(value.Age) >= client.age) {
-                    if (value.Number < initialValue * 0.90 && check90) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i - 1].Number;
-                        less = spouseResultsData[i].Number;
-                        difference = more - less;
-                        number = (more - initialValue * 0.90) / difference;
+            if (client.checkspouse) {
+                spouseResultsData.forEach(function (value, i) {
+                    var initialValue = parseInt(spouseResultsData[spouse.age].Number);
+                    if (parseInt(value.Age) >= client.age) {
+                        if (value.Number < initialValue * 0.90 && check90) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i - 1].Number;
+                            less = spouseResultsData[i].Number;
+                            difference = more - less;
+                            number = (more - initialValue * 0.90) / difference;
 
-                        spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
-                        spouseAverageTableValue.push("90%");
-                        check90 = false;
-                    } else if (value.Number < initialValue * 0.75 && check75) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i - 1].Number;
-                        less = spouseResultsData[i].Number;
-                        difference = more - less;
-                        number = (more - initialValue * 0.75) / difference;
+                            spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                            spouseAverageTableValue.push("90%");
+                            check90 = false;
+                        } else if (value.Number < initialValue * 0.75 && check75) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i - 1].Number;
+                            less = spouseResultsData[i].Number;
+                            difference = more - less;
+                            number = (more - initialValue * 0.75) / difference;
 
-                        spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
-                        spouseAverageTableValue.push("75%");
-                        check75 = false;
-                    } else if (value.Number < initialValue * 0.50 && check50) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i - 1].Number;
-                        less = spouseResultsData[i].Number;
-                        difference = more - less;
-                        number = (more - initialValue * 0.50) / difference;
+                            spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                            spouseAverageTableValue.push("75%");
+                            check75 = false;
+                        } else if (value.Number < initialValue * 0.50 && check50) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i - 1].Number;
+                            less = spouseResultsData[i].Number;
+                            difference = more - less;
+                            number = (more - initialValue * 0.50) / difference;
 
-                        spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
-                        spouseAverageTableValue.push("50%");
-                        check50 = false;
-                    } else if (value.Number < initialValue * 0.25 && check25) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i - 1].Number;
-                        less = spouseResultsData[i].Number;
-                        difference = more - less;
-                        number = (more - initialValue * 0.25) / difference;
+                            spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                            spouseAverageTableValue.push("50%");
+                            check50 = false;
+                        } else if (value.Number < initialValue * 0.25 && check25) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i - 1].Number;
+                            less = spouseResultsData[i].Number;
+                            difference = more - less;
+                            number = (more - initialValue * 0.25) / difference;
 
-                        spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
-                        spouseAverageTableValue.push("25%");
-                        check25 = false;
-                    } else if (value.Number < initialValue * 0.10 && check10) {
-                        age = spouseResultsData[i - 1].Age;
-                        more = spouseResultsData[i - 1].Number;
-                        less = spouseResultsData[i].Number;
-                        difference = more - less;
-                        number = (more - initialValue * 0.10) / difference;
+                            spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                            spouseAverageTableValue.push("25%");
+                            check25 = false;
+                        } else if (value.Number < initialValue * 0.10 && check10) {
+                            age = spouseResultsData[i - 1].Age;
+                            more = spouseResultsData[i - 1].Number;
+                            less = spouseResultsData[i].Number;
+                            difference = more - less;
+                            number = (more - initialValue * 0.10) / difference;
 
-                        spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
-                        spouseAverageTableValue.push("10%");
-                        check10 = false;
+                            spouseAverageTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                            spouseAverageTableValue.push("10%");
+                            check10 = false;
+                        }
+
+                        spouseAverageTuples.push([parseInt(value.Age), value.Number]);
                     }
-
-                    spouseAverageTuples.push([parseInt(value.Age), value.Number]);
-                }
-            });
+                });
+            }
 
             clientResults.clientTuples = clientTuples;
             spouseResults.spouseTuples = spouseTuples;
