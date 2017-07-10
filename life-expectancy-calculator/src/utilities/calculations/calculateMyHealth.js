@@ -136,6 +136,8 @@ export class CalculateMyHealth {
 
     //Given a person, this method calculates the impact of alcohol consumption on life expectancy
     async calculateAlcoholConsumption(personHealth, personInfo, personResults) {
+        console.log(personInfo);
+        console.log(personHealth);
         var jsonName = personInfo.race.toLowerCase() + "-" + personInfo.gender + ".json";
         var alcohol = personHealth.alcoholPerWeek;
         var jsonValueToSearch;
