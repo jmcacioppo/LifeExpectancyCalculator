@@ -8,6 +8,7 @@ export class ResultsData {
         //PERSONAL INFO EXPECTANCIES
         this.education = 0;
         this.marital = 0;
+        this.county = 0;
 
         //MY HEALTH EXPECTANCIES
         this.exercise = 0;
