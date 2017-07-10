@@ -1,13 +1,15 @@
 import {inject} from 'aurelia-framework';
 import {StateData} from '../services/data/stateData';
 import {OccupationData} from '../services/data/occupationData';
+import {MyHealthData} from '../services/data/myHealthData';
 
-@inject(StateData, OccupationData)
+@inject(StateData, OccupationData, MyHealthData)
 export class ReadFile {
 
-    constructor(stateData, occupationData) {
+    constructor(stateData, occupationData, myHealthData) {
         this.stateData = stateData;
         this.occupationData = occupationData;
+        this.myHealthData = myHealthData;
     }
 
     //Given the json data this method will create a set of states and save in stateData.js
@@ -57,5 +59,15 @@ export class ReadFile {
             })
         });
         return deathTotal;
+    }
+
+    //Gets the impact of alcohol consumption per week from json file
+    getAlcoholConsumption(person, jsonData, jsonValue) {
+        var self = this;
+        jsonData.forEach((weekObject) => {
+            if(weekObject.Consumption === jsonValue) {
+                person.alcoholConsumptionImpact = weekObject.Years;
+            }
+        });
     }
 }
