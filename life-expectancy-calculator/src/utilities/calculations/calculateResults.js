@@ -66,6 +66,7 @@ export class CalculateResults {
         personResults.overallLifeExpectancy = 0;
         //Personal Info Factors
         personResults.overallLifeExpectancy += personResults.education;
+        personResults.overallLifeExpectancy += personResults.marital;
         
         //MyHealth Factors
         personResults.overallLifeExpectancy += personResults.exercise;
@@ -110,6 +111,26 @@ export class CalculateResults {
                 var tempValueNumber = parseInt(value.Number);
                 if(parseInt(value.Age) <= 67) 
                     value.Number = parseInt(value.Number) - self.user.clientOccupation.occupationChangeInLifeExpectancy;
+                
+                if(client.gender == 'male' || client.gender == 'Male') {
+                    if(parseInt(value.Age) >= 28 && parseInt(value.Age) <= 70) {
+                        difference = parseInt(clientResultsData[i-1].Number) - parseInt(clientResultsData[i].Number);
+                        if(client.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+                        else if(client.maritalStatus == 'Married/Cohabitated') value.Number += difference * .15; //Years of marriage
+                        else if(client.maritalStatus == 'Widowed') value.Number -= difference * .32; //Years after passing
+                        else if(client.maritalStatus == 'Divorced') value.Number -= difference * .32; //Years after divorce
+                    }
+                }
+                else if(client.gender == 'Female') {
+                    if(parseInt(value.Age) >= 25 && parseInt(value.Age) <= 70) {
+                        difference = parseInt(clientResultsData[i-1].Number) - parseInt(clientResultsData[i].Number);
+                        if(client.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+                        else if(client.maritalStatus == 'Married/Cohabitated') value.Number += difference * .15; //Years of marriage
+                        else if(client.maritalStatus == 'Widowed') value.Number -= difference * .32; //Years after passing
+                        else if(client.maritalStatus == 'Divorced') value.Number -= difference * .32; //Years after divorce
+                    }
+                }
+                
                 if(value.Number < 90000 && check90) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
@@ -172,6 +193,90 @@ export class CalculateResults {
                 clientTuples.push([parseInt(value.Age), value.Number]);
                 value.Number = tempValueNumber;
             }
+            else if(parseInt(value.Age) < client.age) {
+                if(client.gender == 'male' || client.gender == 'Male') {
+                    if(parseInt(value.Age) >= 28 && parseInt(value.Age) <= 70) {
+                        difference = parseInt(clientResultsData[i-1].Number) - parseInt(clientResultsData[i].Number);
+                        var ageAtMarriage = parseInt(value.Age) - client.yearsOfMarriage;
+
+                        if(client.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+
+                        else if(client.maritalStatus == 'Married/Cohabitated') {
+                            if(ageAtMarriage > parseInt(value.Age)) value.Number -= difference * .32; //Years they were single
+                            else value.Number += difference * .15; //Years of marriage
+                        }
+
+                        else if(client.maritalStatus == 'Widowed') {
+                            ageAtMarriage -= client.yearsSinceSpousePassing;
+                            var ageAtPassing = parseInt(value.Age) - client.yearsSinceSpousePassing;
+
+                            if(ageAtMarriage - 28 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                            else if(ageAtMarriage < ageAtPassing) value.Number += difference * .15; //Years of Marriage
+                            else {
+                                if(parseInt(value.Age) == ageAtPassing) {
+                                    value.Number -= difference * .32;
+                                    value.Number -= difference * .66; //Year of passing
+                                }
+                                else if(parseInt(value.Age) == ageAtPassing + 1) {
+                                    value.Number -= difference * .32;
+                                    value.Number -= difference * .30; //Year after the year of passing
+                                }
+                                else value.Number -= difference * .32; //Years after passing
+                            }
+                        }
+
+                        else if(client.maritalStatus == 'Divorced') {
+                            ageAtMarriage -= client.yearsOfDivorce;
+                            var ageAtDivorce = parseInt(value.Age) - client.yearsOfDivorce;
+
+                            if(ageAtMarriage - 28 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                            else if(ageAtMarriage < ageAtDivorce) value.Number += difference * .15; //Years of Marriage
+                            else value.Number -= difference * .32; //Years after divorce
+                        }
+                    }
+                }
+                else if(client.gender == 'Female') {
+                    if(parseInt(value.Age) >= 25 && parseInt(value.Age) <= 70) {
+                        difference = parseInt(clientResultsData[i-1].Number) - parseInt(clientResultsData[i].Number);
+                        var ageAtMarriage = parseInt(value.Age) - client.yearsOfMarriage;
+
+                        if(client.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+
+                        else if(client.maritalStatus == 'Married/Cohabitated') {
+                            if(ageAtMarriage > parseInt(value.Age)) value.Number -= difference * .32; //Years they were single
+                            else value.Number += difference * .15; //Years of marriage
+                        }
+
+                        else if(client.maritalStatus == 'Widowed') {
+                            ageAtMarriage -= client.yearsSinceSpousePassing;
+                            var ageAtPassing = parseInt(value.Age) - client.yearsSinceSpousePassing;
+
+                            if(ageAtMarriage - 25 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                            else if(ageAtMarriage < ageAtPassing) value.Number += difference * .15; //Years of Marriage
+                            else {
+                                if(parseInt(value.Age) == ageAtPassing) {
+                                    value.Number -= difference * .32;
+                                    value.Number -= difference * .66; //Year of passing
+                                }
+                                else if(parseInt(value.Age) == ageAtPassing + 1) {
+                                    value.Number -= difference * .32;
+                                    value.Number -= difference * .30; //Year after the year of passing
+                                }
+                                else value.Number -= difference * .32; //Years after passing
+                            }
+                        }
+
+                        else if(client.maritalStatus == 'Divorced') {
+                            ageAtMarriage -= client.yearsOfDivorce;
+                            var ageAtDivorce = parseInt(value.Age) - client.yearsOfDivorce;
+
+                            if(ageAtMarriage - 25 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                            else if(ageAtMarriage < ageAtDivorce) value.Number += difference * .15; //Years of Marriage
+                            else value.Number -= difference * .32; //Years after divorce
+                        }
+                    }
+                }
+            }
         });
 
         var spouseTuples = [];
@@ -190,6 +295,26 @@ export class CalculateResults {
                     var tempValueNumber = parseInt(value.Number);
                     if(parseInt(value.Age) <= 67) 
                         value.Number = parseInt(value.Number) - self.user.spouseOccupation.occupationChangeInLifeExpectancy;
+                    
+                    if(spouse.gender == 'male' || spouse.gender == 'Male') {
+                        if(parseInt(value.Age) >= 28 && parseInt(value.Age) <= 70) {
+                            difference = parseInt(spouseResultsData[i-1].Number) - parseInt(spouseResultsData[i].Number);
+                            if(spouse.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+                            else if(spouse.maritalStatus == 'Married/Cohabitated') value.Number += difference * .15; //Years of marriage
+                            else if(spouse.maritalStatus == 'Widowed') value.Number -= difference * .32; //Years after passing
+                            else if(spouse.maritalStatus == 'Divorced') value.Number -= difference * .32; //Years after divorce
+                        }
+                    }
+                    else if(spouse.gender == 'Female') {
+                        if(parseInt(value.Age) >= 25 && parseInt(value.Age) <= 70) {
+                            difference = parseInt(spouseResultsData[i-1].Number) - parseInt(spouseResultsData[i].Number);
+                            if(spouse.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+                            else if(spouse.maritalStatus == 'Married/Cohabitated') value.Number += difference * .15; //Years of marriage
+                            else if(spouse.maritalStatus == 'Widowed') value.Number -= difference * .32; //Years after passing
+                            else if(spouse.maritalStatus == 'Divorced') value.Number -= difference * .32; //Years after divorce
+                        }
+                    }
+                    
                     if(value.Number < 90000 && check90) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i-1].Number;
@@ -251,6 +376,90 @@ export class CalculateResults {
 
                     spouseTuples.push([parseInt(value.Age), value.Number]);
                     value.Number = tempValueNumber;
+                }
+                else if(parseInt(value.Age) < spouse.age) {
+                    if(spouse.gender == 'male' || spouse.gender == 'Male') {
+                        if(parseInt(value.Age) >= 28 && parseInt(value.Age) <= 70) {
+                            difference = parseInt(spouseResultsData[i-1].Number) - parseInt(spouseResultsData[i].Number);
+                            var ageAtMarriage = parseInt(value.Age) - spouse.yearsOfMarriage;
+
+                            if(spouse.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+
+                            else if(spouse.maritalStatus == 'Married/Cohabitated') {
+                                if(ageAtMarriage > parseInt(value.Age)) value.Number -= difference * .32; //Years they were single
+                                else value.Number += difference * .15; //Years of marriage
+                            }
+
+                            else if(spouse.maritalStatus == 'Widowed') {
+                                ageAtMarriage -= spouse.yearsSinceSpousePassing;
+                                var ageAtPassing = parseInt(value.Age) - spouse.yearsSinceSpousePassing;
+
+                                if(ageAtMarriage - 28 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                                else if(ageAtMarriage < ageAtPassing) value.Number += difference * .15; //Years of Marriage
+                                else {
+                                    if(parseInt(value.Age) == ageAtPassing) {
+                                        value.Number -= difference * .32;
+                                        value.Number -= difference * .66; //Year of passing
+                                    }
+                                    else if(parseInt(value.Age) == ageAtPassing + 1) {
+                                        value.Number -= difference * .32;
+                                        value.Number -= difference * .30; //Year after the year of passing
+                                    }
+                                    else value.Number -= difference * .32; //Years after passing
+                                }
+                            }
+
+                            else if(spouse.maritalStatus == 'Divorced') {
+                                ageAtMarriage -= spouse.yearsOfDivorce;
+                                var ageAtDivorce = parseInt(value.Age) - spouse.yearsOfDivorce;
+
+                                if(ageAtMarriage - 28 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                                else if(ageAtMarriage < ageAtDivorce) value.Number += difference * .15; //Years of Marriage
+                                else value.Number -= difference * .32; //Years after divorce
+                            }
+                        }
+                    }
+                    else if(spouse.gender == 'Female') {
+                        if(parseInt(value.Age) >= 25 && parseInt(value.Age) <= 70) {
+                            difference = parseInt(spouseResultsData[i-1].Number) - parseInt(spouseResultsData[i].Number);
+                            var ageAtMarriage = parseInt(value.Age) - spouse.yearsOfMarriage;
+
+                            if(spouse.maritalStatus == 'Single/Never Married') value.Number -= difference * .32; //Always Single
+
+                            else if(spouse.maritalStatus == 'Married/Cohabitated') {
+                                if(ageAtMarriage > parseInt(value.Age)) value.Number -= difference * .32; //Years they were single
+                                else value.Number += difference * .15; //Years of marriage
+                            }
+
+                            else if(spouse.maritalStatus == 'Widowed') {
+                                ageAtMarriage -= spouse.yearsSinceSpousePassing;
+                                var ageAtPassing = parseInt(value.Age) - spouse.yearsSinceSpousePassing;
+
+                                if(ageAtMarriage - 25 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                                else if(ageAtMarriage < ageAtPassing) value.Number += difference * .15; //Years of Marriage
+                                else {
+                                    if(parseInt(value.Age) == ageAtPassing) {
+                                        value.Number -= difference * .32;
+                                        value.Number -= difference * .66; //Year of passing
+                                    }
+                                    else if(parseInt(value.Age) == ageAtPassing + 1) {
+                                        value.Number -= difference * .32;
+                                        value.Number -= difference * .30; //Year after the year of passing
+                                    }
+                                    else value.Number -= difference * .32; //Years after passing
+                                }
+                            }
+
+                            else if(spouse.maritalStatus == 'Divorced') {
+                                ageAtMarriage -= spouse.yearsOfDivorce;
+                                var ageAtDivorce = parseInt(value.Age) - spouse.yearsOfDivorce;
+
+                                if(ageAtMarriage - 25 > 0) value.Number -= difference * .32; //Years they were single before marriage
+                                else if(ageAtMarriage < ageAtDivorce) value.Number += difference * .15; //Years of Marriage
+                                else value.Number -= difference * .32; //Years after divorce
+                            }
+                        }
+                    }
                 }
             });
         }
