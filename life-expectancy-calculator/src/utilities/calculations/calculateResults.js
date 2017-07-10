@@ -555,4 +555,33 @@ export class CalculateResults {
         spouseResults.spouseTableValue = spouseTableValue;
         clientResults.averageTableValue = averageTableValue;
     }
+
+    getPercent(initialValue, currentValue, pastValue, percentage) {
+        if(currentValue < initialValue * percentage) {
+            var difference = pastValue - currentValue;
+            var number = (pastValue - initialValue * percentage) / difference;
+            console.log(number);
+            return number;
+        }
+        else return false;
+    }
+
+    async calculateSpouseDiesEarly(client, clientResults, spouse, spouseResults) {
+        let clientEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + client.race.toLowerCase() + '-' + client.gender.toLowerCase() + '.json');
+        let clientResultsData = await clientEthnicityExpectancy.json();
+        var age = client.age + (clientResults.spouseDeath - spouse.age);
+        var self = this;
+        var check50 = true;
+
+        clientResultsData.forEach(function(value, i) {
+            var initialValue = parseInt(clientResultsData[age].Number);
+            if(i > 0) {
+                var more = clientResultsData[i-1].Number;
+                var less = clientResultsData[i].Number;
+                if(check50) {
+                    if(self.getPercent(initialValue, less, more, .50) != false) check50 = false;
+                }
+            }
+        });
+    }
 }
