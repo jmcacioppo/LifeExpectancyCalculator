@@ -140,7 +140,7 @@ export class CalculateResults {
                     less = clientResultsData[i].Number;
                     difference = more - less;
                     number = (more - initialValue * 0.9) / difference;
-
+                    
                     clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
                     clientTableValue.push("90%");
                     check90 = false;

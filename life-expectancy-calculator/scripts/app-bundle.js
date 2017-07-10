@@ -974,7 +974,7 @@ define('utilities/readFile',['exports', 'aurelia-framework', '../services/data/s
             var self = this;
             jsonData.forEach(function (weekObject) {
                 if (weekObject.Consumption === jsonValue) {
-                    person.alcoholConsumptionImpact = weekObject.Years;
+                    person.alcoholConsumptionImpact = parseInt(weekObject.Years);
                 }
             });
         };
@@ -1395,44 +1395,46 @@ define('utilities/calculations/calculateMyHealth',['exports', 'aurelia-framework
                     while (1) {
                         switch (_context.prev = _context.next) {
                             case 0:
+                                console.log(personInfo);
+                                console.log(personHealth);
                                 jsonName = personInfo.race.toLowerCase() + "-" + personInfo.gender + ".json";
                                 alcohol = personHealth.alcoholPerWeek;
                                 _context.t0 = true;
-                                _context.next = _context.t0 === (alcohol === 'None') ? 5 : _context.t0 === (alcohol === 'Less than 2') ? 7 : _context.t0 === (alcohol === 'Between 2 and 7') ? 9 : 11;
+                                _context.next = _context.t0 === (alcohol === 'None') ? 7 : _context.t0 === (alcohol === 'Less than 2') ? 9 : _context.t0 === (alcohol === 'Between 2 and 7') ? 11 : 13;
                                 break;
 
-                            case 5:
-                                jsonValueToSearch = 'no drinks';
-                                return _context.abrupt('break', 13);
-
                             case 7:
-                                jsonValueToSearch = 'less than 2 drinks';
-                                return _context.abrupt('break', 13);
+                                jsonValueToSearch = 'no drinks';
+                                return _context.abrupt('break', 15);
 
                             case 9:
-                                jsonValueToSearch = 'between 2 and 7 drinks';
-                                return _context.abrupt('break', 13);
+                                jsonValueToSearch = 'less than 2 drinks';
+                                return _context.abrupt('break', 15);
 
                             case 11:
-                                jsonValueToSearch = 'more than 8 drinks';
-                                return _context.abrupt('break', 13);
+                                jsonValueToSearch = 'between 2 and 7 drinks';
+                                return _context.abrupt('break', 15);
 
                             case 13:
-                                _context.next = 15;
-                                return this.httpClient.fetch('/api/alcohol-table/' + jsonName);
+                                jsonValueToSearch = 'more than 8 drinks';
+                                return _context.abrupt('break', 15);
 
                             case 15:
+                                _context.next = 17;
+                                return this.httpClient.fetch('/api/alcohol-table/' + jsonName);
+
+                            case 17:
                                 jsonData = _context.sent;
-                                _context.next = 18;
+                                _context.next = 20;
                                 return jsonData.json();
 
-                            case 18:
+                            case 20:
                                 json = _context.sent;
 
                                 this.readFile.getAlcoholConsumption(personHealth, json, jsonValueToSearch);
                                 personResults.alcohol = personHealth.alcoholConsumptionImpact;
 
-                            case 21:
+                            case 23:
                             case 'end':
                                 return _context.stop();
                         }
