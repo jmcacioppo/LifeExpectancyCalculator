@@ -18,6 +18,7 @@ export class MyHealthData {
         this.checkdiabetes = false;
         this.checkmental = false;
         this.alcoholPerWeek;
+        this.alcoholConsumptionImpact;
 
         this.checksmoking = false;
         this.checkStillSmoking = true;
