@@ -60,11 +60,10 @@ export class personalinfo {
             var countyWithLifeArrays = this.stateData.stateToCountyMap.get(state).split(',');
             countyWithLifeArrays.forEach(function (data) {
                 var currentCountyInfo = data.split(":");
-                //Life expectancy of male is index 2, life expectancy of female is index 1
-                var lifeExpectancy =  person.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
+                
                 //If county name is found in array, then get life expectancy
-                if(currentCountyInfo[0].indexOf(person.county) != -1) {
-                    person.countyLifeExpectancy =  person.checkgender ? currentCountyInfo[1] : currentCountyInfo[2];
+                if(currentCountyInfo[0].indexOf(person.county.trim().toLowerCase()) != -1) {
+                    person.countyLifeExpectancy =  person.checkgender ? currentCountyInfo[2] : currentCountyInfo[1];
                 }
             });
         }
