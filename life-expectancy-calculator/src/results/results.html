@@ -83,13 +83,13 @@
                     <thead>
                         <tr>
                             <th>Probability to Reach Age</th>
-                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
+                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseAverageTableValue[num]}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <th>Age</th>
-                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
+                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseAverageTableAge[age]}</th>
                         </tr>
                     </tbody>
                 </table>

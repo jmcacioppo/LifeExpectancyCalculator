@@ -25,7 +25,7 @@ export class results {
 
     attached() {
         this.slider.createSpouseDiesSlider();
-        
+        console.log(this.user.clientResults.clientTableAge);
         var chartTuples = [];
         if(this.user.clientPersonalInfo.checkspouse) {
             chartTuples = [{

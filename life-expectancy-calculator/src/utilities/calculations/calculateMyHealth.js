@@ -136,14 +136,13 @@ export class CalculateMyHealth {
 
     //Given a person, this method calculates the impact of alcohol consumption on life expectancy
     async calculateAlcoholConsumption(personHealth, personInfo, personResults) {
-        console.log(personInfo);
-        console.log(personHealth);
         var jsonName = personInfo.race.toLowerCase() + "-" + personInfo.gender + ".json";
         var alcohol = personHealth.alcoholPerWeek;
+
         var jsonValueToSearch;
         switch(true) {
-            case alcohol === 'None':
-                jsonValueToSearch = 'no drinks';
+            case alcohol === '8 or more':
+                jsonValueToSearch = 'more than 8 drinks';
                 break;
             case alcohol === 'Less than 2':
                 jsonValueToSearch = 'less than 2 drinks';
@@ -152,12 +151,13 @@ export class CalculateMyHealth {
                 jsonValueToSearch = 'between 2 and 7 drinks';
                 break;
             default:
-                jsonValueToSearch = 'more than 8 drinks';
+                jsonValueToSearch = 'None';
                 break;
         }
         let jsonData = await this.httpClient.fetch('/api/alcohol-table/' + jsonName);
         let json = await jsonData.json()
         this.readFile.getAlcoholConsumption(personHealth, json, jsonValueToSearch);
+
         personResults.alcohol = personHealth.alcoholConsumptionImpact;
     }
 }

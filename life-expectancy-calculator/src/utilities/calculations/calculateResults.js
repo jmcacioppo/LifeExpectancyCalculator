@@ -16,13 +16,16 @@ export class CalculateResults {
         let clientEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + client.race.toLowerCase() + '-' + client.gender.toLowerCase() + '.json');
         let clientResultsData = await clientEthnicityExpectancy.json();
         this.setUserExpectedAge(clientResultsData, client);
+        if(this.user.clientMyHealth.checkdiabetes) await this.calculateDiabetes(clientResultsData, client, clientResults);
 
         var spouseResultsData;
         if(client.checkspouse) {
             let spouseEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + spouse.race.toLowerCase() + '-' + spouse.gender.toLowerCase() + '.json');
             spouseResultsData = await spouseEthnicityExpectancy.json();
             this.setUserExpectedAge(spouseResultsData, spouse);
+            if(this.user.spouseMyHealth.checkdiabetes) await this.calculateDiabetes(spouseResultsData, spouse, spouseResults);
         }
+
 
         this.getTestTuples(clientResultsData, client, clientResults,
             spouseResultsData, spouse, spouseResults);
@@ -39,6 +42,39 @@ export class CalculateResults {
                 person.expectedYearsLeft = parseInt(value.Number);
             }
         });
+    }
+
+    //SUBTRACT DIABETES YEARS
+    calculateDiabetes(personResultsData, person, personResults) {
+        var self = this;
+        var age;
+        var check50 = true;
+
+        personResultsData.forEach(function(value, i) {
+            if(i > 0 ) {
+                var initialValue = parseInt(personResultsData[person.age].Number);
+                var less = parseFloat(personResultsData[i].Number);
+                var more = parseFloat(personResultsData[i-1].Number);
+
+                if(check50) {
+                    if(self.getPercent(initialValue, less, more, .50) != false) {
+                        var number = self.getPercent(initialValue, less, more, .50);
+                        age = parseInt(personResultsData[i-1].Age) + number;
+                        check50 = false;
+                    }
+                }
+            }
+        });
+
+        personResults.diabetes = 0;
+
+        if(age < 70) personResults.diabetes = 5.4;
+        else if(age >= 70 && age < 80) personResults.diabetes = 4.0;
+        else if(age >= 80 && age < 90) personResults.diabetes = 2.5;
+        else if(age >= 90 && age < 100) personResults.diabetes = 1.0;
+        else if(age >= 100) personResults.diabetes = 0;
+
+        personResults.overallLifeExpectancy -= personResults.diabetes;
     }
 
     //Education calculation
@@ -76,7 +112,7 @@ export class CalculateResults {
         personResults.overallLifeExpectancy += personResults.mental;
         personResults.overallLifeExpectancy += personResults.parentAges;
         personResults.overallLifeExpectancy += personResults.alcohol;
-        personResults.overallLifeExpectancy += personResults.county;
+        //personResults.overallLifeExpectancy += personResults.county;
 
         //Occupation Factors
         personResults.overallLifeExpectancy += personResults.income;
@@ -94,18 +130,6 @@ export class CalculateResults {
     //Gets test tuples for chart data
     getTestTuples(clientResultsData, client, clientResults,
             spouseResultsData, spouse, spouseResults) {
-        
-        //SUBTRACT DIABETES YEARS
-        function calculateDiabetes(person, age, personResults) {
-            if(person.checkdiabetes) {
-                if(age < 70) personResults.overallLifeExpectancy -= 5.4;
-                else if(age >= 70 && age < 80) personResults.overallLifeExpectancy -= 4.0;
-                else if(age >= 80 && age < 90) personResults.overallLifeExpectancy -= 2.5;
-                else if(age >= 90 && age < 100) personResults.overallLifeExpectancy -= 1.0;
-                else if(age >= 100) personResults.overallLifeExpectancy -= 0;
-            } 
-        }
-
         var clientTuples = [];
         var clientTableAge = [];
         var clientTableValue = [];
@@ -113,18 +137,164 @@ export class CalculateResults {
         var age, more, less, difference, number, check90, check75, check50, check25, check10;
         var self = this;
 
+        var averageTuples = [];
+        var averageTableAge = [];
+        var averageTableValue = [];
+
         check90 = true; 
         check75 = true; 
         check50 = true; 
         check25 = true; 
         check10 = true;
 
+        //AVERAGE CLIENT
+        clientResultsData.forEach(function(value, i) {
+            if(parseInt(value.Age) >= client.age) {
+                var initialValue = parseInt(clientResultsData[client.age].Number);
+
+                //GET PERCENTILES
+                if(i > 0) {
+                    age = clientResultsData[i-1].Age;
+                    less = parseFloat(clientResultsData[i].Number);
+                    more = parseFloat(clientResultsData[i-1].Number);
+                    
+                    if(check90) {
+                        if(self.getPercent(initialValue, less, more, .90) != false) {
+                            number = self.getPercent(initialValue, less, more, .90);
+                            averageTableAge.push((parseInt(age) + number).toFixed(2));
+                            averageTableValue.push("90%");
+                            check90 = false;
+                        }
+                    }
+                    if(check75) {
+                        if(self.getPercent(initialValue, less, more, .75) != false) {
+                            number = self.getPercent(initialValue, less, more, .75);
+                            averageTableAge.push((parseInt(age) + number).toFixed(2));
+                            averageTableValue.push("75%");
+                            check75 = false;
+                        }
+                    }
+                    if(check50) {
+                        if(self.getPercent(initialValue, less, more, .50) != false) {
+                            number = self.getPercent(initialValue, less, more, .50);
+                            averageTableAge.push((parseInt(age) + number).toFixed(2));
+                            averageTableValue.push("50%");
+                            check50 = false;
+                        }
+                    }
+                    if(check25) {
+                        if(self.getPercent(initialValue, less, more, .25) != false) {
+                            number = self.getPercent(initialValue, less, more, .25);
+                            averageTableAge.push((parseInt(age) + number).toFixed(2));
+                            averageTableValue.push("25%");
+                            check25 = false;
+                        }
+                    }
+                    if(check10) {
+                        if(self.getPercent(initialValue, less, more, .10) != false) {
+                            number = self.getPercent(initialValue, less, more, .10);
+                            averageTableAge.push((parseInt(age) + number).toFixed(2));
+                            averageTableValue.push("10%");
+                            check10 = false;
+                        }
+                    }
+                }
+
+                averageTuples.push([parseInt(value.Age), parseInt(value.Number)]);
+            }
+        });
+
+
+        var spouseAverageTuples = [];
+        var spouseAverageTableAge = [];
+        var spouseAverageTableValue = [];
+
+        check90 = true; 
+        check75 = true; 
+        check50 = true; 
+        check25 = true; 
+        check10 = true;
+
+        //AVERAGE SPOUSE
+        if(client.checkspouse) {
+            spouseResultsData.forEach(function(value, i) {
+                if(parseInt(value.Age) >= client.age) {
+                    var initialValue = parseInt(spouseResultsData[spouse.age].Number);
+
+                    //GET PERCENTILES
+                    if(i > 0) {
+                        age = spouseResultsData[i-1].Age;
+                        less = parseFloat(spouseResultsData[i].Number);
+                        more = parseFloat(spouseResultsData[i-1].Number);
+                        
+                        if(check90) {
+                            if(self.getPercent(initialValue, less, more, .90) != false) {
+                                number = self.getPercent(initialValue, less, more, .90);
+                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
+                                spouseAverageTableValue.push("90%");
+                                check90 = false;
+                            }
+                        }
+                        if(check75) {
+                            if(self.getPercent(initialValue, less, more, .75) != false) {
+                                number = self.getPercent(initialValue, less, more, .75);
+                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
+                                spouseAverageTableValue.push("75%");
+                                check75 = false;
+                            }
+                        }
+                        if(check50) {
+                            if(self.getPercent(initialValue, less, more, .50) != false) {
+                                number = self.getPercent(initialValue, less, more, .50);
+                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
+                                spouseAverageTableValue.push("50%");
+                                check50 = false;
+                            }
+                        }
+                        if(check25) {
+                            if(self.getPercent(initialValue, less, more, .25) != false) {
+                                number = self.getPercent(initialValue, less, more, .25);
+                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
+                                spouseAverageTableValue.push("25%");
+                                check25 = false;
+                            }
+                        }
+                        if(check10) {
+                            if(self.getPercent(initialValue, less, more, .10) != false) {
+                                number = self.getPercent(initialValue, less, more, .10);
+                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
+                                spouseAverageTableValue.push("10%");
+                                check10 = false;
+                            }
+                        }
+                    }
+
+                    spouseAverageTuples.push([parseInt(value.Age), parseInt(value.Number)]);
+                }
+            });
+        }
+
+
+        check90 = true; 
+        check75 = true; 
+        check50 = true; 
+        check25 = true; 
+        check10 = true;
+              
         //CLIENT
         clientResultsData.forEach(function(value, i) {
             if(parseInt(value.Age) >= client.age) {
                 var initialValue = parseInt(clientResultsData[client.age].Number);
-                var tempValueNumber = parseInt(value.Number);
-
+                
+                if(clientResults.checkSpouseDeath && (parseInt(value.Age) === client.age + (clientResults.spouseDeath - spouse.age))) {
+                     difference = parseInt(clientResultsData[i-1].Number) - parseInt(clientResultsData[i].Number);
+                     value.Number -= difference * .66;
+                } else if(clientResults.checkSpouseDeath && (client.gender === 'male' || client.gender ==='Male') 
+                            && parseInt(value.Age) === client.age + (clientResults.spouseDeath - spouse.age) + 1) {
+                     difference = parseInt(clientResultsData[i-1].Number) - parseInt(clientResultsData[i].Number);
+                     value.Number -= difference * .30;
+                }
+                
                 //OCCUPATION
                 if(parseInt(value.Age) <= 67) value.Number = parseInt(value.Number) - self.user.clientOccupation.occupationChangeInLifeExpectancy;
                 
@@ -148,54 +318,6 @@ export class CalculateResults {
                     }
                 }
 
-                if((value.Number < initialValue * 0.9) && check90) {
-                    age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i-1].Number;
-                    less = clientResultsData[i].Number;
-                    difference = more - less;
-                    number = (more - initialValue * 0.9) / difference;
-                    
-                    clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
-                    clientTableValue.push("90%");
-                    check90 = false;
-                }
-                else if((value.Number < initialValue * 0.75) && check75) {
-                    age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i-1].Number;
-                    less = clientResultsData[i].Number;
-                    difference = more - less;
-                    number = (more - initialValue * 0.75) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
-                    clientTableValue.push("75%");
-                    check75 = false;
-                }
-                else if((value.Number < initialValue * 0.5) && check50) {
-                    age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i-1].Number;
-                    less = clientResultsData[i].Number;
-                    difference = more - less;
-                    number = (more - initialValue * 0.5) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
-                    clientTableValue.push("50%");
-                    calculateDiabetes(self.user.clientMyHealth, parseInt(age) + number, clientResults);
-                    clientResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
-
-                    check50 = false;
-                }
-                else if((value.Number < initialValue * 0.25) && check25) {
-                    age = clientResultsData[i-1].Age;
-                    more = clientResultsData[i-1].Number;
-                    less = clientResultsData[i].Number;
-                    difference = more - less;
-                    number = (more - initialValue * 0.25) / difference;
-
-                    clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
-                    clientTableValue.push("25%");
-                    check25 = false;
-                }
-
                 //GET PERCENTILES
                 if(i > 0) {
                     age = clientResultsData[i-1].Age;
@@ -205,7 +327,7 @@ export class CalculateResults {
                     if(check90) {
                         if(self.getPercent(initialValue, less, more, .90) != false) {
                             number = self.getPercent(initialValue, less, more, .90);
-                            clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
+                            clientTableAge.push((parseInt(age) + number + parseFloat(clientResults.overallLifeExpectancy)).toFixed(2));
                             clientTableValue.push("90%");
                             check90 = false;
                         }
@@ -213,7 +335,7 @@ export class CalculateResults {
                     if(check75) {
                         if(self.getPercent(initialValue, less, more, .75) != false) {
                             number = self.getPercent(initialValue, less, more, .75);
-                            clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
+                            clientTableAge.push((parseInt(age) + number + parseFloat(clientResults.overallLifeExpectancy)).toFixed(2));
                             clientTableValue.push("75%");
                             check75 = false;
                         }
@@ -221,18 +343,17 @@ export class CalculateResults {
                     if(check50) {
                         if(self.getPercent(initialValue, less, more, .50) != false) {
                             number = self.getPercent(initialValue, less, more, .50);
-                            clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
+                            clientTableAge.push((parseInt(age) + number + parseFloat(clientResults.overallLifeExpectancy)).toFixed(2));
                             clientTableValue.push("50%");
 
-                            calculateDiabetes(self.user.clientMyHealth, parseInt(age) + number, clientResults);
-                            clientResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
+                            clientResults.finalLifeExpectancy = (parseInt(age) + number + parseFloat(clientResults.overallLifeExpectancy)).toFixed(2);
                             check50 = false;
                         }
                     }
                     if(check25) {
                         if(self.getPercent(initialValue, less, more, .25) != false) {
                             number = self.getPercent(initialValue, less, more, .25);
-                            clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
+                            clientTableAge.push((parseInt(age) + number + parseFloat(clientResults.overallLifeExpectancy)).toFixed(2));
                             clientTableValue.push("25%");
                             check25 = false;
                         }
@@ -240,15 +361,18 @@ export class CalculateResults {
                     if(check10) {
                         if(self.getPercent(initialValue, less, more, .10) != false) {
                             number = self.getPercent(initialValue, less, more, .10);
-                            clientTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(clientResults.overallLifeExpectancy));
+                            clientTableAge.push((parseInt(age) + number + parseFloat(clientResults.overallLifeExpectancy)).toFixed(2));
                             clientTableValue.push("10%");
                             check10 = false;
                         }
                     }
                 }
 
-                clientTuples.push([parseInt(value.Age), value.Number]);
-                value.Number = tempValueNumber;
+                if(parseInt(value.Age) + clientResults.overallLifeExpectancy < client.age) {
+                    clientTuples.push([parseInt(value.Age), parseInt(value.Number)]);
+                }
+                else clientTuples.push([parseInt(value.Age) + Math.trunc(clientResults.overallLifeExpectancy), parseInt(value.Number)]);
+                
             } //PAST MARITAL STATUS 
             else if(parseInt(value.Age) < client.age) {
                 if(client.gender == 'male' || client.gender == 'Male') {
@@ -333,6 +457,10 @@ export class CalculateResults {
                         }
                     }
                 }
+
+                if(parseInt(value.Age) + clientResults.overallLifeExpectancy > client.age && i <= client.age + clientResults.overallLifeExpectancy) {
+                    clientTuples.push([client.age + Math.abs(client.age - i), parseInt(value.Number)]);
+                }
             }
         });
 
@@ -350,7 +478,7 @@ export class CalculateResults {
             spouseResultsData.forEach(function(value, i) {
                 if(parseInt(value.Age) >= spouse.age) {
                     var initialValue = parseInt(spouseResultsData[spouse.age].Number);
-                    var tempValueNumber = parseInt(value.Number);
+                    //var tempValueNumber = parseInt(value.Number);
 
                     //OCCUPATION
                     if(parseInt(value.Age) <= 67) value.Number = parseInt(value.Number) - self.user.spouseOccupation.occupationChangeInLifeExpectancy;
@@ -384,7 +512,7 @@ export class CalculateResults {
                         if(check90) {
                             if(self.getPercent(initialValue, less, more, .90) != false) {
                                 number = self.getPercent(initialValue, less, more, .90);
-                                spouseTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                                spouseTableAge.push((parseInt(age) + number + parseFloat(spouseResults.overallLifeExpectancy)).toFixed(2));
                                 spouseTableValue.push("90%");
                                 check90 = false;
                             }
@@ -392,7 +520,7 @@ export class CalculateResults {
                         if(check75) {
                             if(self.getPercent(initialValue, less, more, .75) != false) {
                                 number = self.getPercent(initialValue, less, more, .75);
-                                spouseTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                                spouseTableAge.push((parseInt(age) + number + parseFloat(spouseResults.overallLifeExpectancy)).toFixed(2));
                                 spouseTableValue.push("75%");
                                 check75 = false;
                             }
@@ -400,18 +528,17 @@ export class CalculateResults {
                         if(check50) {
                             if(self.getPercent(initialValue, less, more, .50) != false) {
                                 number = self.getPercent(initialValue, less, more, .50);
-                                spouseTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                                spouseTableAge.push((parseInt(age) + number + parseFloat(spouseResults.overallLifeExpectancy)).toFixed(2));
                                 spouseTableValue.push("50%");
 
-                                calculateDiabetes(self.user.spouseMyHealth, parseInt(age) + number, spouseResults);
-                                spouseResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
+                                spouseResults.finalLifeExpectancy = (parseInt(age) + number + parseFloat(spouseResults.overallLifeExpectancy)).toFixed(2);
                                 check50 = false;
                             }
                         }
                         if(check25) {
                             if(self.getPercent(initialValue, less, more, .25) != false) {
                                 number = self.getPercent(initialValue, less, more, .25);
-                                spouseTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                                spouseTableAge.push((parseInt(age) + number + parseFloat(spouseResults.overallLifeExpectancy)).toFixed(2));
                                 spouseTableValue.push("25%");
                                 check25 = false;
                             }
@@ -419,15 +546,18 @@ export class CalculateResults {
                         if(check10) {
                             if(self.getPercent(initialValue, less, more, .10) != false) {
                                 number = self.getPercent(initialValue, less, more, .10);
-                                spouseTableAge.push((parseInt(age) + number).toFixed(2) + parseFloat(spouseResults.overallLifeExpectancy));
+                                spouseTableAge.push((parseInt(age) + number + parseFloat(spouseResults.overallLifeExpectancy)).toFixed(2));
                                 spouseTableValue.push("10%");
                                 check10 = false;
                             }
                         }
                     }
 
-                    spouseTuples.push([parseInt(value.Age), value.Number]);
-                    value.Number = tempValueNumber;
+                    if(parseInt(value.Age) + spouseResults.overallLifeExpectancy < spouse.age) {
+                        spouseTuples.push([parseInt(value.Age), parseInt(value.Number)]);
+                    }
+                    else spouseTuples.push([parseInt(value.Age) + Math.trunc(spouseResults.overallLifeExpectancy), parseInt(value.Number)]);
+                    //value.Number = tempValueNumber;
                 } //PAST MARITAL STATUS 
                 else if(parseInt(value.Age) < spouse.age) {
                     if(spouse.gender == 'male' || spouse.gender == 'Male') {
@@ -513,152 +643,13 @@ export class CalculateResults {
                         }
                     }
                 }
-            });
-        }
-
-        var averageTuples = [];
-        var averageTableAge = [];
-        var averageTableValue = [];
-
-        check90 = true; 
-        check75 = true; 
-        check50 = true; 
-        check25 = true; 
-        check10 = true;
-
-        //AVERAGE CLIENT
-        clientResultsData.forEach(function(value, i) {
-            if(parseInt(value.Age) >= client.age) {
-                var initialValue = parseInt(clientResultsData[client.age].Number);
-
-                //GET PERCENTILES
-                if(i > 0) {
-                    age = clientResultsData[i-1].Age;
-                    less = parseFloat(clientResultsData[i].Number);
-                    more = parseFloat(clientResultsData[i-1].Number);
-                    
-                    if(check90) {
-                        if(self.getPercent(initialValue, less, more, .90) != false) {
-                            number = self.getPercent(initialValue, less, more, .90);
-                            averageTableAge.push((parseInt(age) + number).toFixed(2));
-                            averageTableValue.push("90%");
-                            check90 = false;
-                        }
-                    }
-                    if(check75) {
-                        if(self.getPercent(initialValue, less, more, .75) != false) {
-                            number = self.getPercent(initialValue, less, more, .75);
-                            averageTableAge.push((parseInt(age) + number).toFixed(2));
-                            averageTableValue.push("75%");
-                            check75 = false;
-                        }
-                    }
-                    if(check50) {
-                        if(self.getPercent(initialValue, less, more, .50) != false) {
-                            number = self.getPercent(initialValue, less, more, .50);
-                            averageTableAge.push((parseInt(age) + number).toFixed(2));
-                            averageTableValue.push("50%");
-
-                            calculateDiabetes(self.user.clientMyHealth, parseInt(age) + number, clientResults);
-                            clientResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
-                            check50 = false;
-                        }
-                    }
-                    if(check25) {
-                        if(self.getPercent(initialValue, less, more, .25) != false) {
-                            number = self.getPercent(initialValue, less, more, .25);
-                            averageTableAge.push((parseInt(age) + number).toFixed(2));
-                            averageTableValue.push("25%");
-                            check25 = false;
-                        }
-                    }
-                    if(check10) {
-                        if(self.getPercent(initialValue, less, more, .10) != false) {
-                            number = self.getPercent(initialValue, less, more, .10);
-                            averageTableAge.push((parseInt(age) + number).toFixed(2));
-                            averageTableValue.push("10%");
-                            check10 = false;
-                        }
-                    }
-                }
-
-                averageTuples.push([parseInt(value.Age), value.Number]);
-            }
-        });
-
-
-        var spouseAverageTuples = [];
-        var spouseAverageTableAge = [];
-        var spouseAverageTableValue = [];
-
-        check90 = true; 
-        check75 = true; 
-        check50 = true; 
-        check25 = true; 
-        check10 = true;
-
-        //AVERAGE SPOUSE
-        if(client.checkspouse) {
-            spouseResultsData.forEach(function(value, i) {
-                if(parseInt(value.Age) >= client.age) {
-                    var initialValue = parseInt(spouseResultsData[spouse.age].Number);
-
-                    //GET PERCENTILES
-                    if(i > 0) {
-                        age = spouseResultsData[i-1].Age;
-                        less = parseFloat(spouseResultsData[i].Number);
-                        more = parseFloat(spouseResultsData[i-1].Number);
-                        
-                        if(check90) {
-                            if(self.getPercent(initialValue, less, more, .90) != false) {
-                                number = self.getPercent(initialValue, less, more, .90);
-                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
-                                spouseAverageTableValue.push("90%");
-                                check90 = false;
-                            }
-                        }
-                        if(check75) {
-                            if(self.getPercent(initialValue, less, more, .75) != false) {
-                                number = self.getPercent(initialValue, less, more, .75);
-                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
-                                spouseAverageTableValue.push("75%");
-                                check75 = false;
-                            }
-                        }
-                        if(check50) {
-                            if(self.getPercent(initialValue, less, more, .50) != false) {
-                                number = self.getPercent(initialValue, less, more, .50);
-                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
-                                spouseAverageTableValue.push("50%");
-
-                                calculateDiabetes(self.user.spouseMyHealth, parseInt(age) + number, spouseResults);
-                                spouseResults.finalLifeExpectancy = (parseInt(age) + number).toFixed(2);
-                                check50 = false;
-                            }
-                        }
-                        if(check25) {
-                            if(self.getPercent(initialValue, less, more, .25) != false) {
-                                number = self.getPercent(initialValue, less, more, .25);
-                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
-                                spouseAverageTableValue.push("25%");
-                                check25 = false;
-                            }
-                        }
-                        if(check10) {
-                            if(self.getPercent(initialValue, less, more, .10) != false) {
-                                number = self.getPercent(initialValue, less, more, .10);
-                                spouseAverageTableAge.push((parseInt(age) + number).toFixed(2));
-                                spouseAverageTableValue.push("10%");
-                                check10 = false;
-                            }
-                        }
-                    }
-
-                    spouseAverageTuples.push([parseInt(value.Age), value.Number]);
+                if(parseInt(value.Age) + spouseResults.overallLifeExpectancy > spouse.age && i <= spouse.age + spouseResults.overallLifeExpectancy) {
+                    spouseTuples.push([spouse.age + Math.abs(spouse.age - i), parseInt(value.Number)]);
                 }
             });
         }
 
+        
         //GET TUPLES FOR GRAPH
         clientResults.clientTuples = clientTuples;
         spouseResults.spouseTuples = spouseTuples;
@@ -678,24 +669,14 @@ export class CalculateResults {
         spouseResults.spouseAverageTableValue = spouseAverageTableValue;
     }
 
-    
-
     async calculateSpouseDiesEarly(client, clientResults, spouse, spouseResults) {
         let clientEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + client.race.toLowerCase() + '-' + client.gender.toLowerCase() + '.json');
         let clientResultsData = await clientEthnicityExpectancy.json();
-        var age = client.age + (clientResults.spouseDeath - spouse.age);
-        var self = this;
-        var check50 = true;
+       
+        let spouseEthnicityExpectancy = await this.httpClient.fetch('/api/life-table/' + spouse.race.toLowerCase() + '-' + spouse.gender.toLowerCase() + '.json');
+        let spouseResultsData = await spouseEthnicityExpectancy.json();
 
-        clientResultsData.forEach(function(value, i) {
-            var initialValue = parseInt(clientResultsData[age].Number);
-            if(i > 0) {
-                var more = clientResultsData[i-1].Number;
-                var less = clientResultsData[i].Number;
-                if(check50) {
-                    if(self.getPercent(initialValue, less, more, .50) != false) check50 = false;
-                }
-            }
-        });
+        this.getTestTuples(clientResultsData, client, clientResults,
+            spouseResultsData, spouse, spouseResults);
     }
 }

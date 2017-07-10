@@ -66,7 +66,9 @@ export class ReadFile {
         var self = this;
         jsonData.forEach((weekObject) => {
             if(weekObject.Consumption === jsonValue) {
-                person.alcoholConsumptionImpact = parseInt(weekObject.Years);
+                console.log(weekObject.Consumption);
+                console.log(weekObject.Years);
+                person.alcoholConsumptionImpact = parseFloat(weekObject.Years);
             }
         });
     }
