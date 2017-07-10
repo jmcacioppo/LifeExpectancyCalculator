@@ -1,5 +1,9 @@
 <template>
     <require from="highcharts/css/highcharts.css"></require>
+    <require from="ion-rangeslider/css/ion.rangeSlider.css"></require>
+    <require from="ion-rangeslider/css/ion.rangeSlider.skinHTML5.css"></require>
+    <require from="ion-rangeslider/css/normalize.css"></require>
+
     <div id="results">
         <h1 style="text-align: center">Results</h1>
         <div id="chart-container" style="width:100%; height:400px;"></div>
@@ -26,31 +30,8 @@
             </div>  
         </div>
 
-        <!--============================SPOUSE===========================-->
-        <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
-            <hr>
-            <h3 style="text-align:center;">Spouse Results - Life Expectancy is: <b>${user.spouseResults.finalLifeExpectancy}</b></h3>
-            <div class="table-outter">
-                <table class="table table-hover table-bordered search-table">
-                    <thead>
-                        <tr>
-                            <th>Probability to Reach Age</th>
-                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>Age</th>
-                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>  
-        </div>
-
         <!--============================AVERAGE===========================-->
         <div id="average">
-            <hr>
             <h3 style="text-align:center;">Average Results for
                 ${user.clientPersonalInfo.race} ${user.clientPersonalInfo.gender} at age ${user.clientPersonalInfo.age}
             </h3>
@@ -71,10 +52,31 @@
                 </table>
             </div>  
         </div>
+        
+        <!--============================SPOUSE===========================-->
+        <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
+            <hr> <br> <br>
+            <h3 style="text-align:center;">Spouse Results - Life Expectancy is: <b>${user.spouseResults.finalLifeExpectancy}</b></h3>
+            <div class="table-outter">
+                <table class="table table-hover table-bordered search-table">
+                    <thead>
+                        <tr>
+                            <th>Probability to Reach Age</th>
+                            <th repeat.for="num of user.spouseResults.spouseTableValue.length">${user.spouseResults.spouseTableValue[num]}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Age</th>
+                            <td repeat.for="age of user.spouseResults.spouseTableAge.length">${user.spouseResults.spouseTableAge[age]}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>  
+        </div>
 
         <!--============================ SPOUSE AVERAGE===========================-->
         <div id="spouse" show.bind="user.clientPersonalInfo.checkspouse">
-            <hr>
             <h3 style="text-align:center;">Average Results for ${user.spousePersonalInfo.race} ${user.spousePersonalInfo.gender} at age ${user.spousePersonalInfo.age}</h3>
             <div class="table-outter">
                 <table class="table table-hover table-bordered search-table">
@@ -94,12 +96,23 @@
             </div>  
         </div>
 
-        <label for="mentalCondition">Check scenarios if my spouse dies?</label>
-        <div class="btn-group" click.delegate="checkSpouseDeath(user.clientResults)" data-toggle="buttons">
-            <label class="btn ${user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
-                <input type="radio">Yes</label>
-            <label class="btn ${!user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
-                <input type="radio">No</label>
+        <!--=====================CHECK IF SPOUSE DIES=======================-->
+        <div show.bind="user.clientPersonalInfo.checkspouse">
+            <hr>
+            <label style="padding-right: 10px;" for="ifSpouseDies">Check scenarios if my spouse dies?</label>
+            <div class="btn-group" click.delegate="checkSpouseDeath(user.clientResults)" data-toggle="buttons">
+                <label class="btn ${user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">Yes</label>
+                <label class="btn ${!user.clientResults.checkSpouseDeath ? 'active btn-primary' : 'btn-secondary'}">
+                    <input type="radio">No</label>
+            </div>
+        </div>
+        <br> <br>
+
+        <!--=====================AGE OF SPOUSE PASSING==============================-->
+        <div show.bind="user.clientResults.checkSpouseDeath && user.clientPersonalInfo.checkspouse" class="form-group">
+            <label for="age">Age of passing:</label>
+            <input style="width: 400px;" id="spouseDies"></input>
         </div>
 
         <hr style="clear:both">

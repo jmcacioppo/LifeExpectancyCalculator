@@ -4,6 +4,7 @@ import {transient} from 'aurelia-framework';
 export class ResultsData {
     constructor() {
         this.checkSpouseDeath = false;
+        this.spouseDeath;
         
         //PERSONAL INFO EXPECTANCIES
         this.education = 0;
