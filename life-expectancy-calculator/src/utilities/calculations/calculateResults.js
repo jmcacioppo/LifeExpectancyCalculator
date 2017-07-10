@@ -109,6 +109,7 @@ export class CalculateResults {
         //CLIENT
         clientResultsData.forEach(function(value, i) {
             if(parseInt(value.Age) >= client.age) {
+                var initialValue = parseInt(clientResultsData[client.age].Number);
                 var tempValueNumber = parseInt(value.Number);
                 if(parseInt(value.Age) <= 67) 
                     value.Number = parseInt(value.Number) - self.user.clientOccupation.occupationChangeInLifeExpectancy;
@@ -131,35 +132,35 @@ export class CalculateResults {
                         else if(client.maritalStatus == 'Divorced') value.Number -= difference * .32; //Years after divorce
                     }
                 }
-                
-                if(value.Number < 90000 && check90) {
+
+                if((value.Number < initialValue * 0.9) && check90) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 90000) / difference;
+                    number = (more - initialValue * 0.9) / difference;
 
                     clientTableAge.push((parseInt(age) + number).toFixed(2));
                     clientTableValue.push("90%");
                     check90 = false;
                 }
-                else if(value.Number < 75000 && check75) {
+                else if((value.Number < initialValue * 0.75) && check75) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 75000) / difference;
+                    number = (more - initialValue * 0.75) / difference;
 
                     clientTableAge.push((parseInt(age) + number).toFixed(2));
                     clientTableValue.push("75%");
                     check75 = false;
                 }
-                else if(value.Number < 50000 && check50) {
+                else if((value.Number < initialValue * 0.5) && check50) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 50000) / difference;
+                    number = (more - initialValue * 0.5) / difference;
 
                     clientTableAge.push((parseInt(age) + number).toFixed(2));
                     clientTableValue.push("50%");
@@ -168,23 +169,23 @@ export class CalculateResults {
 
                     check50 = false;
                 }
-                else if(value.Number < 25000 && check25) {
+                else if((value.Number < initialValue * 0.25) && check25) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 25000) / difference;
+                    number = (more - initialValue * 0.25) / difference;
 
                     clientTableAge.push((parseInt(age) + number).toFixed(2));
                     clientTableValue.push("25%");
                     check25 = false;
                 }
-                else if(value.Number < 10000 && check10) {
+                else if((value.Number < initialValue * 0.10) && check10) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 10000) / difference;
+                    number = (more - initialValue * 0.10) / difference;
 
                     clientTableAge.push((parseInt(age) + number).toFixed(2));
                     clientTableValue.push("10%");
@@ -292,6 +293,7 @@ export class CalculateResults {
         //CO-CLIENT
         if(client.checkspouse) {
             spouseResultsData.forEach(function(value, i) {
+                var initialValue = parseInt(spouseResultsData[spouse.age].Number);
                 if(parseInt(value.Age) >= spouse.age) {
                     var tempValueNumber = parseInt(value.Number);
                     if(parseInt(value.Age) <= 67) 
@@ -316,34 +318,34 @@ export class CalculateResults {
                         }
                     }
                     
-                    if(value.Number < 90000 && check90) {
+                    if((value.Number < initialValue * 0.90) && check90) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i-1].Number;
                         less = spouseResultsData[i].Number;
                         difference = more - less;
-                        number = (more - 90000) / difference;
+                        number = (more - initialValue * 0.90) / difference;
 
                         spouseTableAge.push((parseInt(age) + number).toFixed(2));
                         spouseTableValue.push("90%");
                         check90 = false;
                     }
-                    else if(value.Number < 75000 && check75) {
+                    else if((value.Number < initialValue * 0.75) && check75) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i-1].Number;
                         less = spouseResultsData[i].Number;
                         difference = more - less;
-                        number = (more - 75000) / difference;
+                        number = (more - initialValue * 0.75) / difference;
 
                         spouseTableAge.push((parseInt(age) + number).toFixed(2));
                         spouseTableValue.push("75%");
                         check75 = false;
                     }
-                    else if(value.Number < 50000 && check50) {
+                    else if((value.Number < initialValue * 0.50) && check50) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i-1].Number;
                         less = spouseResultsData[i].Number;
                         difference = more - less;
-                        number = (more - 50000) / difference;
+                        number = (more - initialValue * 0.50) / difference;
 
                         spouseTableAge.push((parseInt(age) + number).toFixed(2));
                         spouseTableValue.push("50%");
@@ -352,23 +354,23 @@ export class CalculateResults {
 
                         check50 = false;
                     }
-                    else if(value.Number < 25000 && check25) {
+                    else if((value.Number < initialValue * 0.25) && check25) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i-1].Number;
                         less = spouseResultsData[i].Number;
                         difference = more - less;
-                        number = (more - 25000) / difference;
+                        number = (more - initialValue * 0.25) / difference;
 
                         spouseTableAge.push((parseInt(age) + number).toFixed(2));
                         spouseTableValue.push("25%");
                         check25 = false;
                     }
-                    else if(value.Number < 10000 && check10) {
+                    else if((value.Number < initialValue * 0.10) && check10) {
                         age = spouseResultsData[i-1].Age;
                         more = spouseResultsData[i-1].Number;
                         less = spouseResultsData[i].Number;
                         difference = more - less;
-                        number = (more - 10000) / difference;
+                        number = (more - initialValue * 0.10) / difference;
 
                         spouseTableAge.push((parseInt(age) + number).toFixed(2));
                         spouseTableValue.push("10%");
@@ -476,57 +478,58 @@ export class CalculateResults {
         check10 = true;
         //AVERAGE
         clientResultsData.forEach(function(value, i) {
+            var initialValue = parseInt(clientResultsData[client.age].Number);
             if(parseInt(value.Age) >= client.age) {
-                if(value.Number < 90000 && check90) {
+                if((value.Number < initialValue * 0.90) && check90) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 90000) / difference;
+                    number = (more - initialValue * 0.90) / difference;
 
                     averageTableAge.push((parseInt(age) + number).toFixed(2));
                     averageTableValue.push("90%");
                     check90 = false;
                 }
-                else if(value.Number < 75000 && check75) {
+                else if((value.Number < initialValue * 0.75) && check75) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 75000) / difference;
+                    number = (more - initialValue * 0.75) / difference;
 
                     averageTableAge.push((parseInt(age) + number).toFixed(2));
                     averageTableValue.push("75%");
                     check75 = false;
                 }
-                else if(value.Number < 50000 && check50) {
+                else if((value.Number < initialValue * 0.50) && check50) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 50000) / difference;
+                    number = (more - initialValue * 0.50) / difference;
 
                     averageTableAge.push((parseInt(age) + number).toFixed(2));
                     averageTableValue.push("50%");
                     check50 = false;
                 }
-                else if(value.Number < 25000 && check25) {
+                else if((value.Number < initialValue * 0.25) && check25) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 25000) / difference;
+                    number = (more - initialValue * 0.25) / difference;
 
                     averageTableAge.push((parseInt(age) + number).toFixed(2));
                     averageTableValue.push("25%");
                     check25 = false;
                 }
-                else if(value.Number < 10000 && check10) {
+                else if((value.Number < initialValue * 0.10) && check10) {
                     age = clientResultsData[i-1].Age;
                     more = clientResultsData[i-1].Number;
                     less = clientResultsData[i].Number;
                     difference = more - less;
-                    number = (more - 10000) / difference;
+                    number = (more - initialValue * 0.10) / difference;
 
                     averageTableAge.push((parseInt(age) + number).toFixed(2));
                     averageTableValue.push("10%");
