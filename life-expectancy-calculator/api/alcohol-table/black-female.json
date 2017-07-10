@@ -1,0 +1,18 @@
+[
+  {
+    "Consumption": "no drinks",
+    "Years": 0
+  },
+  {
+    "Consumption": "less than 2 drinks",
+    "Years": 1.7
+  },
+  {
+    "Consumption": "between 2 and 7 drinks",
+    "Years": 2
+  },
+  {
+    "Consumption": "more than 8 drinks",
+    "Years": 0.3
+  }
+]

@@ -1,10 +1,14 @@
 import {inject} from 'aurelia-framework';
+import {HttpClient, json} from 'aurelia-fetch-client';
 import {User} from '../../services/user';
+import {ReadFile} from '../readFile';
 
-@inject(User)
+@inject(User, ReadFile, HttpClient)
 export class CalculateMyHealth {
-    constructor(user) {
+    constructor(user, readFile, httpClient) {
         this.user = user;
+        this.readFile = readFile;
+        this.httpClient = httpClient;
     }
 
     //this calculates the body mass index(if you're wondering, tweet me @JesseCochran1)
@@ -128,5 +132,30 @@ export class CalculateMyHealth {
         }
 
         personResults.parentAges = parentAges;
+    }
+
+    //Given a person, this method calculates the impact of alcohol consumption on life expectancy
+    async calculateAlcoholConsumption(personHealth, personInfo, personResults) {
+        var jsonName = personInfo.race.toLowerCase() + "-" + personInfo.gender + ".json";
+        var alcohol = personHealth.alcoholPerWeek;
+        var jsonValueToSearch;
+        switch(true) {
+            case alcohol === 'None':
+                jsonValueToSearch = 'no drinks';
+                break;
+            case alcohol === 'Less than 2':
+                jsonValueToSearch = 'less than 2 drinks';
+                break;
+            case alcohol === 'Between 2 and 7':
+                jsonValueToSearch = 'between 2 and 7 drinks';
+                break;
+            default:
+                jsonValueToSearch = 'more than 8 drinks';
+                break;
+        }
+        let jsonData = await this.httpClient.fetch('/api/alcohol-table/' + jsonName);
+        let json = await jsonData.json()
+        this.readFile.getAlcoholConsumption(personHealth, json, jsonValueToSearch);
+        personResults.alcohol = personHealth.alcoholConsumptionImpact;
     }
 }
