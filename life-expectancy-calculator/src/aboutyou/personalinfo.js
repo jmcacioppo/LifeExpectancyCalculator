@@ -108,10 +108,6 @@ export class personalinfo {
         this.router.navigate('#/myhealth');  
     }
 
-    familyhealth() {
-        this.router.navigate('#/familyhealth');  
-    }
-
     occupation() {
         this.router.navigate('#/occupation');  
     }

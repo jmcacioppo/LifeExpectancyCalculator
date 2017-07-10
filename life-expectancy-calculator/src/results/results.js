@@ -13,6 +13,10 @@ export class results {
         this.calculateResults = calculateResults;
     }
 
+    checkSpouseDeath(person) {
+        if(person.checkSpouseDeath) console.log("Dying");
+    }
+
     attached() {
         var chartTuples = [];
         if(this.user.clientPersonalInfo.checkspouse) {
