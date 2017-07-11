@@ -400,7 +400,7 @@ export class CalculateResults {
                 }
 
                 if(parseInt(value.Age) + clientResults.overallLifeExpectancy < client.age) {
-                    clientTuples.push([parseInt(value.Age), parseInt(value.Number)]);
+                    //clientTuples.push([parseInt(value.Age), parseInt(value.Number)]);
                 }
                 else clientTuples.push([parseInt(value.Age) + Math.trunc(clientResults.overallLifeExpectancy), parseInt(value.Number)]);
                 
