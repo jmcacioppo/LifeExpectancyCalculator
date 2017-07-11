@@ -2171,7 +2171,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
                         }
 
                         if (parseInt(value.Age) + clientResults.overallLifeExpectancy > client.age && i <= client.age + clientResults.overallLifeExpectancy) {
-                            clientTuples.push([client.age + Math.abs(client.age - i), parseInt(value.Number)]);
+                            clientTuples.push([client.age + Math.abs(client.age - i - 1), parseInt(value.Number)]);
                         }
                     }
             });
@@ -2254,9 +2254,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
                             }
                         }
 
-                        if (parseInt(value.Age) + spouseResults.overallLifeExpectancy < spouse.age) {
-                            spouseTuples.push([parseInt(value.Age), parseInt(value.Number)]);
-                        } else spouseTuples.push([parseInt(value.Age) + Math.trunc(spouseResults.overallLifeExpectancy), parseInt(value.Number)]);
+                        if (parseInt(value.Age) + spouseResults.overallLifeExpectancy < spouse.age) {} else spouseTuples.push([parseInt(value.Age) + Math.trunc(spouseResults.overallLifeExpectancy), parseInt(value.Number)]);
                     } else if (parseInt(value.Age) < spouse.age) {
                             if (spouse.gender == 'male' || spouse.gender == 'Male') {
                                 if (parseInt(value.Age) >= 28 && parseInt(value.Age) <= 70) {

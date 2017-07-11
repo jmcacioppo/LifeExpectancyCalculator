@@ -490,7 +490,7 @@ export class CalculateResults {
                 }
 
                 if(parseInt(value.Age) + clientResults.overallLifeExpectancy > client.age && i <= client.age + clientResults.overallLifeExpectancy) {
-                    clientTuples.push([client.age + Math.abs(client.age - i), parseInt(value.Number)]);
+                    clientTuples.push([client.age + Math.abs(client.age - i - 1), parseInt(value.Number)]);
                 }
             }
         });
@@ -585,7 +585,7 @@ export class CalculateResults {
                     }
 
                     if(parseInt(value.Age) + spouseResults.overallLifeExpectancy < spouse.age) {
-                        spouseTuples.push([parseInt(value.Age), parseInt(value.Number)]);
+                        // spouseTuples.push([parseInt(value.Age), parseInt(value.Number)]);
                     }
                     else spouseTuples.push([parseInt(value.Age) + Math.trunc(spouseResults.overallLifeExpectancy), parseInt(value.Number)]);
                     //value.Number = tempValueNumber;
