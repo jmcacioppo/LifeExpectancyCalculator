@@ -103,6 +103,7 @@ export class CalculateResults {
 
         var county = parseFloat(person.countyLifeExpectancy);
         personResults.county = county - ((county + age) / 2);
+        if(isNaN(personResults.county)) personResults.county = 0;
 
         personResults.overallLifeExpectancy += personResults.county;
     }
