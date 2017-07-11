@@ -604,6 +604,47 @@ define('health/myhealth',['exports', 'jquery', 'aurelia-framework', 'aurelia-rou
         return myhealth;
     }()) || _class);
 });
+define('resources/index',["exports"], function (exports) {
+  "use strict";
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.configure = configure;
+  function configure(config) {}
+});
+define('services/user',['exports', 'aurelia-framework', '../services/data/personalInfoData', '../services/data/myHealthData', '../services/data/occupationData', '../services/data/resultsData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _occupationData, _resultsData) {
+    'use strict';
+
+    Object.defineProperty(exports, "__esModule", {
+        value: true
+    });
+    exports.User = undefined;
+
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
+
+    var _dec, _class;
+
+    var User = exports.User = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function User() {
+        _classCallCheck(this, User);
+
+        this.clientPersonalInfo = new _personalInfoData.PersonalInfoData();
+        this.spousePersonalInfo = new _personalInfoData.PersonalInfoData();
+
+        this.clientMyHealth = new _myHealthData.MyHealthData();
+        this.spouseMyHealth = new _myHealthData.MyHealthData();
+
+        this.clientOccupation = new _occupationData.OccupationData();
+        this.spouseOccupation = new _occupationData.OccupationData();
+
+        this.clientResults = new _resultsData.ResultsData();
+        this.spouseResults = new _resultsData.ResultsData();
+    }) || _class);
+});
 define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/calculations/calculateOccupation', '../services/data/occupationData'], function (exports, _aureliaFramework, _aureliaRouter, _user, _calculateOccupation, _occupationData) {
     'use strict';
 
@@ -726,15 +767,6 @@ define('occupation/occupation',['exports', 'aurelia-framework', 'aurelia-router'
         return occupation;
     }()) || _class);
 });
-define('resources/index',["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.configure = configure;
-  function configure(config) {}
-});
 define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../services/user', '../utilities/chart', '../utilities/calculations/calculateResults', '../utilities/slider'], function (exports, _aureliaFramework, _aureliaRouter, _user, _chart, _calculateResults, _slider) {
     'use strict';
 
@@ -804,38 +836,6 @@ define('results/results',['exports', 'aurelia-framework', 'aurelia-router', '../
 
         return results;
     }()) || _class);
-});
-define('services/user',['exports', 'aurelia-framework', '../services/data/personalInfoData', '../services/data/myHealthData', '../services/data/occupationData', '../services/data/resultsData'], function (exports, _aureliaFramework, _personalInfoData, _myHealthData, _occupationData, _resultsData) {
-    'use strict';
-
-    Object.defineProperty(exports, "__esModule", {
-        value: true
-    });
-    exports.User = undefined;
-
-    function _classCallCheck(instance, Constructor) {
-        if (!(instance instanceof Constructor)) {
-            throw new TypeError("Cannot call a class as a function");
-        }
-    }
-
-    var _dec, _class;
-
-    var User = exports.User = (_dec = (0, _aureliaFramework.singleton)(), _dec(_class = function User() {
-        _classCallCheck(this, User);
-
-        this.clientPersonalInfo = new _personalInfoData.PersonalInfoData();
-        this.spousePersonalInfo = new _personalInfoData.PersonalInfoData();
-
-        this.clientMyHealth = new _myHealthData.MyHealthData();
-        this.spouseMyHealth = new _myHealthData.MyHealthData();
-
-        this.clientOccupation = new _occupationData.OccupationData();
-        this.spouseOccupation = new _occupationData.OccupationData();
-
-        this.clientResults = new _resultsData.ResultsData();
-        this.spouseResults = new _resultsData.ResultsData();
-    }) || _class);
 });
 define('utilities/chart',['exports', 'aurelia-framework', 'highcharts', '../services/user'], function (exports, _aureliaFramework, _highcharts, _user) {
     'use strict';
@@ -2112,9 +2112,7 @@ define('utilities/calculations/calculateResults',['exports', 'aurelia-framework'
                         }
                     }
 
-                    if (parseInt(value.Age) + clientResults.overallLifeExpectancy < client.age) {
-                        clientTuples.push([parseInt(value.Age), parseInt(value.Number)]);
-                    } else clientTuples.push([parseInt(value.Age) + Math.trunc(clientResults.overallLifeExpectancy), parseInt(value.Number)]);
+                    if (parseInt(value.Age) + clientResults.overallLifeExpectancy < client.age) {} else clientTuples.push([parseInt(value.Age) + Math.trunc(clientResults.overallLifeExpectancy), parseInt(value.Number)]);
                 } else if (parseInt(value.Age) < client.age) {
                         if (client.gender == 'male' || client.gender == 'Male') {
                             if (parseInt(value.Age) >= 28 && parseInt(value.Age) <= 70) {
